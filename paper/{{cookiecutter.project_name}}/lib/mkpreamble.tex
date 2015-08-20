@@ -1,0 +1,9 @@
+\documentclass{minimal}
+\newwrite\preamble
+\begin{document}
+\immediate\openout\preamble=preamble.tex
+\immediate\write\preamble{this is interesting}
+\immediate\write\preamble{}
+\immediate\write\preamble{this too}
+\immediate\closeout\preamble
+\end{document}

@@ -39,7 +39,7 @@ DIFFDIR := ./diff
 
 METADATA   := metadata.bib
 GITREF     := $(DIFFDIR)/gitref
-DOCID      := $(shell perl -ne '/\@[a-zA-Z{]*:(.*),/ && print "$1\n"' $(METADATA))
+DOCID      := $(shell perl -ne '/\@[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
 REF        := HEAD
 
 FIGFILES   := $(wildcard $(FIGDIR)/*.png) $(wildcard $(FIGDIR)/*.pdf)
@@ -143,8 +143,8 @@ flat/%: $(BLDDIR)/flat/%
 #----------------------------------#
 
 # create a preamble tex file
-preamble.tex: $(METADATA) $(LIBFILES)
-	$(call lua-environment) $(LUA) -l utils -e "print(utils.load(\"$<\").make_preamble())" > $@
+preamble.tex: $(METADATA)
+	touch $@
 
 # precompile headers
 $(BLDDIR)/preamble.fmt: preamble.tex

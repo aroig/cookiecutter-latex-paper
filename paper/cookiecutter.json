@@ -5,5 +5,5 @@
     "document_type"  : "paper",
     "language"       : "english",
 
-    "_copy_without_render": [ "*.sty" ]
+    "_copy_without_render": [ "lib/*", "*.sty", "*.lua" ]
 }
