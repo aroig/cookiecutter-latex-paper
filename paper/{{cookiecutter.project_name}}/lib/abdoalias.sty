@@ -1,0 +1,671 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{abdoalias}
+
+%% Package Loading
+%% ====================================================
+
+\RequirePackage{iftex}            % do conditionals on tex engine
+\RequirePackage{suffix}           % define starred commands
+
+\RequirePackage{amsmath}          % AMS stuff
+\RequirePackage{amsfonts}         % AMS fonts
+\RequirePackage{amssymb}          % AMS symbols
+
+\RequirePackage{slashed}          % Feynman slashes.
+
+% \RequirePackage{tensor}         % Typeset tensor indices.
+% \RequirePackage{young}          % Draw Young tableaux.
+\RequirePackage{stmaryrd}         % Extra math symbols (like double square bracket)
+
+
+%% Font change shortcuts
+%% ====================================================
+
+% Shortcuts to blackboard bold.
+%-----------------------------
+\newcommand*{\bbA}{\mathbb{A}}
+\newcommand*{\bbB}{\mathbb{B}}
+\newcommand*{\bbC}{\mathbb{C}}
+\newcommand*{\bbD}{\mathbb{D}}
+\newcommand*{\bbE}{\mathbb{E}}
+\newcommand*{\bbF}{\mathbb{F}}
+\newcommand*{\bbG}{\mathbb{G}}
+\newcommand*{\bbH}{\mathbb{H}}
+\newcommand*{\bbI}{\mathbb{I}}
+\newcommand*{\bbJ}{\mathbb{J}}
+\newcommand*{\bbK}{\mathbb{K}}
+\newcommand*{\bbL}{\mathbb{L}}
+\newcommand*{\bbM}{\mathbb{M}}
+\newcommand*{\bbN}{\mathbb{N}}
+\newcommand*{\bbO}{\mathbb{O}}
+\newcommand*{\bbP}{\mathbb{P}}
+\newcommand*{\bbQ}{\mathbb{Q}}
+\newcommand*{\bbR}{\mathbb{R}}
+\newcommand*{\bbS}{\mathbb{S}}
+\newcommand*{\bbT}{\mathbb{T}}
+\newcommand*{\bbU}{\mathbb{U}}
+\newcommand*{\bbV}{\mathbb{V}}
+\newcommand*{\bbW}{\mathbb{W}}
+\newcommand*{\bbX}{\mathbb{X}}
+\newcommand*{\bbY}{\mathbb{Y}}
+\newcommand*{\bbZ}{\mathbb{Z}}
+
+
+% Shortcuts to script fonts
+%-----------------------------
+\newcommand*{\scA}{\mathscr{A}}
+\newcommand*{\scB}{\mathscr{B}}
+\newcommand*{\scC}{\mathscr{C}}
+\newcommand*{\scD}{\mathscr{D}}
+\newcommand*{\scE}{\mathscr{E}}
+\newcommand*{\scF}{\mathscr{F}}
+\newcommand*{\scG}{\mathscr{G}}
+\newcommand*{\scH}{\mathscr{H}}
+\newcommand*{\scI}{\mathscr{I}}
+\newcommand*{\scJ}{\mathscr{J}}
+\newcommand*{\scK}{\mathscr{K}}
+\newcommand*{\scL}{\mathscr{L}}
+\newcommand*{\scM}{\mathscr{M}}
+\newcommand*{\scN}{\mathscr{N}}
+\newcommand*{\scO}{\mathscr{O}}
+\newcommand*{\scP}{\mathscr{P}}
+\newcommand*{\scQ}{\mathscr{Q}}
+\newcommand*{\scR}{\mathscr{R}}
+\newcommand*{\scS}{\mathscr{S}}
+\newcommand*{\scT}{\mathscr{T}}
+\newcommand*{\scU}{\mathscr{U}}
+\newcommand*{\scV}{\mathscr{V}}
+\newcommand*{\scW}{\mathscr{W}}
+\newcommand*{\scX}{\mathscr{X}}
+\newcommand*{\scY}{\mathscr{Y}}
+\newcommand*{\scZ}{\mathscr{Z}}
+
+
+% Shortcuts to caligraphic
+%-----------------------------
+\newcommand*{\caA}{\mathcal{A}}
+\newcommand*{\caB}{\mathcal{B}}
+\newcommand*{\caC}{\mathcal{C}}
+\newcommand*{\caD}{\mathcal{D}}
+\newcommand*{\caE}{\mathcal{E}}
+\newcommand*{\caF}{\mathcal{F}}
+\newcommand*{\caG}{\mathcal{G}}
+\newcommand*{\caH}{\mathcal{H}}
+\newcommand*{\caI}{\mathcal{I}}
+\newcommand*{\caJ}{\mathcal{J}}
+\newcommand*{\caK}{\mathcal{K}}
+\newcommand*{\caL}{\mathcal{L}}
+\newcommand*{\caM}{\mathcal{M}}
+\newcommand*{\caN}{\mathcal{N}}
+\newcommand*{\caO}{\mathcal{O}}
+\newcommand*{\caP}{\mathcal{P}}
+\newcommand*{\caQ}{\mathcal{Q}}
+\newcommand*{\caR}{\mathcal{R}}
+\newcommand*{\caS}{\mathcal{S}}
+\newcommand*{\caT}{\mathcal{T}}
+\newcommand*{\caU}{\mathcal{U}}
+\newcommand*{\caV}{\mathcal{V}}
+\newcommand*{\caW}{\mathcal{W}}
+\newcommand*{\caX}{\mathcal{X}}
+\newcommand*{\caY}{\mathcal{Y}}
+\newcommand*{\caZ}{\mathcal{Z}}
+
+
+% Shortcuts to bold fonts
+%-----------------------------
+\newcommand*{\bfA}{\mathbf{A}}
+\newcommand*{\bfB}{\mathbf{B}}
+\newcommand*{\bfC}{\mathbf{C}}
+\newcommand*{\bfD}{\mathbf{D}}
+\newcommand*{\bfE}{\mathbf{E}}
+\newcommand*{\bfF}{\mathbf{F}}
+\newcommand*{\bfG}{\mathbf{G}}
+\newcommand*{\bfH}{\mathbf{H}}
+\newcommand*{\bfI}{\mathbf{I}}
+\newcommand*{\bfJ}{\mathbf{J}}
+\newcommand*{\bfK}{\mathbf{K}}
+\newcommand*{\bfL}{\mathbf{L}}
+\newcommand*{\bfM}{\mathbf{M}}
+\newcommand*{\bfN}{\mathbf{N}}
+\newcommand*{\bfO}{\mathbf{O}}
+\newcommand*{\bfP}{\mathbf{P}}
+\newcommand*{\bfQ}{\mathbf{Q}}
+\newcommand*{\bfR}{\mathbf{R}}
+\newcommand*{\bfS}{\mathbf{S}}
+\newcommand*{\bfT}{\mathbf{T}}
+\newcommand*{\bfU}{\mathbf{U}}
+\newcommand*{\bfV}{\mathbf{V}}
+\newcommand*{\bfW}{\mathbf{W}}
+\newcommand*{\bfX}{\mathbf{X}}
+\newcommand*{\bfY}{\mathbf{Y}}
+\newcommand*{\bfZ}{\mathbf{Z}}
+
+
+% Shortcuts to Roman fonts
+%-----------------------------
+\newcommand*{\rmA}{\mathrm{A}}
+\newcommand*{\rmB}{\mathrm{B}}
+\newcommand*{\rmC}{\mathrm{C}}
+\newcommand*{\rmD}{\mathrm{D}}
+\newcommand*{\rmE}{\mathrm{E}}
+\newcommand*{\rmF}{\mathrm{F}}
+\newcommand*{\rmG}{\mathrm{G}}
+\newcommand*{\rmH}{\mathrm{H}}
+\newcommand*{\rmI}{\mathrm{I}}
+\newcommand*{\rmJ}{\mathrm{J}}
+\newcommand*{\rmK}{\mathrm{K}}
+\newcommand*{\rmL}{\mathrm{L}}
+\newcommand*{\rmM}{\mathrm{M}}
+\newcommand*{\rmN}{\mathrm{N}}
+\newcommand*{\rmO}{\mathrm{O}}
+\newcommand*{\rmP}{\mathrm{P}}
+\newcommand*{\rmQ}{\mathrm{Q}}
+\newcommand*{\rmR}{\mathrm{R}}
+\newcommand*{\rmS}{\mathrm{S}}
+\newcommand*{\rmT}{\mathrm{T}}
+\newcommand*{\rmU}{\mathrm{U}}
+\newcommand*{\rmV}{\mathrm{V}}
+\newcommand*{\rmW}{\mathrm{W}}
+\newcommand*{\rmX}{\mathrm{X}}
+\newcommand*{\rmY}{\mathrm{Y}}
+\newcommand*{\rmZ}{\mathrm{Z}}
+
+
+% Shortcuts Fraktur
+%-----------------------------
+\newcommand*{\fka}{\mathfrak{a}}
+\newcommand*{\fkb}{\mathfrak{b}}
+\newcommand*{\fkc}{\mathfrak{c}}
+\newcommand*{\fkd}{\mathfrak{d}}
+\newcommand*{\fke}{\mathfrak{e}}
+\newcommand*{\fkf}{\mathfrak{f}}
+\newcommand*{\fkg}{\mathfrak{g}}
+\newcommand*{\fkh}{\mathfrak{h}}
+\newcommand*{\fki}{\mathfrak{i}}
+\newcommand*{\fkj}{\mathfrak{j}}
+\newcommand*{\fkk}{\mathfrak{k}}
+\newcommand*{\fkl}{\mathfrak{l}}
+\newcommand*{\fkm}{\mathfrak{m}}
+\newcommand*{\fkn}{\mathfrak{n}}
+\newcommand*{\fko}{\mathfrak{o}}
+\newcommand*{\fkp}{\mathfrak{p}}
+\newcommand*{\fkq}{\mathfrak{q}}
+\newcommand*{\fkr}{\mathfrak{r}}
+\newcommand*{\fks}{\mathfrak{s}}
+\newcommand*{\fkt}{\mathfrak{t}}
+\newcommand*{\fku}{\mathfrak{u}}
+\newcommand*{\fkv}{\mathfrak{v}}
+\newcommand*{\fkw}{\mathfrak{w}}
+\newcommand*{\fkx}{\mathfrak{x}}
+\newcommand*{\fky}{\mathfrak{y}}
+\newcommand*{\fkz}{\mathfrak{z}}
+
+\newcommand*{\fkA}{\mathfrak{A}}
+\newcommand*{\fkB}{\mathfrak{B}}
+\newcommand*{\fkC}{\mathfrak{C}}
+\newcommand*{\fkD}{\mathfrak{D}}
+\newcommand*{\fkE}{\mathfrak{E}}
+\newcommand*{\fkF}{\mathfrak{F}}
+\newcommand*{\fkG}{\mathfrak{G}}
+\newcommand*{\fkH}{\mathfrak{H}}
+\newcommand*{\fkI}{\mathfrak{I}}
+\newcommand*{\fkJ}{\mathfrak{J}}
+\newcommand*{\fkK}{\mathfrak{K}}
+\newcommand*{\fkL}{\mathfrak{L}}
+\newcommand*{\fkM}{\mathfrak{M}}
+\newcommand*{\fkN}{\mathfrak{N}}
+\newcommand*{\fkO}{\mathfrak{O}}
+\newcommand*{\fkP}{\mathfrak{P}}
+\newcommand*{\fkQ}{\mathfrak{Q}}
+\newcommand*{\fkR}{\mathfrak{R}}
+\newcommand*{\fkS}{\mathfrak{S}}
+\newcommand*{\fkT}{\mathfrak{T}}
+\newcommand*{\fkU}{\mathfrak{U}}
+\newcommand*{\fkV}{\mathfrak{V}}
+\newcommand*{\fkW}{\mathfrak{W}}
+\newcommand*{\fkX}{\mathfrak{X}}
+\newcommand*{\fkY}{\mathfrak{Y}}
+\newcommand*{\fkZ}{\mathfrak{Z}}
+
+
+% Shortcuts for font types in math mode.
+%-----------------------------
+\newcommand*{\mbb}[1]{\mathbb{#1}}   % Blackboard Bold
+\newcommand*{\msf}[1]{\mathsf{#1}}   % Serif
+\newcommand*{\mbf}[1]{\mathbf{#1}}   % Bold
+\newcommand*{\mrm}[1]{\mathrm{#1}}   % Roman
+\newcommand*{\mfk}[1]{\mathfrak{#1}} % Fraktur
+\newcommand*{\msc}[1]{\mathscr{#1}}  % Script
+\newcommand*{\mca}[1]{\mathcal{#1}}  % Calligraphic
+
+
+%% Symbol shortcuts
+%% ====================================================
+
+% Shortcuts for arrows
+%-----------------------------
+\newcommand*{\into}{\hookrightarrow}
+\newcommand*{\onto}{\twoheadrightarrow}
+\newcommand*{\cof}{\rightarrowtail}
+\newcommand*{\fib}{\twoheadrightarrow}
+\newcommand*{\acof}{\stackrel{\sim}{\rightarrowtail}}
+\newcommand*{\afib}{\stackrel{\sim}{\twoheadrightarrow}}
+\newcommand*{\weq}{\stackrel{\sim}{\to}}
+\newcommand*{\iso}{\stackrel{\simeq}{\to}}
+%\newcommand*{\rto}{\mathop{\dashrightarrow\!\!\!\!\!%
+%    {\color{white}\blacktriangleright}%
+%    \!\!\!\!\!\!\rightarrow}}
+\newcommand*{\dashto}{\dashrightarrow}
+
+
+% Brackets
+%-----------------------------
+\newcommand{\abs}[1]{\left \lvert #1 \right \rvert}
+\newcommand{\set}[1]{\left \lbrace #1\right \rbrace}
+\newcommand{\nrm}[1]{\left \lVert #1 \right \rVert}
+\newcommand{\abk}[1]{\left \langle #1 \right \rangle}
+\newcommand{\rbk}[1]{\left ( #1 \right )}
+\newcommand{\cbk}[1]{\left \lbrace #1 \right \rbrace}
+\newcommand{\sbk}[1]{\left \lbrack #1 \right \rbrack}
+\newcommand{\dsbk}[1]{\left \llbracket #1 \right \rrbracket}
+
+\newcommand{\bra}[1]{\langle #1 \rvert}
+\newcommand{\ket}[1]{\lvert #1 \rangle}
+\newcommand{\qmbk}[2]{\langle #1 \mid #2 \rangle}
+
+
+% Operators
+%-----------------------------
+\newcommand*{\tsr}{\otimes}
+\newcommand*{\btsr}{\boxtimes}
+\newcommand*{\bigtsr}{\bigotimes}
+\newcommand*{\tms}{\times}
+\newcommand*{\rtm}{\rtimes}
+\newcommand*{\ltm}{\ltimes}
+\newcommand*{\cuppr}{\smallsmile}
+\newcommand*{\cappr}{\smallfrown}
+
+
+% Modifiers
+%-----------------------------
+\newcommand*{\sla}[1]{\slashed{#1}}
+\newcommand*{\ol}[1]{\overline{#1}}
+\newcommand*{\wh}[1]{\widehat{#1}}
+\newcommand*{\wt}[1]{\widetilde{#1}}
+
+
+% Symbols
+%-----------------------------
+\newcommand*{\id}{\mathrm{id}}
+\newcommand*{\es}{\varnothing}
+\newcommand*{\sm}{\smallsetminus}
+\newcommand*{\sub}{\subset}
+\newcommand*{\subeq}{\subseteq}
+\newcommand*{\ieq}{\cong}
+\newcommand*{\deq}{\stackrel{\mathrm{def}}{=}}
+\newcommand*{\heq}{\simeq}
+\newcommand*{\dg}{\dagger}
+\newcommand*{\bt}{\bullet}
+\newcommand*{\trans}{\pitchfork}
+
+\newcommand*{\oo}{\infty}
+\newcommand*{\cl}{\colon}
+\newcommand*{\hy}{\text{-}}
+\newcommand*{\cm}{\circ}
+
+\let\amp\&
+
+
+% Operators
+%-----------------------------
+\newcommand*{\sq}{\square}
+\newcommand*{\sqb}{\overline{\square}}
+
+\newcommand*{\nbl}{\nabla}
+\newcommand*{\nblb}{\overline{\nabla}}
+\newcommand*{\nbls}{\slashed{\nabla}}
+
+\newcommand*{\del}{\partial}
+\newcommand*{\delb}{\overline{\partial}}
+\newcommand*{\dels}{\slashed{\partial}}
+
+\newcommand*{\df}{\mathrm{d}}
+
+
+% Unicode symbols
+%-----------------------------
+\ifLuaTeX
+  \newcommand{\acts}{\ensuremath{\,\rotatebox[origin=c]{-90}{$↻$}\,}}
+\else
+  \newcommand{\acts}{%
+    \ensuremath{\,\rotatebox[origin=c]{-90}{$\raisebox{0.3mm}{\circlearrowright}$}\,}
+  }
+\fi
+
+
+
+%% Subject specific symbols
+%% ====================================================
+
+
+% Limits and colimits
+%-----------------------------
+\DeclareMathOperator{\hocofib}{\mathrm{hocofib}}
+\DeclareMathOperator{\hofib}{\mathrm{hofib}}
+\DeclareMathOperator*{\hocolim}{\mathrm{hocolim}}
+\DeclareMathOperator*{\holim}{\mathrm{holim}}
+\DeclareMathOperator*{\colim}{\mathrm{colim}}
+\DeclareMathOperator{\image}{\mathrm{Im}}
+\DeclareMathOperator{\coker}{\mathrm{coker}}
+
+\newcommand*{\plim}{\varprojlim}
+\newcommand*{\ilim}{\varinjlim}
+
+
+% Hom-sets
+%-----------------------------
+\DeclareMathOperator{\Aut}{\mathrm{Aut}}
+\DeclareMathOperator{\cAut}{\mathcal{A}\mathit{ut}}
+\DeclareMathOperator{\sAut}{\mathscr{A}\negthinspace\mathit{ut}}
+\DeclareMathOperator{\bAut}{\mathbf{Aut}}
+\DeclareMathOperator{\uAut}{\underline{\mathrm{Aut}}}
+
+\DeclareMathOperator{\Iso}{\mathrm{Iso}}
+\DeclareMathOperator{\cIso}{\mathcal{I}\negthinspace\mathit{so}}
+\DeclareMathOperator{\sIso}{\mathscr{I}\negthickspace\mathit{so}}
+\DeclareMathOperator{\bIso}{\mathbf{Iso}}
+\DeclareMathOperator{\uIso}{\underline{\mathrm{Iso}}}
+
+\DeclareMathOperator{\Hom}{\mathrm{Hom}}
+\DeclareMathOperator{\cHom}{\mathcal{H}\negthinspace\mathit{om}}
+\DeclareMathOperator{\sHom}{\mathscr{H}\negthickspace\mathit{om}}
+\DeclareMathOperator{\bHom}{\mathbf{Hom}}
+\DeclareMathOperator{\uHom}{\underline{\mathrm{Hom}}}
+
+\DeclareMathOperator{\Map}{\mathrm{Map}}
+\DeclareMathOperator{\cMap}{\mathcal{M}\mathit{ap}}
+\DeclareMathOperator{\sMap}{\mathscr{M}\negthinspace\mathit{ap}}
+\DeclareMathOperator{\bMap}{\mathbf{Map}}
+\DeclareMathOperator{\uMap}{\underline{\mathrm{Map}}}
+
+\DeclareMathOperator{\Mor}{\mathrm{Mor}}
+\DeclareMathOperator{\cMor}{\mathcal{M}\mathit{or}}
+\DeclareMathOperator{\sMor}{\mathscr{M}\negthinspace\mathit{or}}
+\DeclareMathOperator{\bMor}{\mathbf{Mor}}
+\DeclareMathOperator{\uMor}{\underline{\mathrm{Mor}}}
+
+\DeclareMathOperator{\End}{\mathrm{End}}
+\DeclareMathOperator{\cEnd}{\mathcal{E}\mathit{nd}}
+\DeclareMathOperator{\sEnd}{\mathscr{E}\negthinspace\mathit{nd}}
+\DeclareMathOperator{\bEnd}{\mathbf{End}}
+\DeclareMathOperator{\uEnd}{\underline{\mathrm{End}}}
+
+\DeclareMathOperator{\Func}{\mathrm{Func}}
+\DeclareMathOperator{\bFunc}{\mathbf{Func}}
+
+\DeclareMathOperator{\Nat}{\mathrm{Nat}}
+\DeclareMathOperator{\bNat}{\mathbf{Nat}}
+
+
+% Algebraic Geometry
+%-----------------------------
+% Categories
+\newcommand*{\ctStack}{\mathbf{Stack}}
+\newcommand*{\ctdStack}{\mathbf{dStack}}
+\newcommand*{\ctdSch}{\mathbf{dSch}}
+\newcommand*{\ctSch}{\mathbf{Sch}}
+\newcommand*{\ctVar}{\mathbf{Var}}
+\newcommand*{\ctProj}{\mathbf{Proj}}
+\newcommand*{\ctqProj}{\mathbf{qProj}}
+\newcommand*{\ctSm}{\mathbf{Sm}}
+\newcommand*{\ctSmProj}{\mathbf{SmProj}}
+\newcommand*{\ctCor}{\mathbf{Cor}}
+\newcommand*{\ctM}{\mathbf{M}}
+\newcommand*{\ctMM}{\mathbf{MM}}
+\newcommand*{\ctCoh}{\mathbf{Coh}}
+\newcommand*{\ctqCoh}{\mathbf{qCoh}}
+\newcommand*{\ctConst}{\mathbf{Const}}
+\newcommand*{\ctHdg}{\mathbf{Hdg}}
+\newcommand*{\ctMHS}{\mathbf{MHS}}
+\newcommand*{\ctHdgMod}{\mathbf{HdgMod}}
+\newcommand*{\ctPerv}{\mathbf{Perv}}
+\newcommand*{\ctBun}{\mathbf{Bun}}
+\newcommand*{\ctLoc}{\mathbf{Loc}}
+\newcommand*{\ctDMod}{\mathcal{D}\hy\mathbf{Mod}}
+\newcommand*{\ctHrc}{\mathbf{Hrc}}
+\newcommand*{\ctHypCov}{\mathbf{HypCov}}
+\newcommand*{\ctCov}{\mathbf{Cov}}
+
+% Moduli spaces
+\newcommand*{\Coh}{\mathrm{Coh}}
+\newcommand*{\sCoh}{\mathscr{C}\negthinspace\mathit{oh}}
+\newcommand*{\cCoh}{\mathcal{Coh}}
+\newcommand*{\bCoh}{\mathbf{Coh}}
+
+\newcommand*{\Crys}{\mathrm{Crys}}
+\newcommand*{\sCrys}{\mathscr{C}\negthinspace\mathit{rys}}
+\newcommand*{\cCrys}{\mathcal{Crys}}
+\newcommand*{\bCrys}{\mathbf{Crys}}
+
+\newcommand*{\Vect}{\mathrm{Vect}}
+\newcommand*{\cVect}{\mathcal{Vect}}
+\newcommand*{\sVect}{\mathscr{V}\negthickspace\mathit{ect}}
+\newcommand*{\bVect}{\mathbf{Vect}}
+
+\newcommand*{\Bun}{\mathrm{Bun}}
+\newcommand*{\cBun}{\mathcal{Bun}}
+\newcommand*{\sBun}{\mathscr{B}\negthinspace\mathit{un}}
+\newcommand*{\bBun}{\mathbf{Bun}}
+
+\newcommand*{\Loc}{\mathrm{Loc}}
+\newcommand*{\cLoc}{\mathcal{Loc}}
+\newcommand*{\sLoc}{\mathscr{L}\negthinspace\mathit{oc}}
+\newcommand*{\bLoc}{\mathbf{Loc}}
+
+\newcommand*{\Hilb}{\mathrm{Hilb}}
+\newcommand*{\cHilb}{\mathcal{Hilb}}
+\newcommand*{\sHilb}{\mathscr{H}\negthinspace\mathit{ilb}}
+\newcommand*{\bHilb}{\mathbf{Hilb}}
+
+\newcommand*{\Quot}{\mathrm{Quot}}
+\newcommand*{\cQuot}{\mathcal{Quot}}
+\newcommand*{\sQuot}{\mathscr{Q}\negthinspace\mathit{uot}}
+\newcommand*{\bQuot}{\mathbf{Quot}}
+
+\newcommand*{\Pic}{\mathrm{Pic}}
+\newcommand*{\cPic}{\mathcal{Pic}}
+\newcommand*{\sPic}{\mathscr{P}\negthinspace\mathit{ic}}
+\newcommand*{\bPic}{\mathbf{Pic}}
+
+\newcommand*{\Grass}{\mathrm{Grass}}
+\newcommand*{\cGrass}{\mathcal{Grass}}
+\newcommand*{\sGrass}{\mathscr{G}\negthinspace\mathit{rass}}
+\newcommand*{\bGrass}{\mathbf{Grass}}
+
+\newcommand*{\Frob}{\mathrm{Frob}}
+
+\DeclareMathOperator{\Spec}{\mathrm{Spec}}
+\DeclareMathOperator{\bSpec}{\mathbf{Spec}}
+\DeclareMathOperator{\Proj}{\mathrm{Proj}}
+\DeclareMathOperator{\bProj}{\mathbf{Proj}}
+
+\DeclareMathOperator{\Sing}{\mathrm{Sing}}
+\DeclareMathOperator{\Cl}{\mathrm{Cl}}
+\DeclareMathOperator{\CaCl}{\mathrm{CaCl}}
+\DeclareMathOperator{\Div}{\mathrm{Div}}
+\DeclareMathOperator{\divisor}{\mathrm{div}}
+% \renewcommand*{\div}{\mathrm{\divisor}}        % Hey, sure ?!?
+\DeclareMathOperator{\Res}{\mathrm{Res}}
+\DeclareMathOperator{\res}{\mathrm{res}}
+\DeclareMathOperator{\Bl}{\mathrm{Bl}}
+\DeclareMathOperator{\CH}{\mathrm{CH}}
+\DeclareMathOperator{\Lsu}{\slashed{\Sigma}}
+\DeclareMathOperator{\sh}{\mathrm{sh}}
+
+
+\newcommand*{\nis}{\mathrm{nis}}        % Nisnevich
+\newcommand*{\zar}{\mathrm{zar}}        % Zariski
+\newcommand*{\et}{\mathrm{\acute et}}   % Etale
+\newcommand*{\cdh}{\mathrm{cdh}}        % cdh
+\newcommand*{\fppf}{\mathrm{fppf}}      % fppf
+\newcommand*{\fpqc}{\mathrm{fpqc}}      % fpqc
+\newcommand*{\crys}{\mathrm{crys}}      % Crystalline
+\newcommand*{\an}{\mathrm{an}}          % analytic
+\newcommand*{\red}{\mathrm{red}}        % reduced
+\newcommand*{\sst}{\mathrm{sst}}        % simplicial semi-topological
+\newcommand*{\rat}{\mathrm{rat}}        % rational
+\newcommand*{\num}{\mathrm{num}}        % numerical
+\newcommand*{\alg}{\mathrm{alg}}        % algebraic
+\newcommand*{\dR}{\mathrm{dR}}          % de Rham
+\newcommand*{\hdg}{\mathrm{hdg}}        % Hodge
+\newcommand*{\hol}{\mathrm{hol}}        % Holonomic
+
+%\newcommand*{\hom}{\mathrm{hom}}        % homological
+
+
+
+% Differential geometry
+%-----------------------------
+\newcommand*{\ctKah}{\mathbf{K\ddot{a}h}}
+\newcommand*{\ctMan}{\mathbf{Man}}
+\newcommand*{\ctSuMan}{\mathbf{SuMan}}
+\newcommand*{\ctCpx}{\mathbf{Cpx}}
+\newcommand*{\ctAlCpx}{\mathbf{AlCpx}}
+\newcommand*{\ctSymp}{\mathbf{Symp}}
+
+\newcommand*{\ctFlatBun}{\mathbf{FlatBun}}
+\newcommand*{\ctHiggs}{\mathbf{Higgs}}
+
+
+
+% Topology
+%-----------------------------
+\newcommand*{\ctpSh}{\mathbf{pSh}}
+\newcommand*{\ctSh}{\mathbf{Sh}}
+\newcommand*{\ctTop}{\mathbf{Top}}
+\newcommand*{\ctSpc}{\mathbf{Spc}}
+\newcommand*{\ctSpt}{\mathbf{Spt}}
+\newcommand*{\ctCW}{\mathbf{CW}}
+\newcommand*{\ctsSet}{\mathbf{sSet}}
+\newcommand*{\ctKan}{\mathbf{Kan}}
+\newcommand*{\ctHo}{\mathbf{Ho}}
+
+\DeclareMathOperator{\Cyl}{\mathrm{Cyl}}
+\DeclareMathOperator{\Cone}{\mathrm{Cone}}
+
+\DeclareMathOperator{\ch}{\mathrm{ch}}
+\DeclareMathOperator{\todd}{\mathrm{todd}}
+
+\newcommand*{\sing}{\mathrm{sing}}      % Singular
+
+
+% Operads
+%-----------------------------
+\newcommand*{\ctOp}{\mathbf{Op}}
+\newcommand*{\ctdgOp}{\mathbf{dgOp}}
+
+\newcommand*{\opEnd}{\mathcal{E}\mathit{nd}}
+\newcommand*{\opAss}{\mathcal{A}\mathit{ss}}
+\newcommand*{\opLie}{\mathcal{L}\mathit{ie}}
+\newcommand*{\opCom}{\mathcal{C}\!\mathit{om}}
+\newcommand*{\opBV}{\mathcal{BV}}
+\newcommand*{\opGer}{\mathcal{G}\!\mathit{er}}
+
+
+% Algebra
+%-----------------------------
+\newcommand*{\ctArt}{\mathbf{Art}}
+\newcommand*{\ctVect}{\mathbf{Vect}}
+\newcommand*{\ctCh}{\mathbf{Ch}}
+\newcommand*{\ctMod}{\mathbf{Mod}}
+\newcommand*{\ctAb}{\mathbf{Ab}}
+\newcommand*{\ctsAb}{\mathbf{sAb}}
+\newcommand*{\ctGrp}{\mathbf{Grp}}
+\newcommand*{\ctRng}{\mathbf{Rng}}
+\newcommand*{\ctComRng}{\mathbf{ComRng}}
+\newcommand*{\ctAlg}{\mathbf{Alg}}
+\newcommand*{\ctsAlg}{\mathbf{sAlg}}
+\newcommand*{\ctdgAlg}{\mathbf{dgAlg}}
+\newcommand*{\ctAooAlg}{A^{\infty}\hy\mathbf{Alg}}
+
+\DeclareMathOperator{\Ext}{\mathrm{Ext}}
+\DeclareMathOperator{\bExt}{\mathbf{Ext}}
+\DeclareMathOperator{\sExt}{\mathscr{E}\negthickspace\mathit{xt}}
+
+\DeclareMathOperator{\Tor}{\mathrm{Tor}}
+\DeclareMathOperator{\bTor}{\mathbf{Tor}}
+\DeclareMathOperator{\sTor}{\mathscr{T}\negthickspace\mathit{or}}
+
+\DeclareMathOperator{\D}{\mathbf{D}}
+\DeclareMathOperator{\Doo}{\mathbf{D_{\infty}}}
+\DeclareMathOperator{\Gal}{\mathrm{Gal}}
+\DeclareMathOperator{\Gr}{\mathrm{Gr}}
+\DeclareMathOperator{\Sym}{\mathrm{Sym}}
+\DeclareMathOperator{\Alt}{\mathrm{Alt}}
+\DeclareMathOperator{\cha}{\mathrm{char}}
+\DeclareMathOperator{\Tot}{\mathrm{Tot}}
+
+\newcommand*{\ssmpl}{\mathrm{ss}}       % Semi simple
+
+
+% Category Theory
+%-----------------------------
+\newcommand*{\ctSet}{\mathbf{Set}}
+\newcommand*{\ctCat}{\mathbf{Cat}}
+\newcommand*{\ctGpd}{\mathbf{Gpd}}
+\newcommand*{\ctooCat}{\infty\hy\mathbf{Cat}}
+\newcommand*{\ctooGpd}{\infty\hy\mathbf{Gpd}}
+\newcommand*{\ctdgCat}{\mathbf{dgCat}}
+\newcommand*{\ctStab}{\mathbf{Stab}}
+\newcommand*{\ctAooCat}{A^{\infty}\hy\mathbf{Cat}}
+
+\newcommand*{\ctArr}{\mathbf{Arr}}
+\newcommand*{\ctDiag}{\mathbf{Diag}}
+\newcommand*{\ctcoDiag}{\mathbf{coDiag}}
+\newcommand*{\ctSpan}{\mathbf{Span}}
+\newcommand*{\Typ}{\mathrm{Typ}}
+
+\newcommand*{\op}{\mathrm{op}}          % Opposite category
+\newcommand*{\ctu}{\mathbf{1}}          % Monoidal unit
+
+
+% Analysis
+%-----------------------------
+\newcommand\pder[2]{\frac{\partial #1}{\partial #2}}
+\WithSuffix\newcommand\pder*[2]{\sfrac{\partial #1}{\partial #2}}
+\newcommand\dder[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\WithSuffix\newcommand\dder*[2]{\sfrac{\mathrm{d} #1}{\mathrm{d} #2}}
+
+
+% Lie Groups and Lie algebras
+%-----------------------------
+\newcommand*{\lieSL}{\mathrm{SL}}
+\newcommand*{\lieGL}{\mathrm{GL}}
+\newcommand*{\lieSO}{\mathrm{SO}}
+\newcommand*{\lieO}{\mathrm{O}}
+\newcommand*{\lieU}{\mathrm{U}}
+\newcommand*{\lieSU}{\mathrm{SU}}
+\newcommand*{\lieSp}{\mathrm{Sp}}
+
+\newcommand*{\liesl}{\mathfrak{sl}}
+\newcommand*{\liegl}{\mathfrak{gl}}
+\newcommand*{\lieso}{\mathfrak{so}}
+\newcommand*{\lieo}{\mathfrak{o}}
+\newcommand*{\lieu}{\mathfrak{u}}
+\newcommand*{\liesu}{\mathfrak{su}}
+\newcommand*{\liesp}{\mathfrak{sp}}
+
+
+% Shortcuts for sub and superscripts.
+
+%\newcommand*{\top}{\mathrm{top}}        % topological
+%\newcommand*{\b}{\mathrm{b}}           % bounded
+
+
+% Miscelania
+%-----------------------------
+\DeclareMathOperator{\codim}{\mathrm{codim}}
+\DeclareMathOperator{\rank}{\mathrm{rank}}
+\DeclareMathOperator{\tr}{\mathrm{tr}}
+\DeclareMathOperator{\Supp}{\mathrm{Supp}}
+\DeclareMathOperator{\supp}{\mathrm{supp}}

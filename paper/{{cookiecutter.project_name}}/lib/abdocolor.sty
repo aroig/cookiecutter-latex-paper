@@ -1,0 +1,328 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{abdocolor}
+
+
+%% Options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Hooks
+\newcommand{\colorshook}{\setdefaultcolors}
+
+% Light option
+\DeclareOption{lightcolors}{
+  \renewcommand{\colorshook}{\setlightcolors}
+}
+
+% Colors for the web
+\DeclareOption{webcolors}{
+  \renewcommand{\colorshook}{\setwebcolors}
+}
+
+% Dark option
+\DeclareOption{darkcolors}{
+  \renewcommand{\colorshook}{\setdarkcolors}
+}
+
+\DeclareOption{bwcolors}{
+  \renewcommand{\colorshook}{\setbwcolors}
+}
+
+
+\ProcessOptions
+
+
+%% Package Loading
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{xcolor}
+
+
+%% Colors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% light background colors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{lightgreen}{HTML}{80AF7F}
+\definecolor{darkred}{HTML}{C62424}
+\definecolor{darkgreen}{HTML}{09873B}
+\definecolor{darkblue}{HTML}{3661CF}
+\definecolor{darkorange}{HTML}{DD501F}
+
+
+% Reversed zenburn colors
+% (they become nice zenburn under recolor)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{zenrev-darkred}{HTML}{9F3131}
+\definecolor{zenrev-darkgreen}{HTML}{007700}
+\definecolor{zenrev-lightgreen}{HTML}{80AF7F}
+\definecolor{zenrev-darkblue}{HTML}{10686D}
+\definecolor{zenrev-darkorange}{HTML}{FE5C00}
+
+
+% Zenburn colors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{zenburn-fg}{HTML}{DCDCCC}
+\definecolor{zenburn-bg}{HTML}{2F2F2F}
+
+\definecolor{zenburn-red}{HTML}{CC9393}
+\definecolor{zenburn-red-1}{HTML}{BC8383}
+\definecolor{zenburn-orange}{HTML}{DFAF8F}
+\definecolor{zenburn-green}{HTML}{7F9F7F}
+\definecolor{zenburn-green-1}{HTML}{5F7F5F}
+\definecolor{zenburn-blue}{HTML}{8CD0D3}
+\definecolor{zenburn-blue-1}{HTML}{7CB8BB}
+
+% Saturated Zenburn colors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{zenburn-sat-orange}{HTML}{FF7F41}
+\definecolor{zenburn-sat-orange-1}{HTML}{DD7621}
+\definecolor{zenburn-sat-red}{HTML}{EE3B3B}
+\definecolor{zenburn-sat-red-1}{HTML}{CD3333}
+\definecolor{zenburn-sat-lightgreen}{HTML}{9AFF9A}
+\definecolor{zenburn-sat-lightgreen-1}{HTML}{7CCD7C}
+\definecolor{zenburn-sat-green}{HTML}{00CD66}
+\definecolor{zenburn-sat-green-1}{HTML}{008B45}
+\definecolor{zenburn-sat-blue}{HTML}{1E90FF}
+\definecolor{zenburn-sat-blue-1}{HTML}{3A5FCD}
+
+
+% Slides colors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% sat: 43, val: 72
+\definecolor{slides-orange}{HTML}{B78B69}   % hue: 27
+\definecolor{slides-red}{HTML}{B76969}      % hue: 0
+\definecolor{slides-green}{HTML}{69B769}    % hue: 120
+\definecolor{slides-blue}{HTML}{698BB7}     % hue: 214
+
+% sat: 75, val: 93
+\definecolor{slides-sat-orange}{HTML}{EC8A3B}
+\definecolor{slides-sat-red}{HTML}{EC3B3B}
+\definecolor{slides-sat-green}{HTML}{3BEC3B}
+\definecolor{slides-sat-blue}{HTML}{3B88EC}
+
+% sat: 39, val: 96
+\definecolor{slides-light-orange}{HTML}{F5C095}
+\definecolor{slides-light-red}{HTML}{F59595}
+\definecolor{slides-light-green}{HTML}{95F595}
+\definecolor{slides-light-blue}{HTML}{95BFF5}
+
+% gray
+\definecolor{slides-gray}{HTML}{B8B8B8}
+
+
+
+
+%% Color Modifications
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Conservative defaults
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\setdefaultcolors}{
+  % main
+  \colorlet{backgroundcolor}{white}
+  \colorlet{textcolor}{black}
+  \colorlet{emphcolor}{black}
+
+  % draftools
+  \colorlet{diffbarcolor}{darkred}
+  \colorlet{diffdelcolor}{darkred}
+  \colorlet{diffaddcolor}{darkblue}
+
+  \colorlet{revinfocolor}{black}
+  \colorlet{revwarncolor}{darkred}
+  \colorlet{cmtcolor}{lightgreen}
+
+  \colorlet{sklabelcolor}{black}
+  \colorlet{skrefcolor}{black}
+
+  % hyperref
+  \colorlet{linkcolor}{darkred}
+  \colorlet{citecolor}{darkred}
+  \colorlet{filecolor}{black}
+  \colorlet{urlcolor}{darkblue}
+
+  % sectioning
+  \colorlet{chaptercolor}{textcolor}
+  \colorlet{section1color}{textcolor}
+  \colorlet{section2color}{textcolor}
+  \colorlet{section3color}{textcolor}
+  \colorlet{paragraphcolor}{textcolor}
+
+  % theorems
+  \colorlet{thmcolor}{textcolor}
+  \colorlet{dfncolor}{textcolor}
+}
+
+
+% Colorful with light background
+% (once reversed with recolor become zenburn)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\setlightcolors}{
+  % main
+  \colorlet{backgroundcolor}{white}
+  \colorlet{textcolor}{black}
+  \colorlet{emphcolor}{zenrev-darkgreen}
+
+  % draftools
+  \colorlet{diffbarcolor}{zenrev-darkred}
+  \colorlet{diffdelcolor}{zenrev-darkred}
+  \colorlet{diffaddcolor}{zenrev-darkblue}
+
+  \colorlet{revinfocolor}{black}
+  \colorlet{revwarncolor}{zenrev-darkred}
+  \colorlet{cmtcolor}{zenrev-lightgreen}
+
+  \colorlet{sklabelcolor}{zenrev-darkgreen}
+  \colorlet{skrefcolor}{zenrev-darkgreen}
+
+  % hyperref
+  \colorlet{linkcolor}{zenrev-darkred}
+  \colorlet{citecolor}{zenrev-darkred}
+  \colorlet{filecolor}{black}
+  \colorlet{urlcolor}{zenrev-darkblue}
+
+  % sectioning
+  \colorlet{chaptercolor}{zenrev-darkorange}
+  \colorlet{section1color}{zenrev-darkorange}
+  \colorlet{section2color}{zenrev-darkorange}
+  \colorlet{section3color}{zenrev-darkorange}
+  \colorlet{paragraphcolor}{zenrev-darkorange}
+
+  % theorems
+  \colorlet{thmcolor}{zenrev-darkblue}
+  \colorlet{dfncolor}{zenrev-darkblue}
+}
+
+
+% Colorful. For the web
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\setwebcolors}{
+  % main
+  \colorlet{backgroundcolor}{white}
+  \colorlet{textcolor}{black}
+  \colorlet{emphcolor}{darkgreen}
+
+  % draftools
+  \colorlet{diffbarcolor}{darkred}
+  \colorlet{diffdelcolor}{darkred}
+  \colorlet{diffaddcolor}{darkblue}
+
+  \colorlet{revinfocolor}{black}
+  \colorlet{revwarncolor}{darkred}
+  \colorlet{cmtcolor}{zenburn-green-1}
+
+  \colorlet{sklabelcolor}{darkgreen}
+  \colorlet{skrefcolor}{darkgreen}
+
+  % hyperref
+  \colorlet{linkcolor}{darkred}
+  \colorlet{citecolor}{darkred}
+  \colorlet{filecolor}{black}
+  \colorlet{urlcolor}{darkblue}
+
+  % sectioning
+  \colorlet{chaptercolor}{black}
+  \colorlet{section1color}{black}
+  \colorlet{section2color}{black}
+  \colorlet{section3color}{black}
+  \colorlet{paragraphcolor}{black}
+
+  % theorems
+  \colorlet{thmcolor}{darkorange}
+  \colorlet{dfncolor}{darkorange}
+}
+
+
+% Colorful with dark background
+% (zenburn)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\setdarkcolors}{
+  % main
+  \colorlet{backgroundcolor}{zenburn-bg}
+  \colorlet{textcolor}{zenburn-fg}
+  \colorlet{emphcolor}{zenburn-sat-lightgreen-1}
+
+  % draftools
+  \colorlet{diffbarcolor}{zenburn-red}
+  \colorlet{diffdelcolor}{zenburn-red}
+  \colorlet{diffaddcolor}{zenburn-blue}
+
+  \colorlet{revinfocolor}{textcolor}
+  \colorlet{revwarncolor}{zenburn-red}
+  \colorlet{cmtcolor}{zenburn-green-1}
+
+  \colorlet{sklabelcolor}{zenburn-sat-lightgreen-1}
+  \colorlet{skrefcolor}{zenburn-sat-lightgreen-1}
+
+  % hyperref
+  \colorlet{linkcolor}{zenburn-red}
+  \colorlet{citecolor}{zenburn-red}
+  \colorlet{filecolor}{textcolor}
+  \colorlet{urlcolor}{zenburn-blue}
+
+  % sectioning
+  \colorlet{chaptercolor}{zenburn-sat-orange-1}
+  \colorlet{section1color}{zenburn-sat-orange-1}
+  \colorlet{section2color}{zenburn-sat-orange-1}
+  \colorlet{section3color}{zenburn-sat-orange-1}
+  \colorlet{paragraphcolor}{zenburn-sat-orange-1}
+
+  % theorems
+  \colorlet{thmcolor}{zenburn-blue-1}
+  \colorlet{dfncolor}{zenburn-blue-1}
+}
+
+% Black and White
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\setbwcolors}{
+  % main
+  \colorlet{backgroundcolor}{white}
+  \colorlet{textcolor}{black}
+  \colorlet{emphcolor}{black}
+
+  % draftools
+  \colorlet{diffbarcolor}{black}
+  \colorlet{diffdelcolor}{black}
+  \colorlet{diffaddcolor}{black}
+
+  \colorlet{revinfocolor}{black}
+  \colorlet{revwarncolor}{black}
+  \colorlet{cmtcolor}{black}
+
+  \colorlet{sklabelcolor}{black}
+  \colorlet{skrefcolor}{black}
+
+  % hyperref
+  \colorlet{linkcolor}{black}
+  \colorlet{citecolor}{black}
+  \colorlet{filecolor}{black}
+  \colorlet{urlcolor}{black}
+
+  % sectioning
+  \colorlet{chaptercolor}{textcolor}
+  \colorlet{section1color}{textcolor}
+  \colorlet{section2color}{textcolor}
+  \colorlet{section3color}{textcolor}
+  \colorlet{paragraphcolor}{textcolor}
+
+  % theorems
+  \colorlet{thmcolor}{textcolor}
+  \colorlet{dfncolor}{textcolor}
+}
+
+
+
+%% Run Hooks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\colorshook                 % Set the colors
