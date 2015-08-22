@@ -29,10 +29,10 @@ def print_entry(pattern, *values):
 
 
 def print_abstract(metadata):
-    abstract = metadata.get('abstract',None).strip()
+    abstract = metadata.get('abstract',None)
     print('')
     print(r'\newcommand{\makeabstract}{')
-    if abstract != None and len(abstract) > 0:
+    if abstract != None and len(abstract.strip()) > 0:
         print_entry('\\begin{abstract}\n%s\n\\end{abstract}', abstract)
     print(r'}')
 

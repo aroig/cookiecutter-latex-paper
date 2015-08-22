@@ -14,7 +14,6 @@ PERL       := perl
 LATEX      := lualatex
 DIFFLATEX  := difflatex
 BIBTEX     := biber
-MKPREAMBLE := bin/mkpreamble.py
 
 # execution flags
 LATEX_FLAGS     := --file-line-error --shell-escape --halt-on-error --interaction=nonstopmode --synctex=1
@@ -38,8 +37,11 @@ DIFFDIR    := ./build/diff
 # Source Files                     #
 #----------------------------------#
 
-DOCID      := $(shell perl -ne '/\@[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
 METADATA   := metadata.bib
+DOCID      := $(shell perl -ne '/\@[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
+
+MKPREAMBLE := bin/mkpreamble.py
+PREAMBLE   := preamble.tex
 
 GITREF     := $(DIFFDIR)/gitref
 REF        := HEAD
@@ -145,11 +147,11 @@ flat/%: $(BLDDIR)/flat/%
 #----------------------------------#
 
 # create a preamble tex file
-preamble.tex: $(METADATA) $(MKPREAMBLE)
+$(PREAMBLE): $(METADATA) $(MKPREAMBLE)
 	python $(MKPREAMBLE) $< > $@
 
 # precompile headers
-$(BLDDIR)/preamble.fmt: preamble.tex
+$(BLDDIR)/preamble.fmt: $(PREAMBLE)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) -ini -job-name="preamble" "&lualatex $<\dump" --output-directory=$(dir $@) $<
 
