@@ -58,7 +58,10 @@
 \DeclareOption{hyperref}{
   \PassOptionsToPackage{final}{hyperref}
   \renewcommand{\hyperrefhook}{%
-    \hypersetup{pdfencoding=auto,
+    \hypersetup{%
+      pdfencoding=auto,%
+      pdftitle={\@title},%
+      pdfauthor={\@author}},%
       colorlinks,%
       citecolor=citecolor,%
       filecolor=filecolor,%

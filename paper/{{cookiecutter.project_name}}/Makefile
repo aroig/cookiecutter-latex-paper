@@ -9,11 +9,12 @@
 #----------------------------------#
 
 # software
-LUA       := lua
-PERL      := perl
-LATEX     := lualatex
-DIFFLATEX := difflatex
-BIBTEX    := biber
+LUA        := lua
+PERL       := perl
+LATEX      := lualatex
+DIFFLATEX  := difflatex
+BIBTEX     := biber
+MKPREAMBLE := bin/mkpreamble.py
 
 # execution flags
 LATEX_FLAGS     := --file-line-error --shell-escape --halt-on-error --interaction=nonstopmode --synctex=1
@@ -25,21 +26,22 @@ LATEXDIFF_FLAGS := --packages=amsmath,hyperref \
 # Directories                      #
 #----------------------------------#
 
-BLDDIR  := ./build
-FIGDIR  := ./figs
-LIBDIR  := ./lib
-REFDIR  := ./ref
-FLATDIR := ./flat
-DIFFDIR := ./diff
+BLDDIR     := ./build
+FIGDIR     := ./figs
+LIBDIR     := ./lib
+REFDIR     := ./ref
+FLATDIR    := ./build/flat
+DIFFDIR    := ./build/diff
 
 
 #----------------------------------#
 # Source Files                     #
 #----------------------------------#
 
-METADATA   := metadata.bib
-GITREF     := $(DIFFDIR)/gitref
 DOCID      := $(shell perl -ne '/\@[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
+METADATA   := metadata.bib
+
+GITREF     := $(DIFFDIR)/gitref
 REF        := HEAD
 
 FIGFILES   := $(wildcard $(FIGDIR)/*.png) $(wildcard $(FIGDIR)/*.pdf)
@@ -143,8 +145,8 @@ flat/%: $(BLDDIR)/flat/%
 #----------------------------------#
 
 # create a preamble tex file
-preamble.tex: $(METADATA)
-	touch $@
+preamble.tex: $(METADATA) $(MKPREAMBLE)
+	python $(MKPREAMBLE) $< > $@
 
 # precompile headers
 $(BLDDIR)/preamble.fmt: preamble.tex

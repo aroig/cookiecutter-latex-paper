@@ -1,9 +1,6 @@
 {
-    "full_name"      : "Abdó Roig-Maranges",
-    "email"          : "abdo.roig@gmail.com",
     "project_name"   : "new-project",
-    "document_type"  : "paper",
     "language"       : "english",
 
-    "_copy_without_render": [ "lib/*", "*.sty", "*.lua" ]
+    "_copy_without_render": [ "bin/*", "lib/*", "*.sty", "*.lua" ]
 }
