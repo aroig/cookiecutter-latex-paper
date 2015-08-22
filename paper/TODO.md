@@ -7,3 +7,7 @@ TODO
 
 * Use template name as document subtype. There is no way to get the template name right
   now.
+
+* Fix troubles with bibliography
+
+* Make loud error messages when tex dependencies do not exist
