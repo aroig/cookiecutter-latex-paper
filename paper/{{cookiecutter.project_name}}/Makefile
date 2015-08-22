@@ -38,7 +38,7 @@ DIFFDIR    := ./build/diff
 #----------------------------------#
 
 METADATA   := metadata.bib
-DOCID      := $(shell perl -ne '/\@[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
+DOCID      := $(shell perl -ne '/\@article[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
 
 MKPREAMBLE := bin/mkpreamble.py
 PREAMBLE   := preamble.tex
