@@ -57,10 +57,8 @@ BLDFILES   := Makefile .gitignore README.rst $(METADATA)
 # Functions                        #
 #----------------------------------#
 
-# enviorment variables for latex runs
+# setup environment for some commands
 latex-environment  = TEXINPUTS="$1:$(LIBDIR):$(FIGDIR):" LUAINPUTS="$1:$(LIBDIR):"
-
-# environment variables for lua runs
 lua-environment    = LUA_PATH="$(LIBDIR)/?.lua"
 
 # extract tex file dependencies
@@ -80,7 +78,7 @@ write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ];
 .SECONDEXPANSION:
 
 # never handle as intermediate targets but never delete them
-.SECONDARY: %.sha %.bcf %.bbl %.tex %.pdf
+.SECONDARY:
 
 # always trigger rebuilds on those
 .PHONY: update pdf 2in1 src flat flatsrc diff figs clean slideshow view ref bib test
@@ -132,13 +130,10 @@ $(BLDDIR)/%.ps.imposed: $(BLDDIR)/%.ps
 	ps2pdf -sPAPERSIZE=a4 $< $@
 
 # copy files from the build directory
-%: $(BLDDIR)/%
+%.pdf: $(BLDDIR)/%.pdf
 	cp $< $@
 
-diff/%: $(BLDDIR)/diff/%
-	cp $< $@
-
-flat/%: $(BLDDIR)/flat/%
+%.tar.gz: $(BLDDIR)/%.tar.gz
 	cp $< $@
 
 
@@ -158,7 +153,8 @@ $(BLDDIR)/preamble.fmt: $(PREAMBLE)
 # prepare bibliography when the hash of the bcf file changes
 $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(BIBTEX) $(patsubst %.bbl,%.bcf,$@)
+# TODO: This does not find bib files. I don't know how to fix it right now.
+	$(BIBTEX) --input-directory=$(dir $@) --output-directory=$(dir $@) $*.bcf
 
 # compile document to produce the bcf file
 $(BLDDIR)/%.bcf: $$(call latex-dependencies,%) $(METADATA) $(FIGFILES)
