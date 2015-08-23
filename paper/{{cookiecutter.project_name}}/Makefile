@@ -50,7 +50,7 @@ FIGFILES   := $(wildcard $(FIGDIR)/*.png) $(wildcard $(FIGDIR)/*.pdf)
 LIBFILES   := $(wildcard *.sty) $(wildcard $(LIBDIR)/*)
 BIBFILES   := $(wildcard *.bib)
 TEXFILES   := $(wildcard *.tex)
-BLDFILES   := Makefile .gitignore README.rst $(METADATA)
+BLDFILES   := Makefile .gitignore README.md $(METADATA)
 
 
 #----------------------------------#
