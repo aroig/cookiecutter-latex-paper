@@ -86,7 +86,7 @@ def format_authorlist(authors):
         L.append(r'  \parbox[t]{0.5\textwidth}{')
         L.append(format_entry(r'    \textbf{%s}\\',       a.get('name',None)))
         L.append(format_entry(r'    \texttt{%s}\\',       a.get('email',None)))
-        L.append(format_entry(r'    \texttt{\url{%s}}\\', a.get('web',None)))
+        L.append(format_entry(r'    \texttt{\url{%s}}\\', a.get('url',None)))
         L.append(r'    \\')
         L.append(format_entry(r'    %s\\',                a.get('university',None)))
         L.append(format_entry(r'    %s\\',                a.get('department',None)))
