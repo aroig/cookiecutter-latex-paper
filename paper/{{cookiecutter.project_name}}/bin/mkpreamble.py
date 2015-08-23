@@ -37,13 +37,27 @@ def getlist(d, key, sep=',\s*'):
     else:   return []
 
 
+def reindent(s, delta):
+    if delta >= 0:
+        return re.sub('^', delta * ' ', s, flags=re.MULTILINE)
+    else:
+        return re.sub('^' + (-delta) * ' ', '', s, flags=re.MULTILINE)
+
+
 def format_entry(pattern, *values):
-    if all(values): return pattern % values
-    else:           return ''
+    if all(values):
+        return pattern % values
 
 
 def format_command(name, content):
-    return '\\newcommand{\\%s}{\n%s\n}' % (name, content)
+    if content:
+        if '\n' in content: return '\\%s{%%\n%s%%\n}' % (name, reindent(content, 2))
+        else:               return '\\%s{%s}' % (name, content)
+
+
+def format_environment(name, content):
+    if content:
+        return '\\begin{%s}\n%s\n\\end{%s}' % (name, reindent(content, 2), name)
 
 
 def format_title(metadata):
@@ -58,25 +72,31 @@ def format_title(metadata):
         L.append(r'\thanks{%s}' % thanks)
 
     if mrclass:
-        L.append(r'  \unfootnote{\textbf{AMS CLassification:} %s.}' % (', '.join(mrclass)))
+        L.append(r'\unfootnote{\textbf{AMS CLassification:} %s.}' % (', '.join(mrclass)))
 
-    return '\n'.join(L)
+    return '%\n'.join(L)
 
 
 def format_authors(authors):
-    # TODO: individual thanks
-    return r' \and '.join([a['name'] for a in authors])
+    L = []
+    for a in authors:
+        name = getstr(a, 'name')
+        thanks = getstr(a, 'thanks')
+        if thanks: L.append(name + format_command('thanks', thanks))
+        else:      L.append(name)
+    return r' \and '.join(L)
 
 
 def format_date(metadata):
-    date = metadata.get('date', None)
+    date = getstr(metadata, 'date')
     if date:
         y, m, d = date.split('-')
         return r'\formatdate{%s}{%s}{%s}' % (d.strip(), m.strip(), y.strip())
 
 
 def format_abstract(metadata):
-    return metadata.get('abstract', '')
+    abstract = getstr(metadata, 'abstract')
+    return format_environment("abstract", abstract)
 
 
 def format_authorlist(authors):
@@ -94,18 +114,18 @@ def format_authorlist(authors):
         L.append(format_entry(r'    %s\\',                a.get('city',None)))
         L.append('  }')
 
-    return '\n'.join(L)
+    return '%\n'.join([it for it in L if it != None])
 
 
 def format_preamble(metadata, authors):
     L = []
     L.append('% Auto-generated preamble')
-    L.append(format_entry(r'\title{%s}', format_title(metadata)))
-    L.append(format_entry(r'\author{%s}', format_authors(authors)))
-    L.append(format_entry(r'\date{%s}', format_date(metadata)))
-    L.append(format_command('makeabstract', format_abstract(metadata)))
-    L.append(format_command('makeauthorlist', format_authorlist(authors)))
-    return '\n\n'.join(L)
+    L.append(format_command('title', format_title(metadata)))
+    L.append(format_command('author', format_authors(authors)))
+    L.append(format_command('date', format_date(metadata)))
+    L.append(format_command(r'newcommand{\makeabstract}', format_abstract(metadata)))
+    L.append(format_command(r'newcommand{\makeauthorlist}', format_authorlist(authors)))
+    return '\n\n'.join([it for it in L if it != None])
 
 
 # ----------------------------------------------------------------------- #
