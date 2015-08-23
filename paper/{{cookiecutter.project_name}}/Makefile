@@ -133,7 +133,7 @@ $(BLDDIR)/%.ps.imposed: $(BLDDIR)/%.ps
 %.pdf: $(BLDDIR)/%.pdf
 	cp $< $@
 
-%.tar.gz: $(BLDDIR)/%.tar.gz
+%.gz: $(BLDDIR)/%.gz
 	cp $< $@
 
 
