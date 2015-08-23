@@ -28,6 +28,7 @@ LATEXDIFF_FLAGS := --packages=amsmath,hyperref \
 BLDDIR     := ./build
 FIGDIR     := ./figs
 LIBDIR     := ./lib
+BINDIR     := ./bin
 REFDIR     := ./ref
 FLATDIR    := ./build/flat
 DIFFDIR    := ./build/diff
@@ -49,8 +50,9 @@ REF        := HEAD
 FIGFILES   := $(wildcard $(FIGDIR)/*.png) $(wildcard $(FIGDIR)/*.pdf)
 LIBFILES   := $(wildcard *.sty) $(wildcard $(LIBDIR)/*)
 BIBFILES   := $(wildcard *.bib)
-TEXFILES   := $(wildcard *.tex)
-BLDFILES   := Makefile .gitignore README.md $(METADATA)
+TEXFILES   := $(sort $(wildcard *.tex) $(PREAMBLE))
+BLDFILES   := Makefile .gitignore README.md $(METADATA) $(MKPREAMBLE)
+BLDFILES   := $(foreach f,$(BLDFILES),$(wildcard $(f)))
 
 
 #----------------------------------#
