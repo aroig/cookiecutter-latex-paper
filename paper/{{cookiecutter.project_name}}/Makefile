@@ -65,7 +65,7 @@ lua-environment    = LUA_PATH="$(LIBDIR)/?.lua"
 
 # extract tex file dependencies
 latex-dependencies = $1.tex $(patsubst %,$(dir $1)%,\
-	$(shell $(PERL) -ne '/^\s*\\input\{(.*?)(.tex)?\}/ && print "$$1.tex"' $1.tex) \
+	$(shell $(PERL) -ne '/^\s*\\input\{(.*?)(.tex)?\}/ && print "$$1.tex "' $1.tex) \
 )
 
 # write string $2 to file $1 only if it is different from its contents.
