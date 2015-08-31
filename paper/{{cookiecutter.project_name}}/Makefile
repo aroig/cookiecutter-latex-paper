@@ -28,6 +28,7 @@ LATEXDIFF_FLAGS := --packages=amsmath,hyperref \
 BLDDIR     := ./build
 FIGDIR     := ./figs
 LIBDIR     := ./lib
+TEXDIR     := ./tex
 BINDIR     := ./bin
 REFDIR     := ./ref
 FLATDIR    := ./build/flat
@@ -47,10 +48,13 @@ PREAMBLE   := preamble.tex
 GITREF     := $(DIFFDIR)/gitref
 REF        := HEAD
 
-FIGFILES   := $(wildcard $(FIGDIR)/*.png) $(wildcard $(FIGDIR)/*.pdf)
-LIBFILES   := $(wildcard *.sty) $(wildcard $(LIBDIR)/*)
-BIBFILES   := $(wildcard *.bib)
-TEXFILES   := $(sort $(wildcard *.tex) $(PREAMBLE))
+FIGFILES   := $(sort $(wildcard $(FIGDIR)/*.png) $(wildcard $(FIGDIR)/*.pdf))
+LIBFILES   := $(sort $(wildcard *.sty) $(wildcard $(LIBDIR)/*))
+BIBFILES   := $(sort $(wildcard *.bib))
+TEXFILES   := $(sort $(wildcard *.tex) $(wildcard $(TEXDIR)/*.tex) $(PREAMBLE))
+AUXFILES   := $(patsubst %.tex,$(notdir %.aux),$(TEXFILES))
+TOCFILES   := $(DOCID).toc
+
 BLDFILES   := Makefile .gitignore README.md $(METADATA) $(MKPREAMBLE)
 BLDFILES   := $(foreach f,$(BLDFILES),$(wildcard $(f)))
 
@@ -60,12 +64,13 @@ BLDFILES   := $(foreach f,$(BLDFILES),$(wildcard $(f)))
 #----------------------------------#
 
 # setup environment for some commands
-latex-environment  = TEXINPUTS="$1:$(LIBDIR):$(FIGDIR):" LUAINPUTS="$1:$(LIBDIR):"
+latex-environment  = TEXINPUTS="$1:$(LIBDIR):$(TEXDIR):$(FIGDIR):" LUAINPUTS="$1:$(LIBDIR):"
 lua-environment    = LUA_PATH="$(LIBDIR)/?.lua"
 
 # extract tex file dependencies
-latex-dependencies = $1.tex $(patsubst %,$(dir $1)%,\
-	$(shell $(PERL) -ne '/^\s*\\input\{(.*?)(.tex)?\}/ && print "$$1.tex "' $1.tex) \
+latex-dependencies = $1.tex $(foreach p,\
+	$(shell $(PERL) -ne '/^\s*\\(input|include)\{(.*?)(.tex)?\}/ && print "$$2.tex "' $1.tex),\
+	$(dir $1)$(p)\
 )
 
 # write string $2 to file $1 only if it is different from its contents.
@@ -75,6 +80,9 @@ write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ];
 #----------------------------------#
 # Abstract rules                   #
 #----------------------------------#
+
+# set vpath so make finds the source files
+VPATH=$(LIBDIR):$(TEXDIR):$(FIGDIR)
 
 # So we can use $$(variable) on the prerequisites, that expand at matching time
 .SECONDEXPANSION:
@@ -104,7 +112,6 @@ figs: $(FIGFILES)
 clean:
 	rm -Rf $(BLDDIR) $(FLATDIR) $(DIFFDIR)
 	rm -Rf *.pdf *.tar.gz *.synctex.gz
-
 
 
 #----------------------------------#
@@ -140,40 +147,50 @@ $(BLDDIR)/%.ps.imposed: $(BLDDIR)/%.ps
 
 
 #----------------------------------#
-# Document and bibliography        #
+# Preamble and bibliography        #
 #----------------------------------#
 
 # create a preamble tex file
-$(PREAMBLE): $(METADATA) $(MKPREAMBLE)
-	python $(MKPREAMBLE) $< > $@
+$(PREAMBLE): $(MKPREAMBLE) $(METADATA) 
+	python $^ > $@
 
 # precompile headers
 $(BLDDIR)/preamble.fmt: $(PREAMBLE)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) -ini -job-name="preamble" "&lualatex $<\dump" --output-directory=$(dir $@) $<
 
-# prepare bibliography when the hash of the bcf file changes
+# compile document to produce the bcf file. we do not want to rebuild on every tex file change.
+$(BLDDIR)/%.bcf: | $$(call latex-dependencies,%)
+	@mkdir -p $(dir $@)
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --draftmode --output-directory=$(dir $@) $*.tex
+
+# prepare bibliography when bibliography file changes. Do not rebuild when bcf file changes.
 $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 	@mkdir -p $(dir $@)
-# TODO: This does not find bib files. I don't know how to fix it right now.
 	$(BIBTEX) --input-directory=$(dir $@) --output-directory=$(dir $@) $*.bcf
 
-# compile document to produce the bcf file
-$(BLDDIR)/%.bcf: $$(call latex-dependencies,%) $(METADATA) $(FIGFILES)
-	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --draftmode --output-directory=$(dir $@) $<
+
+
+#----------------------------------#
+# Document                         #
+#----------------------------------#
 
 # compile pdf with up to date bibliography
-$(BLDDIR)/%.pdf $(BLDDIR)/%.synctex.gz: $$(call latex-dependencies,%) $(BLDDIR)/%.bbl $(METADATA) $(FIGFILES)
+$(BLDDIR)/%.pdf $(BLDDIR)/%.synctex.gz: %.tex $$(call latex-dependencies,%) $(BLDDIR)/%.bbl $(PREAMBLE) $(FIGFILES)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) $<
 
-# make a tar.gz package of the sources
-$(BLDDIR)/%.tar.gz: $$(call latex-dependencies,%) $(BLDDIR)/%.bbl $(BIBFILES) $(LIBFILES) $(FIGFILES) $(BLDFILES)
+# compile one chapter alone
+$(BLDDIR)/chapter-%.pdf $(BLDDIR)/chapter-%.synctex.gz: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES)
 	@mkdir -p $(dir $@)
-	tar -cz -f $@ $^
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) \
+		-jobname=chapter-$* "\\includeonly{$<}\\input{$(DOCID).tex}"
 
-# TODO: get rid of the cd
+# make a tar.gz package of the sources
+$(BLDDIR)/%.tar.gz: %.tex $$(call latex-dependencies,%) $(PREAMBLE) $(BLDDIR)/%.bbl $(BIBFILES) $(LIBFILES) $(FIGFILES) $(BLDFILES)
+	@mkdir -p $(dir $@)
+	tar -cz -f $@ $(patsubst ./%,%,$^)
+
 # make a tikz figure
 $(FIGDIR)/%.pdf: $(FIGDIR)/%.tex
 	cd $(FIGDIR); $(LATEX) --jobname=$* --output-directory=$(BLDDIR) $(notdir $<)
@@ -224,3 +241,5 @@ view:
 slideshow:
 	slider $(DOCID).pdf &
 
+test:
+	echo $(call latex-dependencies,thesis)
