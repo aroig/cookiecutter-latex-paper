@@ -41,12 +41,11 @@ DIFFDIR    := ./build/diff
 
 METADATA   := metadata.bib
 DOCID      := $(shell perl -ne '/\@article[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
+REF        := HEAD
 
 MKPREAMBLE := bin/mkpreamble.py
 PREAMBLE   := preamble.tex
-
-GITREF     := $(DIFFDIR)/gitref
-REF        := HEAD
+GITREF     := gitref
 
 FIGFILES   := $(sort $(wildcard $(FIGDIR)/*.png) $(wildcard $(FIGDIR)/*.pdf))
 LIBFILES   := $(sort $(wildcard *.sty) $(wildcard $(LIBDIR)/*))
@@ -93,7 +92,7 @@ VPATH=$(LIBDIR):$(TEXDIR):$(FIGDIR)
 # always trigger rebuilds on those
 .PHONY: update pdf 2in1 src flat flatsrc diff figs clean slideshow view ref bib test
 
-all: pdf src
+all: pdf
 
 pdf: $(DOCID).pdf $(DOCID).synctex.gz
 
@@ -147,6 +146,23 @@ $(BLDDIR)/%.ps.imposed: $(BLDDIR)/%.ps
 
 
 #----------------------------------#
+# Git rules                        #
+#----------------------------------#
+
+$(BLDDIR)/$(GITREF): FORCE
+	@mkdir -p $(dir $@)
+	$(call write-if-changed-cmd,$(shell git describe --always --tags --dirty=+),$@)
+
+$(DIFFDIR)/$(GITREF): FORCE
+	@mkdir -p $(dir $@)
+	$(call write-if-changed-cmd,$(shell git describe --always --tags $(REF)),$@)
+
+$(DIFFDIR)/old/%.tex: $(DIFFDIR)/$(GITREF)
+	@mkdir -p $(dir $@)
+	git show $(shell cat $<):$*.tex > $@
+
+
+#----------------------------------#
 # Preamble and bibliography        #
 #----------------------------------#
 
@@ -170,18 +186,17 @@ $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 	$(BIBTEX) --input-directory=$(dir $@) --output-directory=$(dir $@) $*.bcf
 
 
-
 #----------------------------------#
 # Document                         #
 #----------------------------------#
 
 # compile pdf with up to date bibliography
-$(BLDDIR)/%.pdf $(BLDDIR)/%.synctex.gz: %.tex $$(call latex-dependencies,%) $(BLDDIR)/%.bbl $(PREAMBLE) $(FIGFILES)
+$(BLDDIR)/%.pdf $(BLDDIR)/%.synctex.gz: %.tex $$(call latex-dependencies,%) $(BLDDIR)/%.bbl $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) $<
 
 # compile one chapter alone
-$(BLDDIR)/chapter-%.pdf $(BLDDIR)/chapter-%.synctex.gz: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES)
+$(BLDDIR)/chapter-%.pdf $(BLDDIR)/chapter-%.synctex.gz: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) \
 		-jobname=chapter-$* "\\includeonly{$<}\\input{$(DOCID).tex}"
@@ -205,14 +220,6 @@ $(FIGDIR)/%.pdf: $(FIGDIR)/%.tex
 $(FLATDIR)/%.tex: %.tex
 	@mkdir -p $(dir $@)
 	texa flatten $< > $@
-
-$(GITREF): FORCE
-	@mkdir -p $(dir $@)
-	SHA="`git rev-parse '$(REF)'`"; $(call write-if-changed-cmd,$$SHA,$@)
-
-$(DIFFDIR)/old/%.tex: $(GITREF)
-	@mkdir -p $(dir $@)
-	git show $(shell cat $<):$*.tex > $@
 
 $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 	@mkdir -p $(dir $@)
