@@ -191,7 +191,7 @@ $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 #----------------------------------#
 
 # compile pdf with up to date bibliography
-$(BLDDIR)/%.pdf $(BLDDIR)/%.synctex.gz: %.tex $$(call latex-dependencies,%) $(BLDDIR)/%.bbl $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
+$(BLDDIR)/%.pdf $(BLDDIR)/%.synctex.gz: %.tex $$(call latex-dependencies,%) $(BLDDIR)/%.bbl $(PREAMBLE) $(LIBFILES) $(FIGFILES) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) $<
 
