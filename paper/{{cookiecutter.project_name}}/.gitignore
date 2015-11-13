@@ -1,13 +1,1 @@
-*~
-.\#*
-.auto
-build/*
-bib/*
-*.gz
-*.zip
-*.ps
-*.pdf
-*.dvi
-*.png
-*.jpg
-*.eps
+../../base/gitignore
