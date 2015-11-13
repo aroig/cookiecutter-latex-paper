@@ -2,5 +2,5 @@
     "project_name"   : "new-project",
     "language"       : "english",
 
-    "_copy_without_render": [ "bin/*", "lib/*", "*.sty", "*.lua" ]
+    "_copy_without_render": [ "bin/*", "lib/*", "figs/*", "*.sty", "*.lua" ]
 }

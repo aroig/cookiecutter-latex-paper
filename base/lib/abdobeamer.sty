@@ -1,0 +1,193 @@
+% ----------------------------------------------------------------------- %
+% File:    abdobeamer.cls     Beamer customizations                       %
+% Author:  Abdó Roig-Maranges <abdo.roig@gmail.com>             2012-2013 %
+% ----------------------------------------------------------------------- %
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{abdobeamer}
+
+
+
+% ----------------------------------------------------------------------- %
+% Options                                                                 %
+% ----------------------------------------------------------------------- %
+
+% Hooks
+\providecommand{\hyperrefhook}{}
+\providecommand{\hyperreftitlehook}[1]{}
+\providecommand{\hyperrefauthorhook}[1]{}
+\providecommand{\abdoslides@colorshook}{\usecolortheme{abdo}}
+
+
+% Draft option
+\DeclareOption{draft}{
+  \PassOptionsToPackage{showkeys}{draftools}
+  % \setbeameroption{show notes}
+}
+
+\DeclareOption{bw}{
+  \renewcommand\abdoslides@colorshook{\usecolortheme{abdobw}}
+}
+
+% Hyperref option
+\DeclareOption{hyperref}{
+  \PassOptionsToPackage{final}{hyperref}
+  \renewcommand{\hyperrefhook}{%
+    \hypersetup{pdfencoding=auto,
+      colorlinks,%
+      citecolor=citecolor,%
+      filecolor=filecolor,%
+      linkcolor=linkcolor,%
+      urlcolor=urlcolor
+    }%
+  }
+  \renewcommand{\hyperreftitlehook}[1]{\hypersetup{pdftitle={#1}}}
+  \renewcommand{\hyperrefauthorhook}[1]{\hypersetup{pdfauthor={#1}}}
+}
+
+\DeclareOption{nohyperref}{
+  \PassOptionsToPackage{draft}{hyperref}
+  \renewcommand{\hyperrefhook}{}
+  \renewcommand{\hyperreftitlehook}[1]{}
+  \renewcommand{\hyperrefauthorhook}[1]{}
+}
+
+\ExecuteOptions{nohyperref}
+
+
+% Process options of the package.
+\ProcessOptions
+
+
+
+% ----------------------------------------------------------------------- %
+% Package loading                                                         %
+% ----------------------------------------------------------------------- %
+
+% NOTE: without etex, tikz + beamer complain about not enough room for dimendions.
+\RequirePackage{etex}                   % etex stuff
+\RequirePackage{iftex}                  % conditionals on tex engine
+\RequirePackage{babel}                  % language support
+
+\RequirePackage[nodayofweek]{datetime}  % date formating
+
+% page layout
+\RequirePackage{geometry}         % Geometry of the page
+
+% ams
+\RequirePackage{amsmath}          % AMS stuff
+\RequirePackage{amsfonts}         % AMS fonts
+
+% graphics and color
+\RequirePackage{xcolor}           % provides color
+\RequirePackage{graphicx}         % Include external graphics
+\RequirePackage{tikz}             % Graphics
+
+% personal
+\RequirePackage{abdocolor}        % My colors
+\RequirePackage{abdoalias}        % My aliases
+\RequirePackage{abdothms}         % My theorems
+\RequirePackage{comdiag}          % Commutative diagrams
+\RequirePackage{draftools}        % Various draft tools
+
+% typesetting tools
+\RequirePackage{url}              % provides URL typesetting
+
+% Hyperref must load last I think. May have interactions with showkeys...
+\RequirePackage{hyperref}         % Hyperlinks and URL typesetting
+
+
+
+% ----------------------------------------------------------------------- %
+% Visual appearence                                                       %
+% ----------------------------------------------------------------------- %
+
+% Some aliases
+\let\emphold\emph
+\let\emph\alert
+
+
+\mode<presentation>
+{
+  \useinnertheme{abdo}                  % Inner theme
+  \usefonttheme{abdo}                   % Font Theme
+  \useoutertheme{abdo}
+
+%  \usetheme{default}                    % Main theme
+%  \useinnertheme{default}
+%  \usefonttheme{professionalfonts}
+%  \useoutertheme{infolines}             % Outer theme
+%  \useoutertheme[footline=authorinstitutetitle]{miniframes}
+%  \usecolortheme{beaver}
+
+  \abdoslides@colorshook
+
+%  \setbeamercovered{transparent}
+  \setbeamercovered{invisible}
+}
+
+\setbeamertemplate{navigation symbols}{}
+
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+
+% Spacing in maths
+\newcommand{\setmathspacing}{
+  \setlength\parskip{5pt plus 5pt}
+  \setlength\itemsep{5pt plus 10pt}
+%  \setlength\abovedisplayskip{1pt plus 1pt minus 1pt}
+  \setlength\abovedisplayskip{0pt}
+  \setlength\abovedisplayshortskip{0pt plus 1pt}
+%  \setlength\belowdisplayskip{1pt plus 1pt minus 1pt}
+  \setlength\belowdisplayskip{0pt}
+  \setlength\belowdisplayshortskip{0pt plus 1pt}
+}
+
+\AtBeginDocument{\setmathspacing}
+
+
+
+% ----------------------------------------------------------------------- %
+% Theorems hacking                                                        %
+% ----------------------------------------------------------------------- %
+
+\let\OLDthm=\thm
+\def\thm{%
+  \setbeamercolor{local structure}{fg=abdo-thm!50!black}%
+  \setbeamercolor{block title}{fg=abdo-fg,bg=abdo-thm}%
+  \setbeamercolor{block body}{fg=abdo-fg,bg=abdo-thm!30!white}\OLDthm%
+}
+
+\let\OLDcor=\cor
+\def\cor{%
+  \setbeamercolor{local structure}{fg=abdo-thm!50!black}%
+  \setbeamercolor{block title}{fg=abdo-fg,bg=abdo-thm}%
+  \setbeamercolor{block body}{fg=abdo-fg,bg=abdo-thm!30!white}\OLDcor%
+}
+
+
+\let\OLDdfn=\dfn
+\def\dfn{%
+  \setbeamercolor{block title}{fg=abdo-fg,bg=abdo-dfn}%
+  \setbeamercolor{block body}{fg=abdo-fg,bg=abdo-dfn!30!white}\OLDdfn%
+}
+
+\let\OLDcon=\con
+\def\con{%
+  \setbeamercolor{local structure}{fg=abdo-con!50!black}%
+  \setbeamercolor{block title}{fg=abdo-fg,bg=abdo-con}%
+  \setbeamercolor{block body}{fg=abdo-fg,bg=abdo-con!30!white}\OLDcon%
+}
+
+
+
+% ----------------------------------------------------------------------- %
+% Run hooks                                                               %
+% ----------------------------------------------------------------------- %
+
+\hyperrefhook

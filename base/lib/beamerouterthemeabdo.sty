@@ -1,0 +1,113 @@
+
+
+\def\insertframenavigation#1#2#3{%
+  \hbox to #1{{%
+    \usebeamerfont{subsection in head/foot}\usebeamercolor[fg]{subsection in head/foot}%
+    \beamer@currentsubsection=0%
+    \def\sectionentry##1##2##3##4##5{}%
+    \def\slideentry##1##2##3##4##5##6{%
+      \ifnum##6=\c@part%
+      \ifnum##1=\c@section%
+      \ifnum\c@section>0%
+      \ifnum##2=\c@subsection%
+      \beamer@currentsubsection=##2%
+      \box\beamer@sectionbox\hskip0.3ex%
+      \setbox\beamer@sectionbox=
+      \hbox{\def\insertsubsectionhead{##5}%
+         \def\insertsectionheadnumber{##1}%
+         \def\insertsubsectionheadnumber{##2}%
+         \def\insertpartheadnumber{##6}%
+         \ifnum\c@subsectionslide=##3%
+         \beamer@link(##4){{\usebeamertemplate{subsection in head/foot}}}%
+         \else%
+         \beamer@link(##4){{\usebeamertemplate{subsection in head/foot shaded}}}%
+         \fi}%
+%      \ht\beamer@sectionbox=1.875ex%
+%      \dp\beamer@sectionbox=0.75ex%
+      \fi\fi\fi\fi\ignorespaces}%
+    #2\setbox\beamer@sectionbox=\hbox{}%
+    \dohead%
+    \box\beamer@sectionbox#3\hfill
+}}}
+
+
+\mode<presentation>
+
+\setbeamercolor*{author in head/foot}{parent=palette tertiary}
+\setbeamercolor*{title in head/foot}{parent=palette secondary}
+\setbeamercolor*{date in head/foot}{parent=palette primary}
+
+\setbeamercolor*{section in head/foot}{parent=palette tertiary}
+\setbeamercolor*{subsection in head/foot}{parent=palette primary}
+
+\defbeamertemplate*{footline}{abdo theme}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.3\paperwidth,ht=2.0ex,dp=.8ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor\expandafter\beamer@ifempty\expandafter{\beamer@shortinstitute}{}{~~(\insertshortinstitute)}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.0ex,dp=.8ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.3\paperwidth,ht=2.0ex,dp=.8ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\defbeamertemplate*{headline}{abdo theme}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.0ex,dp=.8ex,right]{section in
+      head/foot}%
+    \usebeamerfont{section in head/foot}\insertsectionhead\hspace*{2ex}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.0ex,dp=.8ex,left]{subsection in head/foot}%
+%    \usebeamerfont{subsection in head/foot}\hspace*{2ex}\insertsubsectionhead
+    \usebeamerfont{subsection in head/foot}\hspace*{2ex}\insertframenavigation{0.45\paperwidth}{}{}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+
+\defbeamertemplate*{subsection in head/foot}{abdo theme}
+{\tikz \draw[thick,fill] (1ex,1ex) circle (0.55ex);}
+
+
+\defbeamertemplate*{subsection in head/foot shaded}{abdo theme}
+{\tikz \draw[thick] (1ex,1ex) circle (0.55ex);}
+
+
+\defbeamertemplate*{frametitle}{abdo theme}[1][left]
+{
+  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+  \@tempdima=\textwidth%
+  \advance\@tempdima by\beamer@leftmargin%
+  \advance\@tempdima by\beamer@rightmargin%
+  \begin{beamercolorbox}[sep=0.3cm,#1,wd=\the\@tempdima]{frametitle}
+    \usebeamerfont{frametitle}%
+    \vbox{}\vskip-1.4ex%
+    \if@tempswa\else\csname beamer@fte#1\endcsname\fi%
+    \strut\insertframetitle\strut\par%
+    {%
+      \ifx\insertframesubtitle\@empty%
+      \else%
+      {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
+      \fi
+    }%
+    \vskip-1ex%
+    \if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+  \end{beamercolorbox}%
+}
+
+
+% less margin on the sides
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+
+
+\mode
+<all>

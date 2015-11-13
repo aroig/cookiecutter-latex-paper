@@ -1,0 +1,336 @@
+% ----------------------------------------------------------------------- %
+% File:    draftools.sty      Some tools for managing drafts              %
+% Author:  Abdó Roig-Maranges <abdo.roig@gmail.com>             2011-2013 %
+% ----------------------------------------------------------------------- %
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{draftools}
+
+
+% ----------------------------------------------------------------------- %
+% Options                                                                 %
+% ----------------------------------------------------------------------- %
+
+% Hooks
+\providecommand{\showkeyshook}{}
+\providecommand{\showkeyshackshook}{}
+\providecommand{\visualdbghook}{}
+\providecommand{\showcommentshook}{}
+\providecommand{\revinfoheaderhook}{}
+
+
+% Showkeys options
+\DeclareOption{onlylabels}{
+  \PassOptionsToPackage{notref,notcite}{showkeys}
+}
+
+\DeclareOption{showkeys}{
+  \renewcommand{\showkeyshook}{\RequirePackage{showkeys}}
+  \renewcommand{\showkeyshackshook}{\makeshowkeyshacks}
+}
+
+\DeclareOption{noshowkeys}{
+  \renewcommand{\showkeyshook}{}
+  \renewcommand{\showkeyshackshook}{}
+}
+
+\DeclareOption{visualdbg}{
+  \renewcommand{\visualdbghook}{\RequirePackage{lua-visual-debug}}
+}
+
+\DeclareOption{showcomments}{
+  \renewcommand\showcommentshook{\showcomments}
+}
+
+\DeclareOption{noshowcomments}{
+  \renewcommand\showcommentshook{\hidecomments}
+}
+
+\DeclareOption{revinfo}{
+  \renewcommand{\revinfoheaderhook}{\revinfoheader}
+}
+
+\DeclareOption{norevinfo}{
+  \renewcommand{\revinfoheaderhook}{}
+}
+
+
+\DeclareOption{draft}{
+  \ExecuteOptions{showcomments}
+  \ExecuteOptions{revinfo}
+}
+
+\PassOptionsToPackage{automark}{scrpage2}
+\PassOptionsToPackage{nodayofweek}{datetime}
+
+\PassOptionsToPackage{color,outerbars}{changebar}
+\PassOptionsToPackage{normalem}{ulem}
+
+
+% Defaults
+\ExecuteOptions{}
+
+
+% Process options of the package.
+\ProcessOptions
+
+
+% ----------------------------------------------------------------------- %
+% Package Loading                                                         %
+% ----------------------------------------------------------------------- %
+
+
+\RequirePackage{ulem}       % Underlining.
+\RequirePackage{changebar}  % Use change bars to highlight text !
+\RequirePackage{datetime}   % Date formating issues
+
+\@ifclassloaded{beamer}{}{\RequirePackage{scrpage2}}
+
+
+
+% ----------------------------------------------------------------------- %
+% Hooks                                                                   %
+% ----------------------------------------------------------------------- %
+
+\showkeyshook               % and if there is no noshowkeys option.
+                            % The package showkeys shows the keys of
+                            %  hyperrefs in draft mode.
+
+\visualdbghook              % Visual debugging info
+
+\AtBeginDocument{\showkeyshackshook}
+
+
+
+% ----------------------------------------------------------------------- %
+% Comments                                                                %
+% ----------------------------------------------------------------------- %
+
+% TODO: catcode hack to show spaces?
+% TODO: \endcmt should check if followed by \begincmt and replace
+%       them by a \newline!
+
+\def\begincmt{%
+    \begingroup%
+    \ifhmode\newline\else\fi%
+    \fontsize{9pt}{9pt}\ttfamily%
+    \chbar@begin{cmtcolor}%
+}
+
+\long\def\hopone#1\fi{\fi#1}
+
+\def\endcmt@middle{\\[-0.6ex]}
+\def\endcmt@ending{\chbar@end\endgroup}
+
+\long\def\endcmt#1#2{%
+    \ifx\begincmt #2%
+        \endcmt@middle%
+    \else%
+        \endcmt@ending%
+        \ifx\par #2\else \\ \fi
+        \hopone #2%
+    \fi%
+}
+
+
+
+% ----------------------------------------------------------------------- %
+% Handle active comments                                                  %
+% ----------------------------------------------------------------------- %
+
+\ifluatex
+  \directlua{
+    draftools = require("draftools")
+    luatexbase.add_to_callback("process_input_buffer",
+                               draftools.parse_active_comments,
+                               "Parse active comments",
+                               1)
+  }
+
+  \newcommand{\showcomments}{%
+    \directlua{userdata.state.showcomments=true}%
+  }
+
+  \newcommand{\hidecomments}{%
+    \directlua{userdata.state.showcomments=false}%
+  }
+
+\else
+
+  \newcommand{\showcomments}{}
+
+  \newcommand{\hidecomments}{}
+
+\fi
+
+
+
+% ----------------------------------------------------------------------- %
+% Showkeys Hacks                                                          %
+% ----------------------------------------------------------------------- %
+
+% Revert back the modifications on the \@@vpageref. I dont't want
+% showkeys showing the keys for pagerefs.
+\newcommand{\revertSKvpageref}{\def\@@vpageref{\SK@@@vpageref}}
+
+
+% Solving a conflict with underbar, which is redefined in the package
+% unicode-math.
+\newcommand{\revertSKunderbar}{
+\def\SK@@ref##1>##2\SK@{%
+  {\@inlabelfalse\leavevmode\vbox to\z@{%
+    \vss
+    \SK@refcolor
+    \rlap{\vrule\raise .75em%
+       \hbox{\normalfont\footnotesize\ttfamily##2}}}}}
+}
+
+
+\def\abdoshowkeyslabel#1:#2:#3@{
+  \fbox{\scriptsize\normalfont\ttfamily%
+    \ifx&#3&
+      #1%
+    \else%
+      \renewcommand{\arraystretch}{0.6}%
+      \begin{tabular}{@{}c@{}}#1:\\#2\\[-0.2em]%
+      \end{tabular}%
+    \fi%
+  }%
+}
+
+% This functions redefines the showkeys hook to typeset the label boxes.
+\newcommand{\makeshowkeyshacks}{
+  \renewcommand*{\showkeyslabelformat}[1]{\abdoshowkeyslabel##1::@}
+  \revertSKvpageref
+  \revertSKunderbar
+  \def\SK@labelcolor{\color{sklabelcolor}}
+  \def\SK@refcolor{\color{skrefcolor}}
+
+}
+
+
+
+% ----------------------------------------------------------------------- %
+% Change Bar Stuff                                                        %
+% ----------------------------------------------------------------------- %
+
+% Changebars configuration.
+\setlength\changebarwidth{0.3em}
+\setlength\changebarsep{5pt}
+\cbcolor{gray}
+
+\newcounter{abdo@chbar@rec}
+\setcounter{abdo@chbar@rec}{1}
+
+% Begins a changebar. Accepts a nonoptional color.
+\newcommand{\chbar@begin}[1]{%
+  \addtocounter{abdo@chbar@rec}{1}
+  \colorlet{abdo@chbar@oldcolor@\alph{abdo@chbar@rec}}{.}%
+  \expandafter\global\expandafter\let%
+    \csname abdo@chbar@oldcbcolor@\alph{abdo@chbar@rec}\endcsname%
+    \cb@current@color%
+  \protect\cbstart%
+  \protect\cbcolor{#1}%
+  \protect\color{#1}%
+}
+
+% Ends a changebar.
+\newcommand{\chbar@end}{%
+  \protect\cbend%
+  \protect\color{abdo@chbar@oldcolor@\alph{abdo@chbar@rec}}%
+  \expandafter\global\expandafter\let\expandafter\cb@current@color%
+    \csname abdo@chbar@oldcbcolor@\alph{abdo@chbar@rec}\endcsname%
+  \addtocounter{abdo@chbar@rec}{-1}
+}
+
+
+
+% ----------------------------------------------------------------------- %
+% Revision History                                                        %
+% ----------------------------------------------------------------------- %
+
+% Set the revisions on a diff
+\newcommand{\setdiffrevision}[2]{\directlua{draftools.set_diff_revinfo("#1", "#2")}}
+
+% Set revision info to the current revision
+\newcommand{\setcurrentrevision}{\directlua{draftools.set_workingdir_revinfo()}}
+
+\setcurrentrevision
+
+
+% Header line thickness
+\newlength\rev@headerlinethickness
+\setlength\rev@headerlinethickness{0.5pt}
+
+
+% produce a revision info header
+\newcommand{\revinfoheader}{
+  \def\rev@header@cmd{%
+    \footnotesize\ttfamily%
+    \setlength\tabcolsep{0em}%
+    \begin{tabular*}{\textwidth}{p{10em}l@{\extracolsep{\fill}}r}%
+      \directlua{draftools.print_revinfo_header()}
+    \end{tabular*}%
+    \hfill%
+  }
+
+  \defpagestyle{revinfo}{%
+    {\rev@header@cmd}{\rev@header@cmd}{\rev@header@cmd}%
+  }{%
+    {\pagemark\hfill}{\hfill\pagemark}{\hfill\pagemark\hfill}%
+  }%
+
+  \pagestyle{revinfo}%
+  \setheadsepline{\rev@headerlinethickness}%
+}
+
+
+
+% ----------------------------------------------------------------------- %
+% Latexdiff Macros                                                        %
+% ----------------------------------------------------------------------- %
+
+\newcommand{\cbmark}[1]{\begingroup\protect\cbcolor{diffbarcolor}%
+   \protect\cbstart\protect\color{diffbarcolor}#1\protect\cbend\endgroup}
+
+\newcommand{\uwmark}[1]{{\protect\color{diffaddcolor}\protect\uwave{#1}}}
+\newcommand{\somark}[1]{{\protect\color{diffdelcolor}\protect\sout{#1}}}
+
+% Add and Del
+\providecommand{\DIFadd}{}
+%\providecommand{\DIFadd}[1]{\uwmark{#1}}
+%\providecommand{\DIFdel}{}%
+\providecommand{\DIFdel}[1]{\somark{#1}}
+
+% Hey ! There is an incompatibility between ulem's \sout and
+% hyperref. When doing this inside a section, crashes because of the
+% pdf metadata that hyperref produces. \texorpdfstring solves
+% it, but this renders hyperref unusable with latexdiff.
+
+% \providecommand{\DIFdel}[1]{\somark{#1}}
+
+%Dif safe
+\providecommand{\DIFaddbegin}{\chbar@begin{diffbarcolor}\protect\color{diffaddcolor}}
+\providecommand{\DIFaddend}{\chbar@end}
+
+\providecommand{\DIFdelbegin}{}
+\providecommand{\DIFdelend}{}
+
+%Dif floatsafe
+%\providecommand{\DIFaddFL}[1]{\DIFadd{#1}}
+%\providecommand{\DIFdelFL}[1]{\DIFdel{#1}}
+\providecommand{\DIFaddFL}{}
+\providecommand{\DIFdelFL}{}
+\providecommand{\DIFaddbeginFL}{}
+\providecommand{\DIFaddendFL}{}
+\providecommand{\DIFdelbeginFL}{}
+\providecommand{\DIFdelendFL}{}
+
+
+
+% ----------------------------------------------------------------------- %
+% Run hooks                                                               %
+% ----------------------------------------------------------------------- %
+
+\showcommentshook
+\AtBeginDocument{\revinfoheaderhook}

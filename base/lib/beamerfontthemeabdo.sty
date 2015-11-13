@@ -1,0 +1,39 @@
+
+% \ProvidesPackageRCS $Header: /Users/joseph/Library/texmf/tex/latex/beamer/base/themes/font/beamerfontthemedefault.sty,v d02a7cf4d8ae 2010/06/17 09:11:41 rivanvx $
+
+\RequirePackage{iftex}            % Do conditionals on tex engine
+
+\ifLuaTeX
+  \RequirePackage{fontspec}
+  \RequirePackage{unicode-math}
+  \RequirePackage{lualatex-math}  % temporary kludge to fix some lualatex math issues.
+
+\else
+  \RequirePackage[utf8]{inputenc}
+  \RequirePackage[T1]{fontenc}
+\fi
+
+\mode<presentation>
+
+  % Prevent beamer from messing with the fonts. Got it from the professionalfonts theme.
+  \beamer@suppressreplacementstrue
+
+  % Sans serif font for text
+  \setmainfont[Ligatures=TeX]{Tex Gyre Heros}
+  \setsansfont[Ligatures=TeX]{Tex Gyre Heros}
+  \setmonofont{Ubuntu Mono}
+
+  % XITS math font + make it sans
+  % \setmathfont[math-style=TeX]{XITS Math}
+  \setmathfont[math-style=TeX]{Tex Gyre Bonum Math}
+
+  % Use bold for titles
+  \setbeamerfont{title}{size=\Large,shape=\bfseries,parent=structure}
+  \setbeamerfont{title in head/foot}{shape=\bfseries}
+
+  % Use Bree for author name
+  \setbeamerfont{author}{family=\fontspec{Bree},shape=\itshape}
+  \setbeamerfont{author in head/foot}{family=\fontspec{Bree},shape=\itshape}
+
+\mode
+<all>

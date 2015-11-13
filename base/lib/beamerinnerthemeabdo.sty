@@ -1,0 +1,63 @@
+
+\mode<presentation>
+
+\setbeamertemplate{items}[circle]
+
+% Bullet points in itemize
+\setbeamertemplate{itemize item}{\raisebox{-0.2ex}{\Large\bullet}}
+\setbeamertemplate{itemize subitem}{\raisebox{-0.2ex}{\large\bullet}}
+\setbeamertemplate{itemize subsubitem}{-}
+
+% Enumeration indentation
+\setlength\leftmargini{1em}
+\setlength\leftmarginii{1em}
+\setlength\leftmarginiii{1em}
+
+
+\setbeamertemplate{sections/subsections in toc}[circle]
+
+% Rounded boxes without shadow
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+
+% Disable vertical gradient between title and content of boxes
+\pgfdeclareverticalshading[lower.bg,upper.bg]{bmb@transition}{200cm}{%
+  color(0pt)=(lower.bg); color(4pt)=(lower.bg); color(4pt)=(upper.bg)}
+
+% To disable gradients on shadows must touch bmb@shadowball and
+% bmb@shadowballlarge. Look at beamerbaseboxes.sty
+
+
+% Title inside a rounded block
+\defbeamertemplate*{title page}{abdo theme}
+{
+  \vbox{}
+  \vfill
+  \begin{centering}
+    \begin{beamercolorbox}[sep=6pt,center,rounded=true,shadow=false]{title}%
+      \vbox{}\vskip-3ex
+      \usebeamerfont{title}\inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip0.25em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi%
+    \end{beamercolorbox}%
+    \vskip1em\par
+    \begin{beamercolorbox}[sep=8pt,center]{author}
+      \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=8pt,center]{institute}
+      \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=8pt,center]{date}
+      \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}\vskip0.5em
+    {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+  \end{centering}
+  \vfill
+}
+
+
+\mode
+<all>
