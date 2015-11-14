@@ -1,6 +1,8 @@
 TODO
 ====
 
+* test and review `book` and `poster` document types.
+
 * track dependencies of `.aux` and `.toc` files.
 
 * simplify scripts to create `preamble.tex`. I'd like to get rid of the python
