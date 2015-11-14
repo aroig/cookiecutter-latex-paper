@@ -19,12 +19,6 @@
 \providecommand{\abdoslides@colorshook}{\usecolortheme{abdo}}
 
 
-% Draft option
-\DeclareOption{draft}{
-  \PassOptionsToPackage{showkeys}{draftools}
-  % \setbeameroption{show notes}
-}
-
 \DeclareOption{bw}{
   \renewcommand\abdoslides@colorshook{\usecolortheme{abdobw}}
 }
@@ -74,6 +68,16 @@
 % page layout
 \RequirePackage{geometry}         % Geometry of the page
 
+% bibliography
+\RequirePackage[autostyle]{csquotes}    % quotation (required by biblatex).
+\RequirePackage[                        % Bibliography
+    backend=biber,
+    style=numeric,
+    url=false,
+    doi=true,
+    eprint=true
+]{biblatex}
+
 % ams
 \RequirePackage{amsmath}          % AMS stuff
 \RequirePackage{amsfonts}         % AMS fonts
@@ -82,13 +86,12 @@
 \RequirePackage{xcolor}           % provides color
 \RequirePackage{graphicx}         % Include external graphics
 \RequirePackage{tikz}             % Graphics
+\usetikzlibrary{cd}               % commutative diagrams
 
 % personal
 \RequirePackage{abdocolor}        % My colors
 \RequirePackage{abdoalias}        % My aliases
 \RequirePackage{abdothms}         % My theorems
-\RequirePackage{comdiag}          % Commutative diagrams
-\RequirePackage{draftools}        % Various draft tools
 
 % typesetting tools
 \RequirePackage{url}              % provides URL typesetting

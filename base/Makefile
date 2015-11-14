@@ -72,6 +72,9 @@ latex-dependencies = $1.tex $(foreach p,\
 	$(dir $1)$(p)\
 )
 
+# bibliography files
+doc-dependencies = $(call latex-dependencies,$1) $(BLDDIR)/$1.bbl $(PREAMBLE) $(LIBFILES) $(FIGFILES)
+
 # write string $2 to file $1 only if it is different from its contents.
 write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ]; then echo "$1" > "$2"; fi
 
@@ -191,7 +194,7 @@ $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 #----------------------------------#
 
 # compile pdf with up to date bibliography
-$(BLDDIR)/%.pdf $(BLDDIR)/%.synctex.gz: %.tex $$(call latex-dependencies,%) $(BLDDIR)/%.bbl $(PREAMBLE) $(LIBFILES) $(FIGFILES) | $(BLDDIR)/$(GITREF)
+$(BLDDIR)/%.pdf $(BLDDIR)/%.synctex.gz: %.tex $$(call doc-dependencies,%) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) $<
 
@@ -202,7 +205,7 @@ $(BLDDIR)/chapter-%.pdf $(BLDDIR)/chapter-%.synctex.gz: $(TEXDIR)/%.tex $(PREAMB
 		-jobname=chapter-$* "\\includeonly{$<}\\input{$(DOCID).tex}"
 
 # make a tar.gz package of the sources
-$(BLDDIR)/%.tar.gz: %.tex $$(call latex-dependencies,%) $(PREAMBLE) $(BLDDIR)/%.bbl $(BIBFILES) $(LIBFILES) $(FIGFILES) $(BLDFILES)
+$(BLDDIR)/%.tar.gz: %.tex $$(call doc-dependencies) $(BIBFILES) $(BLDFILES)
 	@mkdir -p $(dir $@)
 	tar -cz -f $@ $(patsubst ./%,%,$^)
 
@@ -249,4 +252,4 @@ slideshow:
 	slider $(DOCID).pdf &
 
 test:
-	echo $(call latex-dependencies,thesis)
+
