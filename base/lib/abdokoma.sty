@@ -16,16 +16,6 @@
 \newcommand{\widelinespread}{\linespread{1.3}}
 \newcommand{\regularlinespread}{\linespread{1}}
 
-% Headers
-\newlength\headerlinethickness
-\setlength\headerlinethickness{0.5pt}
-
-\newcommand{\regularheader}{%
-  \pagestyle{scrheadings} \setheadsepline{\headerlinethickness}%
-  \ihead{\headmark} \chead{} \ohead{\pagemark}%
-  \ifoot{} \cfoot{} \ofoot{}%
-}
-
 
 
 % ----------------------------------------------------------------------- %
@@ -34,7 +24,6 @@
 
 % Hooks
 \providecommand{\hyperrefhook}{}
-\providecommand{\headerhook}{}
 \providecommand{\sectioninghook}{}
 
 
@@ -60,13 +49,15 @@
   \renewcommand{\hyperrefhook}{%
     \hypersetup{%
       pdfencoding=auto,%
+      unicode,%
+      psdextra,%
       pdftitle={\@title},%
       pdfauthor={\@author},%
       colorlinks,%
       citecolor=citecolor,%
       filecolor=filecolor,%
       linkcolor=linkcolor,%
-      urlcolor=urlcolor
+      urlcolor=urlcolor%
     }%
   }
 }
@@ -105,19 +96,13 @@
 \ProcessOptions
 
 % Delay options to be processed.
-\AtBeginDocument{\headerhook}
+\AtBeginDocument{\setupheader}
 
 
 
 % ----------------------------------------------------------------------- %
 % Package loading                                                         %
 % ----------------------------------------------------------------------- %
-
-% Options
-\PassOptionsToPackage{automark}{scrpage2}
-
-% With hyperref 2012/08/13 v6.83a this will enable to put unicode math on pdf bookmarks
-% \PassOptionsToPackage{unicode,psdextra}{hyperref}
 
 % NOTE: without etex, tikz + beamer complain about not enough room for dimendions.
 \RequirePackage{etex}                   % etex stuff
@@ -134,9 +119,10 @@
 
 % page layout
 \RequirePackage{geometry}               % Geometry of the page
-\RequirePackage{scrpage2}               % Customizing headings
+\RequirePackage[automark]{scrpage2}     % Customizing headings
 \RequirePackage{titletoc}               % Tweaking TOC
 
+% bibliography
 \RequirePackage[autostyle]{csquotes}    % quotation (required by biblatex).
 \RequirePackage[                        % Bibliography
     backend=biber,
@@ -154,7 +140,6 @@
 \RequirePackage{graphicx}         % Include external graphics
 \RequirePackage{tikz}             % Graphics
 \usetikzlibrary{cd}               % commutative diagrams
-% \RequirePackage[all]{xy}          % Commutative diagrams
 
 % personal
 \RequirePackage{abdocolor}        % Custom colors
@@ -166,8 +151,14 @@
 % typesetting tools
 \RequirePackage{url}              % provides URL typesetting
 
-% Hyperref must load last I think. May have interactions with showkeys...
-\RequirePackage{hyperref}         % Hyperlinks and URL typesetting
+% NOTE: hyperref must load last, or it breaks showkeys...
+\RequirePackage{hyperref}
+
+% NOTE: but cleveref must load after hyperref
+\RequirePackage[                        % Smart references
+    noabbrev,
+    capitalise
+]{cleveref}
 
 
 
@@ -178,6 +169,15 @@
 % change emph
 \let\emphold\emph
 \renewcommand{\emph}[1]{\textbf{\color{emphcolor}#1}}
+
+
+\newcommand{\setupheader}{%
+  \setkomafont{pageheadfoot}{\sffamily}
+  \pagestyle{scrheadings}%
+  \setheadsepline{0.0pt}%
+  \ihead{\headmark} \chead{} \ohead{}%
+  %\ifoot{} \cfoot{} \ofoot{}%
+}
 
 
 \newcommand{\setupsectioning}[1]{
@@ -203,9 +203,6 @@
     \def\sectioning@paragraphmargin{4.5em}
     \renewcommand*{\toclevel@paragraph}{3}
   \fi
-
-
-
 
   % table of contents style (titletoc)
   \titlecontents{section}[1em]{\bfseries\sffamily\vspace*{1ex}}{\thecontentslabel. }
