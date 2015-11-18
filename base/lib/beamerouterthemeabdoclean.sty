@@ -1,0 +1,33 @@
+
+\mode<presentation>
+
+\setbeamercolor*{title}{parent=palette primary}
+\setbeamercolor*{author}{parent=palette secondary}
+\setbeamercolor*{institute}{parent=palette secondary}
+\setbeamercolor*{date}{parent=palette secondary}
+
+\defbeamertemplate*{frametitle}{abdoclean theme}[1][left]
+{%
+  \vspace{0.40em}%
+  \noindent%
+  \tikz[overlay,baseline=0.3em]{\fill (-0.3,0.05) rectangle (0,0.9);}%
+  ~~\insertframetitle%
+}
+
+\defbeamertemplate*{title page}{abdoclean theme}[1][]
+{
+  \begin{center}\begin{minipage}{0.9\textwidth}
+    \usebeamercolor[fg]{title}\usebeamerfont{title}{\Huge \inserttitle}\par
+    \bigskip
+    \usebeamercolor[fg]{author}\usebeamerfont{author}\insertauthor\par
+    \usebeamercolor[fg]{institute}\usebeamerfont{institute}\insertinstitute\par
+    \bigskip
+    \usebeamercolor[fg]{date}\usebeamerfont{date}\insertdate\par
+  \end{minipage}\end{center}
+}
+
+% less margin on the sides
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+\mode
+<all>
