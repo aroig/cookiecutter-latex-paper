@@ -1,10 +1,10 @@
 
 \mode<presentation>
 
-\setbeamercolor*{title}{parent=palette primary}
-\setbeamercolor*{author}{parent=palette secondary}
-\setbeamercolor*{institute}{parent=palette secondary}
-\setbeamercolor*{date}{parent=palette secondary}
+\setbeamercolor*{title}{parent=structure}
+\setbeamercolor*{author}{parent=normal text}
+\setbeamercolor*{institute}{parent=normal text}
+\setbeamercolor*{date}{parent=normal text}
 
 \defbeamertemplate*{frametitle}{abdoclean theme}[1][left]
 {%
@@ -17,12 +17,12 @@
 \defbeamertemplate*{title page}{abdoclean theme}[1][]
 {
   \begin{center}\begin{minipage}{0.9\textwidth}
-    \usebeamercolor[fg]{title}\usebeamerfont{title}{\Huge \inserttitle}\par
+    \usebeamercolor[fg]{title}\usebeamerfont{title}{\huge \inserttitle}\par
     \bigskip
-    \usebeamercolor[fg]{author}\usebeamerfont{author}\insertauthor\par
-    \usebeamercolor[fg]{institute}\usebeamerfont{institute}\insertinstitute\par
+    \usebeamercolor[fg]{author}\usebeamerfont{author}{\large \insertauthor}\par
+    \usebeamercolor[fg]{institute}\usebeamerfont{institute}{\small \insertinstitute}\par
     \bigskip
-    \usebeamercolor[fg]{date}\usebeamerfont{date}\insertdate\par
+    \usebeamercolor[fg]{date}\usebeamerfont{date}{\small \insertdate}\par
   \end{minipage}\end{center}
 }
 

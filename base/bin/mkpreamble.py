@@ -120,11 +120,20 @@ def format_authorlist(authors):
 def format_preamble(metadata, authors):
     L = []
     L.append('% Auto-generated preamble')
+
     L.append(format_command('title', format_title(metadata)))
     L.append(format_command('author', format_authors(authors)))
     L.append(format_command('date', format_date(metadata)))
+
+    # add institute entry for beamer slides
+    if metadata['entrysubtype'] == 'slides':
+        for a in authors:
+            if a['name'] in metadata['author']:
+                L.append(format_command('institute', a['university']))
+
     L.append(format_command(r'newcommand{\makeabstract}', format_abstract(metadata)))
     L.append(format_command(r'newcommand{\makeauthorlist}', format_authorlist(authors)))
+
     return '\n\n'.join([it for it in L if it != None])
 
 
