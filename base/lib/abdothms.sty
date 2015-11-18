@@ -35,8 +35,8 @@
 
 % Creates a new theorem environment.
 % Parameters: label, text, short text, thm style, enum style, enum param.
-% Example: \maketheoremenv{thm}{Theorem}{plain}{counter}{section} 
-% Example: \maketheoremenv{dfn}{Definition}{definition}{copy}{thm} 
+% Example: \maketheoremenv{thm}{Theorem}{plain}{counter}{section}
+% Example: \maketheoremenv{dfn}{Definition}{definition}{copy}{thm}
 
 \newcommand{\maketheoremenv}[6]{
   \theoremstyle{#4}%
@@ -81,13 +81,13 @@
   \maketheoremenv{lem}{\color{thmcolor}Lema}{Lem.}{definition}{copy}{thm}
   \maketheoremenv{cor}{\color{thmcolor}Coro\l.lari}{Cor.}{definition}{copy}{thm}
   \maketheoremenv{con}{\color{thmcolor}Conjectura}{Conj.}{definition}{copy}{thm}
-  
+
   \maketheoremenv{dfn}{\color{dfncolor}Definici\'o}{Def.}{definition}{copy}{thm}
   \maketheoremenv{rmk}{\color{dfncolor}Remarca}{Rem.}{definition}{copy}{thm}
   \maketheoremenv{obs}{\color{dfncolor}Observaci\'o}{Obs.}{definition}{copy}{thm}
   \maketheoremenv{nte}{\color{dfncolor}Nota}{Nota}{definition}{copy}{thm}
   \maketheoremenv{exm}{\color{dfncolor}Exemple}{Exm.}{definition}{copy}{thm}
-  
+
   \maketheoremenv{exr}{Exercici}{Exr.}{definition}{counter}{section}
   \maketheoremenv{prb}{Problema}{Prob.}{definition}{copy}{exr}
   \maketheoremenv{que}{Q\"uesti\'o}{Q\"ue.}{definition}{copy}{exr}
@@ -105,13 +105,13 @@
   \maketheoremenv{lem}{\color{thmcolor}Lemma}{Lem.}{definition}{copy}{thm}
   \maketheoremenv{cor}{\color{thmcolor}Corollary}{Cor.}{definition}{copy}{thm}
   \maketheoremenv{con}{\color{thmcolor}Conjecture}{Conj.}{definition}{copy}{thm}
-  
+
   \maketheoremenv{dfn}{\color{dfncolor}Definition}{Def.}{definition}{copy}{thm}
   \maketheoremenv{rmk}{\color{dfncolor}Remark}{Rem.}{definition}{copy}{thm}
   \maketheoremenv{obs}{\color{dfncolor}Observation}{Obs.}{definition}{copy}{thm}
   \maketheoremenv{nte}{\color{dfncolor}Note}{Note}{definition}{copy}{thm}
   \maketheoremenv{exm}{\color{dfncolor}Example}{Exm.}{definition}{copy}{thm}
-  
+
   \maketheoremenv{exr}{Exercise}{Exr.}{definition}{counter}{section}
   \maketheoremenv{prb}{Problem}{Prb.}{definition}{copy}{exr}
   \maketheoremenv{que}{Question}{Que.}{definition}{copy}{exr}
@@ -129,13 +129,13 @@
   \maketheoremenv{lem}{\color{thmcolor}Lema}{Lem.}{definition}{copy}{thm}
   \maketheoremenv{cor}{\color{thmcolor}Corolario}{Cor.}{definition}{copy}{thm}
   \maketheoremenv{con}{\color{thmcolor}Conjetura}{Conj.}{definition}{copy}{thm}
-  
+
   \maketheoremenv{dfn}{\color{dfncolor}Definici\'on}{Def.}{definition}{copy}{thm}
   \maketheoremenv{rmk}{\color{dfncolor}Remarca}{Rem.}{definition}{copy}{thm}
   \maketheoremenv{obs}{\color{dfncolor}Observaci\'on}{Obs.}{definition}{copy}{thm}
   \maketheoremenv{nte}{\color{dfncolor}Nota}{Nota}{definition}{copy}{thm}
   \maketheoremenv{exm}{\color{dfncolor}Ejemplo}{Ejm.}{definition}{copy}{thm}
-  
+
   \maketheoremenv{exr}{Ejercicio}{Ejer.}{definition}{counter}{section}
   \maketheoremenv{prb}{Problema}{Prob.}{definition}{copy}{exr}
   \maketheoremenv{que}{Questi\'on}{Que.}{definition}{copy}{exr}
@@ -148,6 +148,18 @@
 }
 
 
+% Mimic the numbering of an other theorem, to be used in introductions and such.
+\newenvironment{thmref}[1]
+{%
+  \bgroup%
+  \renewcommand{\thethm}{\ref*{#1}}%
+  \thm%
+}{%
+  \endthm%
+  \addtocounter{thm}{-1}%
+  \egroup%
+}
+
+
 \theoremshook               % Creates all the theorems in the
                             % appropriate language.
-
