@@ -1,0 +1,7 @@
+{
+    "project_name"   : "new-project",
+    "project_type"   : "notes",
+    "language"       : "english",
+
+    "_copy_without_render": [ "bin/*", "lib/*", "figs/*", "*.sty", "*.lua" ]
+}
