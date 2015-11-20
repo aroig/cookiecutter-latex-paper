@@ -25,9 +25,14 @@
   % Monospace font for code
   \setmonofont{Ubuntu Mono}
 
-  % XITS math font + make it sans
+  % math font
+  \setmathfont[math-style=TeX]{Tex Gyre Pagella Math}
+  % \setmathfont[math-style=TeX]{Tex Gyre Bonum Math}
   % \setmathfont[math-style=TeX]{XITS Math}
-  \setmathfont[math-style=TeX]{Tex Gyre Bonum Math}
+
+  % tweak caligraphic and script ranges
+  \setmathfont[math-style=TeX,range={\mathcal,\mathbfcal}]{Latin Modern Math}
+  \setmathfont[math-style=TeX,range={\mathscr,\mathbfscr}]{Asana Math}
 
   % Use bold for titles
   \setbeamerfont{title}{size=\Large,shape=\bfseries,parent=structure}
