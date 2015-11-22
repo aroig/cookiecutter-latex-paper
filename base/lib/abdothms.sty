@@ -33,6 +33,16 @@
 %% Theorems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newtheoremstyle{abdothm}
+  {\topsep}    % Space above
+  {\topsep}    % Space below
+  {}           % Body font
+  {}           % Indent amount
+  {\sffamily\bfseries}  % Theorem head font
+  {.}          % Punctuation after theorem head
+  {.5em}       % Space after theorem head
+  {}           % Theorem head spec
+
 % Creates a new theorem environment.
 % Parameters: label, text, short text, thm style, enum style, enum param.
 % Example: \maketheoremenv{thm}{Theorem}{plain}{counter}{section}
@@ -76,23 +86,23 @@
 \renewenvironment{proof}[1][]{\errmessage{Proof environment disabled. Use prf instead !}}{}
 
 \newcommand{\theoremscatalan}{
-  \maketheoremenv{thm}{\color{thmcolor}Teorema}{Tma.}{definition}{counter}{section}
-  \maketheoremenv{prp}{\color{thmcolor}Proposici\'o}{Prop.}{definition}{copy}{thm}
-  \maketheoremenv{lem}{\color{thmcolor}Lema}{Lem.}{definition}{copy}{thm}
-  \maketheoremenv{cor}{\color{thmcolor}Coro\l.lari}{Cor.}{definition}{copy}{thm}
-  \maketheoremenv{con}{\color{thmcolor}Conjectura}{Conj.}{definition}{copy}{thm}
+  \maketheoremenv{thm}{\color{thmcolor}Teorema}{Tma.}{abdothm}{counter}{section}
+  \maketheoremenv{prp}{\color{thmcolor}Proposici\'o}{Prop.}{abdothm}{copy}{thm}
+  \maketheoremenv{lem}{\color{thmcolor}Lema}{Lem.}{abdothm}{copy}{thm}
+  \maketheoremenv{cor}{\color{thmcolor}Coro\l.lari}{Cor.}{abdothm}{copy}{thm}
+  \maketheoremenv{con}{\color{thmcolor}Conjectura}{Conj.}{abdothm}{copy}{thm}
 
-  \maketheoremenv{dfn}{\color{dfncolor}Definici\'o}{Def.}{definition}{copy}{thm}
-  \maketheoremenv{rmk}{\color{dfncolor}Remarca}{Rem.}{definition}{copy}{thm}
-  \maketheoremenv{obs}{\color{dfncolor}Observaci\'o}{Obs.}{definition}{copy}{thm}
-  \maketheoremenv{nte}{\color{dfncolor}Nota}{Nota}{definition}{copy}{thm}
-  \maketheoremenv{exm}{\color{dfncolor}Exemple}{Exm.}{definition}{copy}{thm}
+  \maketheoremenv{dfn}{\color{dfncolor}Definici\'o}{Def.}{abdothm}{copy}{thm}
+  \maketheoremenv{rmk}{\color{dfncolor}Remarca}{Rem.}{abdothm}{copy}{thm}
+  \maketheoremenv{obs}{\color{dfncolor}Observaci\'o}{Obs.}{abdothm}{copy}{thm}
+  \maketheoremenv{nte}{\color{dfncolor}Nota}{Nota}{abdothm}{copy}{thm}
+  \maketheoremenv{exm}{\color{dfncolor}Exemple}{Exm.}{abdothm}{copy}{thm}
 
-  \maketheoremenv{exr}{Exercici}{Exr.}{definition}{counter}{section}
-  \maketheoremenv{prb}{Problema}{Prob.}{definition}{copy}{exr}
-  \maketheoremenv{que}{Q\"uesti\'o}{Q\"ue.}{definition}{copy}{exr}
+  \maketheoremenv{exr}{Exercici}{Exr.}{abdothm}{counter}{section}
+  \maketheoremenv{prb}{Problema}{Prob.}{abdothm}{copy}{exr}
+  \maketheoremenv{que}{Q\"uesti\'o}{Q\"ue.}{abdothm}{copy}{exr}
 
-  \maketheoremenv{blk}{}{}{definition}{counter}{section}
+  \maketheoremenv{blk}{}{}{abdothm}{counter}{section}
 
   \makeproofenv{sol}{Soluci\'o}{Sol.}{\blackcircle}
   \makeproofenv{ans}{Resposta}{Res.}{\blackcircle}
@@ -100,23 +110,23 @@
 }
 
 \newcommand{\theoremsenglish}{
-  \maketheoremenv{thm}{\color{thmcolor}Theorem}{Thm.}{definition}{counter}{section}
-  \maketheoremenv{prp}{\color{thmcolor}Proposition}{Prop.}{definition}{copy}{thm}
-  \maketheoremenv{lem}{\color{thmcolor}Lemma}{Lem.}{definition}{copy}{thm}
-  \maketheoremenv{cor}{\color{thmcolor}Corollary}{Cor.}{definition}{copy}{thm}
-  \maketheoremenv{con}{\color{thmcolor}Conjecture}{Conj.}{definition}{copy}{thm}
+  \maketheoremenv{thm}{\color{thmcolor}Theorem}{Thm.}{abdothm}{counter}{section}
+  \maketheoremenv{prp}{\color{thmcolor}Proposition}{Prop.}{abdothm}{copy}{thm}
+  \maketheoremenv{lem}{\color{thmcolor}Lemma}{Lem.}{abdothm}{copy}{thm}
+  \maketheoremenv{cor}{\color{thmcolor}Corollary}{Cor.}{abdothm}{copy}{thm}
+  \maketheoremenv{con}{\color{thmcolor}Conjecture}{Conj.}{abdothm}{copy}{thm}
 
-  \maketheoremenv{dfn}{\color{dfncolor}Definition}{Def.}{definition}{copy}{thm}
-  \maketheoremenv{rmk}{\color{dfncolor}Remark}{Rem.}{definition}{copy}{thm}
-  \maketheoremenv{obs}{\color{dfncolor}Observation}{Obs.}{definition}{copy}{thm}
-  \maketheoremenv{nte}{\color{dfncolor}Note}{Note}{definition}{copy}{thm}
-  \maketheoremenv{exm}{\color{dfncolor}Example}{Exm.}{definition}{copy}{thm}
+  \maketheoremenv{dfn}{\color{dfncolor}Definition}{Def.}{abdothm}{copy}{thm}
+  \maketheoremenv{rmk}{\color{dfncolor}Remark}{Rem.}{abdothm}{copy}{thm}
+  \maketheoremenv{obs}{\color{dfncolor}Observation}{Obs.}{abdothm}{copy}{thm}
+  \maketheoremenv{nte}{\color{dfncolor}Note}{Note}{abdothm}{copy}{thm}
+  \maketheoremenv{exm}{\color{dfncolor}Example}{Exm.}{abdothm}{copy}{thm}
 
-  \maketheoremenv{exr}{Exercise}{Exr.}{definition}{counter}{section}
-  \maketheoremenv{prb}{Problem}{Prb.}{definition}{copy}{exr}
-  \maketheoremenv{que}{Question}{Que.}{definition}{copy}{exr}
+  \maketheoremenv{exr}{Exercise}{Exr.}{abdothm}{counter}{section}
+  \maketheoremenv{prb}{Problem}{Prb.}{abdothm}{copy}{exr}
+  \maketheoremenv{que}{Question}{Que.}{abdothm}{copy}{exr}
 
-  \maketheoremenv{blk}{}{}{definition}{counter}{section}
+  \maketheoremenv{blk}{}{}{abdothm}{counter}{section}
 
   \makeproofenv{sol}{Solution}{Sol.}{\blackcircle}
   \makeproofenv{ans}{Answer}{Ans.}{\blackcircle}
@@ -124,23 +134,23 @@
 }
 
 \newcommand{\theoremsspanish}{
-  \maketheoremenv{thm}{\color{thmcolor}Teorema}{Tma.}{definition}{counter}{section}
-  \maketheoremenv{prp}{\color{thmcolor}Proposici\'on}{Prop.}{definition}{copy}{thm}
-  \maketheoremenv{lem}{\color{thmcolor}Lema}{Lem.}{definition}{copy}{thm}
-  \maketheoremenv{cor}{\color{thmcolor}Corolario}{Cor.}{definition}{copy}{thm}
-  \maketheoremenv{con}{\color{thmcolor}Conjetura}{Conj.}{definition}{copy}{thm}
+  \maketheoremenv{thm}{\color{thmcolor}Teorema}{Tma.}{abdothm}{counter}{section}
+  \maketheoremenv{prp}{\color{thmcolor}Proposici\'on}{Prop.}{abdothm}{copy}{thm}
+  \maketheoremenv{lem}{\color{thmcolor}Lema}{Lem.}{abdothm}{copy}{thm}
+  \maketheoremenv{cor}{\color{thmcolor}Corolario}{Cor.}{abdothm}{copy}{thm}
+  \maketheoremenv{con}{\color{thmcolor}Conjetura}{Conj.}{abdothm}{copy}{thm}
 
-  \maketheoremenv{dfn}{\color{dfncolor}Definici\'on}{Def.}{definition}{copy}{thm}
-  \maketheoremenv{rmk}{\color{dfncolor}Remarca}{Rem.}{definition}{copy}{thm}
-  \maketheoremenv{obs}{\color{dfncolor}Observaci\'on}{Obs.}{definition}{copy}{thm}
-  \maketheoremenv{nte}{\color{dfncolor}Nota}{Nota}{definition}{copy}{thm}
-  \maketheoremenv{exm}{\color{dfncolor}Ejemplo}{Ejm.}{definition}{copy}{thm}
+  \maketheoremenv{dfn}{\color{dfncolor}Definici\'on}{Def.}{abdothm}{copy}{thm}
+  \maketheoremenv{rmk}{\color{dfncolor}Remarca}{Rem.}{abdothm}{copy}{thm}
+  \maketheoremenv{obs}{\color{dfncolor}Observaci\'on}{Obs.}{abdothm}{copy}{thm}
+  \maketheoremenv{nte}{\color{dfncolor}Nota}{Nota}{abdothm}{copy}{thm}
+  \maketheoremenv{exm}{\color{dfncolor}Ejemplo}{Ejm.}{abdothm}{copy}{thm}
 
-  \maketheoremenv{exr}{Ejercicio}{Ejer.}{definition}{counter}{section}
-  \maketheoremenv{prb}{Problema}{Prob.}{definition}{copy}{exr}
-  \maketheoremenv{que}{Questi\'on}{Que.}{definition}{copy}{exr}
+  \maketheoremenv{exr}{Ejercicio}{Ejer.}{abdothm}{counter}{section}
+  \maketheoremenv{prb}{Problema}{Prob.}{abdothm}{copy}{exr}
+  \maketheoremenv{que}{Questi\'on}{Que.}{abdothm}{copy}{exr}
 
-  \maketheoremenv{blk}{}{}{definition}{counter}{section}
+  \maketheoremenv{blk}{}{}{abdothm}{counter}{section}
 
   \makeproofenv{sol}{Soluci\'on}{Sol.}{\blackcircle}
   \makeproofenv{ans}{Respuesta}{Res.}{\blackcircle}
