@@ -141,8 +141,12 @@
 % graphics and color
 \RequirePackage{xcolor}           % provides color
 \RequirePackage{graphicx}         % Include external graphics
+
 \RequirePackage{tikz}             % Graphics
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
 \usetikzlibrary{cd}               % commutative diagrams
+\tikzcdset{arrow style=tikz}      % configure tikzcd
 
 % personal
 \RequirePackage{abdocolor}        % Custom colors
