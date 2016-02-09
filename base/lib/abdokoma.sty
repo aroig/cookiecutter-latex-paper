@@ -143,10 +143,11 @@
 \RequirePackage{graphicx}         % Include external graphics
 
 \RequirePackage{tikz}             % Graphics
+\usetikzlibrary{matrix}
 \usetikzlibrary{calc}
 \usetikzlibrary{decorations.markings}
-\usetikzlibrary{cd}               % commutative diagrams
-\tikzcdset{arrow style=tikz}      % configure tikzcd
+\usetikzlibrary{cd}
+\tikzcdset{arrow style=tikz}
 
 % personal
 \RequirePackage{abdocolor}        % Custom colors
@@ -196,7 +197,6 @@
   \pagecolor{backgroundcolor}
   \color{textcolor}
 
-  % table of contents depth
   \setcounter{tocdepth}{4}
 
   \renewcommand*{\toclevel@section}{1}

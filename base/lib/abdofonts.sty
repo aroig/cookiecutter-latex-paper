@@ -11,24 +11,18 @@
 
 
 \newcommand{\abdo@otfonts}{
-  % Roman font
+  % Text fonts
   \setmainfont[Ligatures=TeX]{TeX Gyre Pagella}
-
-  % Sans font
   \setsansfont[Ligatures=TeX]{TeX Gyre Heros}
-
-  % Mono Font
   \setmonofont{Ubuntu Mono}
 
-  % Math Font
+  % Math fonts
   \setmathfont[math-style=TeX]{TeX Gyre Pagella Math}
+  \setmathfont[math-style=TeX,range={\mathcal,\mathbfcal}]{Latin Modern Math}
+  \setmathfont[math-style=TeX,range={\mathscr,\mathbfscr}]{Asana Math}
   % \setmathfont[math-style=TeX]{Asana Math}
   % \setmathfont[math-style=TeX]{XITS Math}
   % \setmathfont[math-style=TeX]{Latin Modern Math}
-
-  % tweak caligraphic and script ranges
-  \setmathfont[math-style=TeX,range={\mathcal,\mathbfcal}]{Latin Modern Math}
-  \setmathfont[math-style=TeX,range={\mathscr,\mathbfscr}]{Asana Math}
 }
 
 
@@ -37,7 +31,6 @@
   \RequirePackage{mathpazo}
   \RequirePackage{mathrsfs}         % Ralph Smith Formal Script font.
 }
-
 
 
 \ifLuaTeX
