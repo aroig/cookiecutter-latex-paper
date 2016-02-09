@@ -1,14 +1,12 @@
 \documentclass[a4paper,11pt,{{cookiecutter.language}}]{scrartcl}
 
 \usepackage[utf8]{inputenc}
-\usepackage{babel}
-\usepackage{geometry}
+\usepackage{babel,geometry,biblatex}
+\usepackage{palatino,mathpazo,amsmath,amsfonts}
 
 \geometry{left=3cm, right=3cm, top=4cm, bottom=3cm}
 \KOMAoptions{parskip=half+}
-
-\usepackage{palatino,mathpazo}
-\usepackage{amsmath,amsfonts}
+\addbibresource{{"{" + cookiecutter.project_name + ".bib}"}}
 
 \title{The Title}
 \author{The Author}
@@ -16,6 +14,7 @@
 \begin{document}
 \maketitle
 
+\printbibliography
 \end{document}
 
 %%% Local variables:
