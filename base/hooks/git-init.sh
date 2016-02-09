@@ -2,6 +2,8 @@
 
 set -e
 
-git init
-git add -A
-git cm -m 'Initial commit'
+if [ ! -e ".git" ]; then
+    git init
+    git add -A
+    git cm -m 'Initial commit'
+fi
