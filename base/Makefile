@@ -84,7 +84,7 @@ write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ];
 #----------------------------------#
 
 # set vpath so make finds the source files
-VPATH=$(LIBDIR):$(TEXDIR):$(FIGDIR)
+VPATH      := $(LIBDIR):$(TEXDIR):$(FIGDIR)
 
 # So we can use $$(variable) on the prerequisites, that expand at matching time
 .SECONDEXPANSION:
