@@ -27,12 +27,11 @@
 }
 
 % page numbers
-\newcounter{totalfr}
 \setbeamertemplate{footline}{
-  \setcounter{totalfr}{\inserttotalframenumber}
   \hfill{
     \tikz{
-      \filldraw[fill=structure!30!white, draw=structure!30!white]  (0,0) -- (0.2,0) arc (0:{\value{framenumber}*(360/(\value{totalfr}-1))}:0.2) -- (0,0);
+      \pgfmathsetmacro{\frameratio}{\insertframenumber/\inserttotalframenumber}
+      \filldraw[fill=structure!30!white, draw=structure!30!white]  (0,0) -- (0.2,0) arc (0:{360*\frameratio}:0.2) -- (0,0);
       \draw[very thin,draw=black!50!white] (0,0) circle (0.2);
       \node at (0,0) {\normalsize \color{fg}\tiny{\insertframenumber}};
     }
