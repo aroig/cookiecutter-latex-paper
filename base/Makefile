@@ -16,7 +16,7 @@ DIFFLATEX  := difflatex
 BIBTEX     := biber
 
 # execution flags
-LATEX_FLAGS     := --shell-escape --halt-on-error --interaction=nonstopmode --synctex=1
+LATEX_FLAGS     := --shell-escape --file-line-error --halt-on-error --interaction=nonstopmode --synctex=1
 LATEXDIFF_FLAGS := --packages=amsmath,hyperref \
 	--config "PICTUREENV=(?:picture|tikzpicture|comdiag.?|DIFnomarkup)[\w\d*@]*"
 
