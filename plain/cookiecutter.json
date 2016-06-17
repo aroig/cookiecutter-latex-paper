@@ -1,4 +1,10 @@
 {
+    "full_name"      : "Abdó Roig-Maranges",
+    "email"          : "abdo.roig@gmail.com",
     "project_name"   : "new-project",
-    "language"       : "english"
+    "project_type"   : "plain",
+    "language"       : "english",
+    "title"          : "The Title",
+
+    "_copy_without_render": [ "bin/*", "lib/*", "figs/*", "*.sty", "*.lua" ]
 }

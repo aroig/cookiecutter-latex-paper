@@ -1,7 +1,4 @@
-# ======================================================================== #
-# Makefile - Makefile for my latex documents                               #
-# 2015 Abdó Roig-Maranges <abdo.roig@gmail.com>                            #
-# ======================================================================== #
+# Copyright (C) {% now 'local', '%Y' %}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 
 
 #----------------------------------#

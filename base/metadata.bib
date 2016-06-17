@@ -1,9 +1,9 @@
 @article{roi:{{cookiecutter.project_name}},
 % Basic document metadata.
-      author = {Abdó Roig-Maranges},
-       title = {The Title},
+      author = {{ "{" + cookiecutter.full_name + "}" }},
+       title = {{ "{" + cookiecutter.title + "}" }},
     language = {{ "{" + cookiecutter.language + "}" }},
-        date = {},
+        date = {% now 'local', '{%Y-%m-%d}' %},
 
 % Journal metadata
      journal = {},
@@ -42,7 +42,7 @@ entrysubtype = {{ "{" + cookiecutter.project_type + "}"}},
 % Authors
 @misc{author:roi,
         name = {Abdó Roig-Maranges},
-       email = {abdo.roig@upc.edu},
+       email = {abdo.roig@gmail.com},
   university = {Universitat Politècnica de Catalunya},
   department = {Departament de Matemàtiques},
          url = {http://www.abdoroig.net},
