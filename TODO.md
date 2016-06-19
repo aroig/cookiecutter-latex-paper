@@ -1,17 +1,13 @@
 TODO
 ====
 
-* test and review `book` and `poster` document types.
+* Join together as many templates as possible.
 
-* track dependencies of `.aux` and `.toc` files.
+* Test and review `book` and `poster` document types.
 
-* simplify scripts to create `preamble.tex`. I'd like to get rid of the python
-  script. Extend to handle journal styles.
+* Track dependencies of `.aux` and `.toc` files.
 
-* Add build target to update templates via cookiecutter.
-
-* Use template name as document subtype. There is no way to get the template name right
-  now.
+  Extend preamble script to handle journal styles.
 
 * Fix troubles with bibliography
 
@@ -21,7 +17,8 @@ TODO
 * move gitref stuff from `draftools.lua` to the Makefile. Want to general gitref.tex with
   the corresponding tex code for the header.
 
-* Use proper json for `.cookiecutter`. 
+* Find a good way to store the template source.
+
 
 ## paper
 
