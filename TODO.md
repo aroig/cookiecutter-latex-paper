@@ -21,6 +21,7 @@ TODO
 * move gitref stuff from `draftools.lua` to the Makefile. Want to general gitref.tex with
   the corresponding tex code for the header.
 
+* Use proper json for `.cookiecutter`. 
 
 ## paper
 

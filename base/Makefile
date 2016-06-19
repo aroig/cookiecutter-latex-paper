@@ -9,12 +9,14 @@ LATEX      := lualatex
 DIFFLATEX  := difflatex
 BIBTEX     := biber
 
-# Environments to be left alone by latexdiff
-LATEXDIFF_IGNORE := picture tikzpicture tikzcd DIFnomarkup
+# Latexdiff config
+LATEXDIFF_IGNORE   := picture tikzpicture tikzcd DIFnomarkup
+LATEXDIFF_PACKAGES := amsmath hyperref
 
 # Execution flags
 LATEX_FLAGS     := --shell-escape --halt-on-error --interaction=nonstopmode --synctex=1
-LATEXDIFF_FLAGS := --packages=amsmath,hyperref --config "PICTUREENV=(?:$(subst ' ',|,$(LATEXDIFF_IGNORE)))[\w\d*@]*"
+LATEXDIFF_FLAGS := --packages=$(subst ' ',',',$(LATEXDIFF_PACKAGES)) \
+                   --config "PICTUREENV=(?:$(subst ' ',|,$(LATEXDIFF_IGNORE)))[\w\d*@]*"
 
 
 #----------------------------------#
@@ -130,9 +132,6 @@ $(BLDDIR)/%.sha: $(BLDDIR)/%
 	@mkdir -p $(dir $@)
 	SHA="`sha256sum '$<'`"; $(call write-if-changed-cmd,$$SHA,$@)
 
-# synctex rule
-$(BLDDIR)/%.synctex.gz: $(BLDDIR)/%.pdf
-
 # convert pdf to ps
 $(BLDDIR)/%.ps: $(BLDDIR)/%.pdf
 	pdftops -paper A4 $< $@
@@ -149,8 +148,12 @@ $(BLDDIR)/%.ps.imposed: $(BLDDIR)/%.ps
 %.pdf: $(BLDDIR)/%.pdf
 	cp $< $@
 
-%.gz: $(BLDDIR)/%.gz
+%.synctex.gz: $(BLDDIR)/%.pdf
+	cp "$(BLDDIR)/$*.synctex.gz" "$@"
+
+%.tar.gz: $(BLDDIR)/%.tar.gz
 	cp $< $@
+
 
 
 #----------------------------------#
@@ -240,17 +243,19 @@ $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 
 # Update cookiecutter template for the project and merge it with current branch
 
-TEMPLATE         := "latex:paper"
-TEMPLATE_BRANCH  := "cookiecutter/template"
-TMPDIR           := ".git/cookiecutter/{{ cookiecutter.project_name }}"
+TEMPLATE         := latex:paper
+TEMPLATE_BRANCH  := cookiecutter/template
+TMPDIR           := .git/cookiecutter/{{ cookiecutter.project_name }}
 
 update-template:
-	mkdir -p "$(TMPDIR)"
-	if [ ! git rev-parse --verify "$(TEMPLATE_BRANCH)" ]; then
+	@mkdir -p "$(TMPDIR)"
+	if ! git rev-parse --verify "$(TEMPLATE_BRANCH)"; then
 		git branch "$(TEMPLATE_BRANCH)" `git rev-list --max-parents=0 HEAD`
 	fi
-	git worktree add "$(TMPDIR)" "$(TEMPLATE_BRANCH)"
-    cookiecutter --no-input --config-file ".cookiecutter" -f -o "$(dir $(TMPDIR))" "$(TEMPLATE)"
+	if [ ! -e "$(TMPDIR)" ]; then
+		git worktree add "$(TMPDIR)" "$(TEMPLATE_BRANCH)"
+	fi
+	python bin/cookiecutter-update.py "$(TEMPLATE)" ".cookiecutter.json" "$(dir $(TMPDIR))"
 	( cd "$(TMPDIR)"; git add -A .; git commit -m "Update template" )
 	rm -Rf "$(TMPDIR)"
 	git worktree --prune
