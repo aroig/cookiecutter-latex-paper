@@ -4,17 +4,17 @@
 # Variables                        #
 #----------------------------------#
 
-# software
-LUA        := lua
-PERL       := perl
+# Software
 LATEX      := lualatex
 DIFFLATEX  := difflatex
 BIBTEX     := biber
 
-# execution flags
+# Environments to be left alone by latexdiff
+LATEXDIFF_IGNORE := picture tikzpicture tikzcd DIFnomarkup
+
+# Execution flags
 LATEX_FLAGS     := --shell-escape --halt-on-error --interaction=nonstopmode --synctex=1
-LATEXDIFF_FLAGS := --packages=amsmath,hyperref \
-	--config "PICTUREENV=(?:picture|tikzpicture|comdiag.?|DIFnomarkup)[\w\d*@]*"
+LATEXDIFF_FLAGS := --packages=amsmath,hyperref --config "PICTUREENV=(?:$(subst ' ',|,$(LATEXDIFF_IGNORE)))[\w\d*@]*"
 
 
 #----------------------------------#
@@ -64,7 +64,7 @@ lua-environment    = LUA_PATH="$(LIBDIR)/?.lua"
 
 # extract tex file dependencies
 latex-dependencies = $1.tex $(foreach p,\
-	$(shell $(PERL) -ne '/^\s*\\(input|include)\{(.*?)(.tex)?\}/ && print "$$2.tex "' $1.tex),\
+	$(shell perl -ne '/^\s*\\(input|include)\{(.*?)(.tex)?\}/ && print "$$2.tex "' $1.tex),\
 	$(dir $1)$(p)\
 )
 
@@ -130,6 +130,9 @@ $(BLDDIR)/%.sha: $(BLDDIR)/%
 	@mkdir -p $(dir $@)
 	SHA="`sha256sum '$<'`"; $(call write-if-changed-cmd,$$SHA,$@)
 
+# synctex rule
+$(BLDDIR)/%.synctex.gz: $(BLDDIR)/%.pdf
+
 # convert pdf to ps
 $(BLDDIR)/%.ps: $(BLDDIR)/%.pdf
 	pdftops -paper A4 $< $@
@@ -172,8 +175,8 @@ $(DIFFDIR)/old/%.tex: $(DIFFDIR)/$(GITREF)
 #----------------------------------#
 
 # create a preamble tex file
-$(PREAMBLE): $(MKPREAMBLE) $(METADATA) 
-	python $^ > $@
+$(PREAMBLE): $(MKPREAMBLE) $(METADATA)
+	@python $^ > $@
 
 # precompile headers
 $(BLDDIR)/preamble.fmt: $(PREAMBLE)
@@ -196,12 +199,12 @@ $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 #----------------------------------#
 
 # compile pdf with up to date bibliography
-$(BLDDIR)/%.pdf $(BLDDIR)/%.synctex.gz: %.tex $$(call doc-dependencies,%) | $(BLDDIR)/$(GITREF)
+$(BLDDIR)/%.pdf: %.tex $$(call doc-dependencies,%) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) $<
 
 # compile one chapter alone
-$(BLDDIR)/chapter-%.pdf $(BLDDIR)/chapter-%.synctex.gz: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
+$(BLDDIR)/chapter-%.pdf: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) \
 		-jobname=chapter-$* "\\includeonly{$<}\\input{$(DOCID).tex}"
@@ -213,7 +216,7 @@ $(BLDDIR)/%.tar.gz: %.tex $$(call doc-dependencies) $(BIBFILES) $(BLDFILES)
 
 # make a tikz figure
 $(FIGDIR)/%.pdf: $(FIGDIR)/%.tex
-	cd $(FIGDIR); $(LATEX) --jobname=$* --output-directory=$(BLDDIR) $(notdir $<)
+	@( cd $(FIGDIR); $(LATEX) --jobname=$* --output-directory=$(BLDDIR) $(notdir $<) )
 	cp $(BLDDIR)/$*.pdf $@
 
 
@@ -224,7 +227,7 @@ $(FIGDIR)/%.pdf: $(FIGDIR)/%.tex
 # flatten sources
 $(FLATDIR)/%.tex: %.tex
 	@mkdir -p $(dir $@)
-	texa flatten $< > $@
+	latexpand -o $@ $<
 
 $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 	@mkdir -p $(dir $@)
@@ -232,12 +235,8 @@ $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 
 
 #----------------------------------#
-# Specific rules                   #
+# Miscelania rules                 #
 #----------------------------------#
-#
-# NOTE: those rules require specific software not likely to be available on your
-# computer.
-
 
 # Update cookiecutter template for the project and merge it with current branch
 
@@ -257,12 +256,10 @@ update-template:
 	git worktree --prune
 	git merge "$(TEMPLATE_BRANCH)"
 
-
 # prepare a tree of symlinks to the bibliography
 ref-tree:
 	rm -Rf $(REFDIR)
 	cali lktree --classifier=flat "tag:paper:$(DOCID)" $(REFDIR)
-
 
 # autogenerate bibliography from citation keys
 auto-bib:
@@ -277,4 +274,3 @@ slideshow:
 	pdfpc $(DOCID).pdf &
 
 test:
-
