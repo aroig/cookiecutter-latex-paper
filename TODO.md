@@ -1,10 +1,6 @@
 TODO
 ====
 
-* Join together as many templates as possible.
-
-* Test and review `book` and `poster` document types.
-
 * Track dependencies of `.aux` and `.toc` files.
 
   Extend preamble script to handle journal styles.
@@ -17,7 +13,7 @@ TODO
 * move gitref stuff from `draftools.lua` to the Makefile. Want to general gitref.tex with
   the corresponding tex code for the header.
 
-* Find a good way to store the template source.
+* Find a good way to store the template source within the project.
 
 
 ## paper
