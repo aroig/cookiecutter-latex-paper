@@ -1,4 +1,6 @@
-\documentclass[a4paper,11pt,{{cookiecutter.language}},draft,lightcolors]{scrartcl}
+{% set doctype_dict = { 'paper': 'scrartcl', 'notes': 'scrartcl', 'book': 'scrbook' } -%}
+{% set doctype = doctype_dict[cookiecutter.project_type] -%}
+\documentclass[a4paper,11pt,{{cookiecutter.language}},draft,lightcolors]{{ "{" + doctype + "}" }}
 % \documentclass[a4paper,11pt,{{cookiecutter.language}},draft,webcolors,tocdepth2]{scrartcl}
 
 \usepackage{abdokoma}
