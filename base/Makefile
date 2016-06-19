@@ -1,5 +1,4 @@
-# Copyright (C) {% now 'local', '%Y' %}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
-
+# Copyright (C) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 
 #----------------------------------#
 # Variables                        #
@@ -82,6 +81,12 @@ write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ];
 
 # set vpath so make finds the source files
 VPATH      := $(LIBDIR):$(TEXDIR):$(FIGDIR)
+
+# shell settings
+SHELL       := /usr/bin/bash
+.SHELLFLAGS := -e -u -c
+
+.ONESHELL:
 
 # So we can use $$(variable) on the prerequisites, that expand at matching time
 .SECONDEXPANSION:
@@ -229,24 +234,47 @@ $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 #----------------------------------#
 # Specific rules                   #
 #----------------------------------#
-# NOTE: those rules require specific software not likely to be available on your computer.
+#
+# NOTE: those rules require specific software not likely to be available on your
+# computer.
+
+
+# Update cookiecutter template for the project and merge it with current branch
+
+TEMPLATE         := "latex:paper"
+TEMPLATE_BRANCH  := "cookiecutter/template"
+TMPDIR           := ".git/cookiecutter/{{ cookiecutter.project_name }}"
+
+update-template:
+	mkdir -p "$(TMPDIR)"
+	if [ ! git rev-parse --verify "$(TEMPLATE_BRANCH)" ]; then
+		git branch "$(TEMPLATE_BRANCH)" `git rev-list --max-parents=0 HEAD`
+	fi
+	git worktree add "$(TMPDIR)" "$(TEMPLATE_BRANCH)"
+    cookiecutter --no-input --config-file ".cookiecutter" -f -o "$(dir $(TMPDIR))" "$(TEMPLATE)"
+	( cd "$(TMPDIR)"; git add -A .; git commit -m "Update template" )
+	rm -Rf "$(TMPDIR)"
+	git worktree --prune
+	git merge "$(TEMPLATE_BRANCH)"
+
 
 # prepare a tree of symlinks to the bibliography
-ref:
+ref-tree:
 	rm -Rf $(REFDIR)
 	cali lktree --classifier=flat "tag:paper:$(DOCID)" $(REFDIR)
 
+
 # autogenerate bibliography from citation keys
-bib:
+auto-bib:
 	cali find --fmt=bib "tag:paper:$(DOCID)" > $(DOCID).auto.bib
 
 # view pdf
 view:
-	zathura $(DOCID).pdf &
+	xdg-open $(DOCID).pdf &
 
 # make a slideshow
 slideshow:
-	slider $(DOCID).pdf &
+	pdfpc $(DOCID).pdf &
 
 test:
 
