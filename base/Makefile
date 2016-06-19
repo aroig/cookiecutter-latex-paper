@@ -82,7 +82,7 @@ write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ];
 #----------------------------------#
 
 # set vpath so make finds the source files
-VPATH      := $(LIBDIR):$(TEXDIR):$(FIGDIR)
+VPATH       := $(LIBDIR):$(TEXDIR):$(FIGDIR)
 
 # shell settings
 SHELL       := /usr/bin/bash
@@ -153,7 +153,6 @@ $(BLDDIR)/%.ps.imposed: $(BLDDIR)/%.ps
 
 %.tar.gz: $(BLDDIR)/%.tar.gz
 	cp $< $@
-
 
 
 #----------------------------------#
@@ -244,7 +243,7 @@ $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 # Update cookiecutter template for the project and merge it with current branch
 
 TEMPLATE         := latex:paper
-TEMPLATE_BRANCH  := cookiecutter/template
+TEMPLATE_BRANCH  := template
 TMPDIR           := .git/cookiecutter/{{ cookiecutter.project_name }}
 
 update-template:
