@@ -1,6 +1,14 @@
-\documentclass[{{cookiecutter.language}},handout]{beamer}
+{% if cookiecutter.project_type == "poster" -%}
+  {% set docopts = [cookiecutter.language, "handout"] -%}
+{% else -%}
+  {% set docopts = [cookiecutter.language, "handout"] -%}
+{% endif -%}
+\documentclass[{{ docopts | join(',') }}]{beamer}
 
 \usepackage{abdobeamer}
+{% if cookiecutter.project_type == "poster" -%}
+\usepackage[orientation=portrait,size=a1,scale=1.4,debug]{beamerposter}
+{% endif -%}
 
 \input{preamble.tex}
 \addbibresource{{"{" + cookiecutter.project_name + ".bib}"}}
@@ -10,7 +18,6 @@
 %\setbeameroption{show notes}
 %\setbeameroption{show notes on second screen=left}
 %\setbeameroption{show only notes}
-
 
 
 % ------------------------------------ %

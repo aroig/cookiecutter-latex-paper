@@ -2,7 +2,6 @@
     "full_name"      : "Abdó Roig-Maranges",
     "email"          : "abdo.roig@gmail.com",
     "project_name"   : "new-project",
-    "project_type"   : "plain",
     "language"       : "english",
     "title"          : "The Title",
     "date"           : "{% now 'local', '%d-%m-%Y' %}",

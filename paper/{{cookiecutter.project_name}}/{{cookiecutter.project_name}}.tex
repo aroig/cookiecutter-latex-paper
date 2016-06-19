@@ -1,12 +1,12 @@
-{% if cookiecutter.project_type == "paper" -%}
-  {% set doctype = "scrartcl" -%}
-  {% set docopts = ["a4paper", "11pt", cookiecutter.language, "draft", "lightcolors"] -%}
+{% if cookiecutter.project_type == "book" -%}
+  {% set doctype = "scrbook" -%}
+  {% set docopts = ["a4paper", "11pt", cookiecutter.language, "draft", "lightcolors"] -%}   
 {% elif cookiecutter.project_type == "notes" -%}
   {% set doctype = "scrartcl" -%}
   {% set docopts = ["a4paper", "11pt", cookiecutter.language, "draft", "webcolors", "tocdepth2"] -%}   
-{% elif cookiecutter.project_type == "book" -%}
+{% else -%}
   {% set doctype = "scrartcl" -%}
-  {% set docopts = ["a4paper", "11pt", cookiecutter.language, "draft", "lightcolors"] -%}   
+  {% set docopts = ["a4paper", "11pt", cookiecutter.language, "draft", "lightcolors"] -%}
 {% endif -%}
 \documentclass[{{ docopts | join(',') }}]{{ "{" + doctype + "}" }}
 
