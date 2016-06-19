@@ -1,4 +1,5 @@
 \documentclass[a4paper,11pt,{{cookiecutter.language}},draft,lightcolors]{scrartcl}
+% \documentclass[a4paper,11pt,{{cookiecutter.language}},draft,webcolors,tocdepth2]{scrartcl}
 
 \usepackage{abdokoma}
 \geometry{left=3cm, right=3cm, top=4cm, bottom=3cm}
@@ -6,7 +7,6 @@
 
 \input{preamble.tex}
 \addbibresource{{"{" + cookiecutter.project_name + ".bib}"}}
-
 
 
 % ------------------------------------ %
@@ -19,9 +19,7 @@
 \makeabstract
 \tableofcontents
 
-
 % blah blah
-
 
 % Bibliography
 \nocite{*}
