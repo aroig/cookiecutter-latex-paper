@@ -249,16 +249,16 @@ TMPDIR           := .git/cookiecutter/{{ cookiecutter.project_name }}
 
 update-template:
 	@mkdir -p "$(TMPDIR)"
-	if ! git rev-parse --verify "$(TEMPLATE_BRANCH)"; then
-		git branch "$(TEMPLATE_BRANCH)" `git rev-list --max-parents=0 HEAD`
+	if ! git rev-parse -q --verify "$(TEMPLATE_BRANCH)"; then
+		git branch "$(TEMPLATE_BRANCH)" "`git rev-list --max-parents=0 HEAD`"
 	fi
-	if [ ! -e "$(TMPDIR)" ]; then
+	if [ ! -e "$(TMPDIR)/.git" ]; then
 		git worktree add "$(TMPDIR)" "$(TEMPLATE_BRANCH)"
 	fi
 	python bin/cookiecutter-update.py "$(TEMPLATE)" ".cookiecutter.json" "$(dir $(TMPDIR))"
-	( cd "$(TMPDIR)"; git add -A .; git commit -m "Update template" )
+	( cd "$(TMPDIR)"; git add -A .; git commit -m "Update template" || true )
 	rm -Rf "$(TMPDIR)"
-	git worktree --prune
+	git worktree prune
 	git merge "$(TEMPLATE_BRANCH)"
 
 # prepare a tree of symlinks to the bibliography
