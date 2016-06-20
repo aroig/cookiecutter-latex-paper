@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# mkpreamble.py - Generate a tex preamble from metadata.bib
+# Copyright (c) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
+# All rights reserved.
+
 
 import sys
 import argparse
