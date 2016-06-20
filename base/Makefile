@@ -241,7 +241,6 @@ $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 #----------------------------------#
 
 # Update cookiecutter template for the project and merge it with current branch
-
 TEMPLATE         := latex:paper
 TEMPLATE_BRANCH  := template
 TMPDIR           := .git/cookiecutter/{{ cookiecutter.project_name }}
@@ -258,7 +257,6 @@ update-template:
 	( cd "$(TMPDIR)"; git add -A .; git commit -m "Update template" || true )
 	rm -Rf "$(TMPDIR)"
 	git worktree prune
-	git merge "$(TEMPLATE_BRANCH)"
 
 # prepare a tree of symlinks to the bibliography
 ref-tree:
