@@ -40,8 +40,8 @@ DIFFDIR    := ./build/diff
 #----------------------------------#
 
 METADATA   := metadata.bib
-DOCTYPE    := {{cookiecutter.project_type}}
-DOCID      := $(shell perl -ne '/\@article[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
+DOCTYPE    := $(shell perl -ne '/\@article[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
+DOCID      := $(shell perl -ne '/entrysubtype\s*=\s*{\s*(.*)\s*}/ && print "$$1\n"' $(METADATA))
 REF        := HEAD
 
 MKPREAMBLE := bin/mkpreamble.py
@@ -251,7 +251,7 @@ TEMPLATE_URL_slides := latex:slides
 TEMPLATE_URL_poster := latex:slides
 
 update-template:
-	@python make/cookiecutter-update.py "$(TEMPLATE_URL_$(DOCTYPE))" template
+	@python $(BINDIR)/cookiecutter-update.py "$(TEMPLATE_URL_$(DOCTYPE))" template
 
 # prepare a tree of symlinks to the bibliography
 ref-tree:
