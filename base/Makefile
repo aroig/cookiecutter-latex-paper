@@ -40,8 +40,8 @@ DIFFDIR    := ./build/diff
 #----------------------------------#
 
 METADATA   := metadata.bib
-DOCTYPE    := $(shell perl -ne '/\@article[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
-DOCID      := $(shell perl -ne '/entrysubtype\s*=\s*{\s*(.*)\s*}/ && print "$$1\n"' $(METADATA))
+DOCID      := $(shell perl -ne '/\@article[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
+DOCTYPE    := $(shell perl -ne '/entrysubtype\s*=\s*{\s*(.*)\s*}/ && print "$$1\n"' $(METADATA))
 REF        := HEAD
 
 MKPREAMBLE := bin/mkpreamble.py
