@@ -40,6 +40,7 @@ DIFFDIR    := ./build/diff
 #----------------------------------#
 
 METADATA   := metadata.bib
+DOCTYPE    := {{cookiecutter.project_type}}
 DOCID      := $(shell perl -ne '/\@article[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
 REF        := HEAD
 
@@ -243,22 +244,14 @@ $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 #----------------------------------#
 
 # Update cookiecutter template for the project and merge it with current branch
-TEMPLATE         := latex:paper
-TEMPLATE_BRANCH  := template
-TMPDIR           := .git/cookiecutter/{{ cookiecutter.project_name }}
+TEMPLATE_URL_paper  := latex:paper
+TEMPLATE_URL_book   := latex:paper
+TEMPLATE_URL_notes  := latex:paper
+TEMPLATE_URL_slides := latex:slides
+TEMPLATE_URL_poster := latex:slides
 
 update-template:
-	@mkdir -p "$(TMPDIR)"
-	if ! git rev-parse -q --verify "$(TEMPLATE_BRANCH)"; then
-		git branch "$(TEMPLATE_BRANCH)" "`git rev-list --max-parents=0 HEAD`"
-	fi
-	if [ ! -e "$(TMPDIR)/.git" ]; then
-		git worktree add "$(TMPDIR)" "$(TEMPLATE_BRANCH)"
-	fi
-	python bin/cookiecutter-update.py "$(TEMPLATE)" ".cookiecutter.json" "$(dir $(TMPDIR))"
-	( cd "$(TMPDIR)"; git add -A .; git commit -m "Update template" || true )
-	rm -Rf "$(TMPDIR)"
-	git worktree prune
+	@python make/cookiecutter-update.py "$(TEMPLATE_URL_$(DOCTYPE))" template
 
 # prepare a tree of symlinks to the bibliography
 ref-tree:
