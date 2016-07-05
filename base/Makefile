@@ -20,6 +20,9 @@ LATEX_FLAGS     := --shell-escape --halt-on-error --interaction=nonstopmode --sy
 LATEXDIFF_FLAGS := --packages=$(subst ' ',',',$(LATEXDIFF_PACKAGES)) \
                    --config "PICTUREENV=(?:$(subst ' ',|,$(LATEXDIFF_IGNORE)))[\w\d*@]*"
 
+# Source cookiecutter template url.
+TEMPLATE_URL    := {{ cookiecutter._template }}
+
 
 #----------------------------------#
 # Directories                      #
@@ -243,15 +246,8 @@ $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 # Miscelania rules                 #
 #----------------------------------#
 
-# Update cookiecutter template for the project and merge it with current branch
-TEMPLATE_URL_paper  := latex:paper
-TEMPLATE_URL_book   := latex:paper
-TEMPLATE_URL_notes  := latex:paper
-TEMPLATE_URL_slides := latex:slides
-TEMPLATE_URL_poster := latex:slides
-
 update-template:
-	@python $(BINDIR)/cookiecutter-update.py "$(TEMPLATE_URL_$(DOCTYPE))" template
+	@python $(BINDIR)/cookiecutter-update.py "$(TEMPLATE_URL)" template
 
 # prepare a tree of symlinks to the bibliography
 ref-tree:

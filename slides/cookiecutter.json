@@ -7,5 +7,6 @@
     "title"          : "The Title",
     "date"           : "{% now 'local', '%Y-%m-%d' %}",
 
+    "_template"      : "latex:slides",
     "_copy_without_render": [ "bin/*", "lib/*", "figs/*", "*.sty", "*.lua" ]
 }
