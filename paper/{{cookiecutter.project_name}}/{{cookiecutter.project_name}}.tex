@@ -25,7 +25,9 @@
 \begin{document}
 
 \maketitle
+{% if cookiecutter.project_type in ['paper', 'notes'] -%}
 \makeabstract
+{% endif -%}
 \tableofcontents
 
 % blah blah
