@@ -1,1 +1,0 @@
-../../../base/bin/cookiecutter-update.py
