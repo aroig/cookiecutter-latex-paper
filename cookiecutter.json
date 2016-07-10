@@ -1,11 +1,12 @@
 {
-    "full_name"      : "Abdó Roig-Maranges",
-    "email"          : "abdo.roig@gmail.com",
-    "project_name"   : "new-project",
-    "language"       : "english",
-    "title"          : "The Title",
-    "date"           : "{% now 'local', '%Y-%m-%d' %}",
+    "full_name"             : "Abdó Roig-Maranges",
+    "email"                 : "abdo.roig@gmail.com",
+    "project_name"          : "new-project",
+    "project_slug"          : "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+    "language"              : "english",
+    "title"                 : "The Title",
+    "date"                  : "{% now 'local', '%Y-%m-%d' %}",
 
-    "_template"      : "latex:base",
-    "_copy_without_render": [ "bin/*", "lib/*", "fig/*", "*.sty", "*.lua" ]
+    "_template"             : "latex:base",
+    "_copy_without_render"  : [ "bin/*", "lib/*", "fig/*", "*.sty", "*.lua" ]
 }
