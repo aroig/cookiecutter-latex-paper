@@ -1,0 +1,9 @@
+{% set comma = joiner(",") -%}
+{
+{%- for key, val in cookiecutter | dictsort -%}
+  {%- if not key[0] == '_' or key in ['_template'] -%}
+    {{ comma() }}
+    {{ '"%s": "%s"' % (key, val | replace('\\', '\\\\') | replace('"', '\\"')) -}}
+  {% endif -%}
+{% endfor %}
+}

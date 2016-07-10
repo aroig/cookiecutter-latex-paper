@@ -1,4 +1,5 @@
-latex-paper
-===========
+LaTeX Base Cookiecutter
+=======================
 
-A project template for a latex paper, using KOMA-script.
+A base LaTeX cookiecutter
+

@@ -1,7 +1,11 @@
 {
-    "full_name": "Abdo Roig-Maranges",
-        "email": "abdo.roig@gmail.com",
-    "repo_name": "latex-paper",
- "project_name": "newproject",
-     "language": "english"
+    "full_name"             : "Abdó Roig-Maranges",
+    "email"                 : "abdo.roig@gmail.com",
+    "project_name"          : "Project name",
+    "project_slug"          : "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+    "project_description"   : "Project description",
+    "version"               : "0.1",
+    "date"                  : "{% now 'local', '%Y-%m-%d' %}",
+
+    "_template"             : "local:latex-base"
 }
