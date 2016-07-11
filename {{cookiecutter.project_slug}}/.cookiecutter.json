@@ -1,9 +1,18 @@
 {% set comma = joiner(",") -%}
 {
 {%- for key, val in cookiecutter | dictsort -%}
-  {%- if not key[0] == '_' or key in ['_template'] -%}
+  {% if val is string -%}
     {{ comma() }}
     {{ '"%s": "%s"' % (key, val | replace('\\', '\\\\') | replace('"', '\\"')) -}}
+  {% elif val is sequence -%}
+    {{ comma() }}
+    {{ '"%s": [ ' % key -}}
+    {% set comma2 = joiner(",") -%}
+    {% for x in val | sort -%}
+      {{ comma2() -}}
+      {{ '"%s"' % (x | replace('\\', '\\\\') | replace('"', '\\"')) -}}
+    {% endfor -%}
+    {{ ' ]' -}}
   {% endif -%}
 {% endfor %}
 }
