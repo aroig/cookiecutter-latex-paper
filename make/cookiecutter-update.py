@@ -12,6 +12,7 @@ import sys
 import json
 import shutil
 import subprocess
+import json
 from cookiecutter.main import cookiecutter
 
 
@@ -75,4 +76,7 @@ def update_template(template_url, root, branch):
 
 
 if __name__ == '__main__':
-    update_template(sys.argv[1], os.getcwd(), branch=sys.argv[2])
+    with open(sys.argv[1], 'r') as fd:
+        context = json.load(fd)
+
+    update_template(context['_template'], os.getcwd(), branch=sys.argv[2])

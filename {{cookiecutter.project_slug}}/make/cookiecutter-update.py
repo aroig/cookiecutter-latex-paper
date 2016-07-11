@@ -3,12 +3,16 @@
 #
 # Copyright (c) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 # All rights reserved.
+#
+# This file may be modified and distributed under the terms of the 3-clause BSD
+# license. See the LICENSE file for details.
 
 import os
 import sys
 import json
 import shutil
 import subprocess
+import json
 from cookiecutter.main import cookiecutter
 
 
@@ -72,4 +76,7 @@ def update_template(template_url, root, branch):
 
 
 if __name__ == '__main__':
-    update_template(sys.argv[1], os.getcwd(), branch=sys.argv[2])
+    with open(sys.argv[1], 'r') as fd:
+        context = json.load(fd)
+
+    update_template(context['_template'], os.getcwd(), branch=sys.argv[2])
