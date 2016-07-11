@@ -1,5 +1,11 @@
 LaTeX Base Cookiecutter
 =======================
 
-A base LaTeX cookiecutter
+A base LaTeX cookiecutter.
+
+## Overview
+
+
+## Dependencies
+
 

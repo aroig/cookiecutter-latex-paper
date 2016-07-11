@@ -1,5 +1,6 @@
 {
-    "_template": "local:cookiecutter-base",
+    "_copy_without_render": [  ],
+    "_template": "local:cookiecutter",
     "date": "2016-07-10",
     "email": "abdo.roig@gmail.com",
     "full_name": "Abdó Roig-Maranges",
