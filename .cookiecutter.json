@@ -1,0 +1,9 @@
+{
+    "_template": "local:cookiecutter-base",
+    "date": "2016-07-10",
+    "email": "abdo.roig@gmail.com",
+    "full_name": "Abdó Roig-Maranges",
+    "project_description": "A LateX cookiecutter papers and related documents",
+    "project_name": "LaTeX Paper Cookiecutter",
+    "project_slug": "latex-paper"
+}
