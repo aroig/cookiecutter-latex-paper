@@ -7,6 +7,6 @@
     "title"                 : "The Title",
     "date"                  : "{% now 'local', '%Y-%m-%d' %}",
 
-    "_template"             : "latex:base",
+    "_template"             : "local:latex-base",
     "_copy_without_render"  : [ "make/*", "lib/*", "fig/*", "*.sty", "*.lua" ]
 }
