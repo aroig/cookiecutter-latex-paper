@@ -8,6 +8,6 @@
     "title"                 : "The Title",
     "date"                  : "{% now 'local', '%Y-%m-%d' %}",
 
-    "_template"             : "latex:paper",
+    "_template"             : "local:latex-paper",
     "_copy_without_render"  : [ "make/*", "lib/*", "figs/*", "*.sty", "*.lua" ]
 }
