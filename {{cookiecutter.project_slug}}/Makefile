@@ -29,7 +29,6 @@ BLDDIR     := ./build
 FIGDIR     := ./figs
 LIBDIR     := ./lib
 TEXDIR     := ./tex
-BINDIR     := ./bin
 REFDIR     := ./ref
 FLATDIR    := ./build/flat
 DIFFDIR    := ./build/diff
@@ -44,7 +43,7 @@ DOCID      := $(shell perl -ne '/\@article[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(
 DOCTYPE    := $(shell perl -ne '/entrysubtype\s*=\s*{\s*(.*)\s*}/ && print "$$1\n"' $(METADATA))
 REF        := HEAD
 
-MKPREAMBLE := bin/mkpreamble.py
+MKPREAMBLE := make/mkpreamble.py
 PREAMBLE   := preamble.tex
 GITREF     := gitref
 
