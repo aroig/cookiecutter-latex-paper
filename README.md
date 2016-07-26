@@ -1,13 +1,12 @@
 LaTeX Cookiecutter
 ==================
 
-A base LaTeX cookiecutter.
+A LaTeX cookiecutter for papers.
 
 
 ## Overview
 
-A [cookiecutter](https://github.com/audreyr/cookiecutter) templates for latex
-projects.
+A [cookiecutter](https://github.com/audreyr/cookiecutter) templates for latex papers.
 
 
 ## Requirements
