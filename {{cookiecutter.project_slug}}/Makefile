@@ -7,18 +7,18 @@
 #----------------------------------#
 
 # Software
-LATEX      := lualatex
-DIFFLATEX  := difflatex
-BIBTEX     := biber
+LATEX              := lualatex
+DIFFLATEX          := difflatex
+BIBTEX             := biber
 
 # Latexdiff config
 LATEXDIFF_IGNORE   := picture tikzpicture tikzcd DIFnomarkup
 LATEXDIFF_PACKAGES := amsmath hyperref
 
 # Execution flags
-LATEX_FLAGS     := --shell-escape --halt-on-error --interaction=nonstopmode --synctex=1
-LATEXDIFF_FLAGS := --packages=$(subst ' ',',',$(LATEXDIFF_PACKAGES)) \
-                   --config "PICTUREENV=(?:$(subst ' ',|,$(LATEXDIFF_IGNORE)))[\w\d*@]*"
+LATEX_FLAGS        := --shell-escape --halt-on-error --interaction=nonstopmode
+LATEXDIFF_FLAGS    := --packages=$(subst ' ',',',$(LATEXDIFF_PACKAGES)) \
+                      --config "PICTUREENV=(?:$(subst ' ',|,$(LATEXDIFF_IGNORE)))[\w\d*@]*"
 
 
 #----------------------------------#
@@ -83,9 +83,6 @@ write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ];
 # Abstract rules                   #
 #----------------------------------#
 
-# set vpath so make finds the source files
-VPATH       := $(LIBDIR):$(TEXDIR):$(FIGDIR)
-
 # shell settings
 SHELL       := /usr/bin/bash
 .SHELLFLAGS := -e -u -c
@@ -99,7 +96,7 @@ SHELL       := /usr/bin/bash
 .SECONDARY:
 
 # always trigger rebuilds on those
-.PHONY: update pdf 2in1 src flat flatsrc diff figs clean slideshow view ref bib test
+.PHONY: pdf 2in1 src flat flatsrc diff figs clean
 
 all: pdf
 
@@ -185,12 +182,14 @@ $(PREAMBLE): $(MKPREAMBLE) $(METADATA)
 # precompile headers
 $(BLDDIR)/preamble.fmt: $(PREAMBLE)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) -ini -job-name="preamble" "&lualatex $<\dump" --output-directory=$(dir $@) $<
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) -ini \
+		-job-name="preamble" "&lualatex $<\dump" --output-directory=$(dir $@) $<
 
 # compile document to produce the bcf file. we do not want to rebuild on every tex file change.
 $(BLDDIR)/%.bcf: | $$(call latex-dependencies,%)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --draftmode --output-directory=$(dir $@) $*.tex
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --draftmode \
+		--output-format=dvi --output-directory=$(dir $@) $*.tex
 
 # prepare bibliography when bibliography file changes. Do not rebuild when bcf file changes.
 $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
@@ -205,12 +204,12 @@ $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 # compile pdf with up to date bibliography
 $(BLDDIR)/%.pdf: %.tex $$(call doc-dependencies,%) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) $<
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --synctex=1 --output-directory=$(dir $@) $<
 
 # compile one chapter alone
 $(BLDDIR)/chapter-%.pdf: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) \
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --synctex=1 --output-directory=$(dir $@) \
 		-jobname=chapter-$* "\\includeonly{$<}\\input{$(DOCID).tex}"
 
 # make a tar.gz package of the sources
@@ -254,6 +253,9 @@ update-copyright:
 		sed -i "1,10{s/Copyright (c) $$year-$$year,/Copyright (c) $$year,/}" "$$f"
 	done
 
+
+.PHONY: ref-tree auto-bib
+
 # prepare a tree of symlinks to the bibliography
 ref-tree:
 	rm -Rf $(REFDIR)
@@ -263,6 +265,9 @@ ref-tree:
 auto-bib:
 	cali find --fmt=bib "tag:paper:$(DOCID)" > $(DOCID).auto.bib
 
+
+.PHONY: view slideshow
+
 # view pdf
 view:
 	xdg-open $(DOCID).pdf &
@@ -270,5 +275,8 @@ view:
 # make a slideshow
 slideshow:
 	pdfpc $(DOCID).pdf &
+
+
+.PHONY: test
 
 test:
