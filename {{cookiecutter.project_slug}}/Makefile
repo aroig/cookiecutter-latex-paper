@@ -7,18 +7,18 @@
 #----------------------------------#
 
 # Software
-LATEX      := lualatex
-DIFFLATEX  := difflatex
-BIBTEX     := biber
+LATEX              := lualatex
+DIFFLATEX          := difflatex
+BIBTEX             := biber
 
 # Latexdiff config
 LATEXDIFF_IGNORE   := picture tikzpicture tikzcd DIFnomarkup
 LATEXDIFF_PACKAGES := amsmath hyperref
 
 # Execution flags
-LATEX_FLAGS     := --shell-escape --halt-on-error --interaction=nonstopmode --synctex=1
-LATEXDIFF_FLAGS := --packages=$(subst ' ',',',$(LATEXDIFF_PACKAGES)) \
-                   --config "PICTUREENV=(?:$(subst ' ',|,$(LATEXDIFF_IGNORE)))[\w\d*@]*"
+LATEX_FLAGS        := --shell-escape --halt-on-error --interaction=nonstopmode
+LATEXDIFF_FLAGS    := --packages=$(subst ' ',',',$(LATEXDIFF_PACKAGES)) \
+                      --config "PICTUREENV=(?:$(subst ' ',|,$(LATEXDIFF_IGNORE)))[\w\d*@]*"
 
 
 #----------------------------------#
@@ -82,9 +82,6 @@ write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ];
 #----------------------------------#
 # Abstract rules                   #
 #----------------------------------#
-
-# set vpath so make finds the source files
-VPATH       := $(LIBDIR):$(TEXDIR):$(FIGDIR)
 
 # shell settings
 SHELL       := /usr/bin/bash
@@ -205,12 +202,12 @@ $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 # compile pdf with up to date bibliography
 $(BLDDIR)/%.pdf: %.tex $$(call doc-dependencies,%) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) $<
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --synctex=1 --output-directory=$(dir $@) $<
 
 # compile one chapter alone
 $(BLDDIR)/chapter-%.pdf: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) \
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --synctex=1 --output-directory=$(dir $@) \
 		-jobname=chapter-$* "\\includeonly{$<}\\input{$(DOCID).tex}"
 
 # make a tar.gz package of the sources
