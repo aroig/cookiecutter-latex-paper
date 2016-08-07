@@ -182,12 +182,14 @@ $(PREAMBLE): $(MKPREAMBLE) $(METADATA)
 # precompile headers
 $(BLDDIR)/preamble.fmt: $(PREAMBLE)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) -ini -job-name="preamble" "&lualatex $<\dump" --output-directory=$(dir $@) $<
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) -ini \
+		-job-name="preamble" "&lualatex $<\dump" --output-directory=$(dir $@) $<
 
 # compile document to produce the bcf file. we do not want to rebuild on every tex file change.
 $(BLDDIR)/%.bcf: | $$(call latex-dependencies,%)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --draftmode --output-directory=$(dir $@) $*.tex
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --draftmode \
+		--output-format=dvi --output-directory=$(dir $@) $*.tex
 
 # prepare bibliography when bibliography file changes. Do not rebuild when bcf file changes.
 $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
