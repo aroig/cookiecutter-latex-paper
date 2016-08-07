@@ -104,6 +104,11 @@
 % Package loading                                                         %
 % ----------------------------------------------------------------------- %
 
+% NOTE: needed on texlive 2016 due to some packages not following recent lualatex changes.
+\ifLuaTeX
+    \RequirePackage{luatex85}
+\fi
+
 % NOTE: without etex, tikz + beamer complain about not enough room for dimendions.
 \RequirePackage{etex}                   % etex stuff
 \RequirePackage{iftex}                  % conditionals on tex engine
