@@ -96,7 +96,7 @@ SHELL       := /usr/bin/bash
 .SECONDARY:
 
 # always trigger rebuilds on those
-.PHONY: update pdf 2in1 src flat flatsrc diff figs clean slideshow view ref bib test
+.PHONY: pdf 2in1 src flat flatsrc diff figs clean
 
 all: pdf
 
@@ -251,6 +251,9 @@ update-copyright:
 		sed -i "1,10{s/Copyright (c) $$year-$$year,/Copyright (c) $$year,/}" "$$f"
 	done
 
+
+.PHONY: ref-tree auto-bib
+
 # prepare a tree of symlinks to the bibliography
 ref-tree:
 	rm -Rf $(REFDIR)
@@ -260,6 +263,9 @@ ref-tree:
 auto-bib:
 	cali find --fmt=bib "tag:paper:$(DOCID)" > $(DOCID).auto.bib
 
+
+.PHONY: view slideshow
+
 # view pdf
 view:
 	xdg-open $(DOCID).pdf &
@@ -267,5 +273,8 @@ view:
 # make a slideshow
 slideshow:
 	pdfpc $(DOCID).pdf &
+
+
+.PHONY: test
 
 test:
