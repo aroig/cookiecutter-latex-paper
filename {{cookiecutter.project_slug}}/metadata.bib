@@ -44,30 +44,30 @@ entrysubtype = {{ "{" + cookiecutter.project_type + "}"}},
         name = {{ "{" + cookiecutter.full_name + "}" }},
        email = {{ "{" + cookiecutter.email + "}" }},
          url = {{ "{" + cookiecutter.url + "}" }},
-{% if cookiecutter.funding in [ "MTM2015", "MTM2012", "MTM2009" ] -%}
+{%- if cookiecutter.funding in [ "MTM2015", "MTM2012", "MTM2009" ] %}
   university = {Universitat Politècnica de Catalunya},
   department = {Departament de Matemàtiques},
      address = {Av. Diagonal, 647},
         city = {08028 Barcelona},
-{% else -%}
+{%- else -%}
   university = {University of Warsaw},
   department = {Institute of Mathematics},
      address = {ul. Banacha, 2},
         city = {02-097 Warszawa},
-{% endif -%}
-{% if cookiecutter.funding == "MTM2009" -%}
+{%- endif %}
+{%- if cookiecutter.funding == "MTM2009" %}
       thanks = {Partially supported by MICINN (MTM2009-09557) and the ``Comissionat
                 per a Universitats i Recerca'' (2009 SGR 119)},
-{% elif cookiecutter.funding == "MTM2012" -%}
+{%- elif cookiecutter.funding == "MTM2012" %}
       thanks = {Partially supported by MICINN (MTM2012-38122-C03-01) and the ``Comissionat
                 per a Universitats i Recerca'' (2009 SGR 119)},
-{% elif cookiecutter.funding == "MTM2015" -%}
+{%- elif cookiecutter.funding == "MTM2015" %}
       thanks = {Partially supported by MICINN (MTM2015-69135-P) and the ``Comissionat
                 per a Universitats i Recerca'' (2014 SGR 634)},
-{% elif cookiecutter.funding == "NCN2013" -%}
+{%- elif cookiecutter.funding == "NCN2013" %}
       thanks = {Supported by the NCN grant 2013/08/A/ST1/00804},
-{% else -%}
+{%- else -%}
       thanks = {},
-{% endif -%}
+{%- endif -%}
 }
 
