@@ -1,6 +1,8 @@
 {
     "full_name"             : "Abdó Roig-Maranges",
     "email"                 : "abdo.roig@gmail.com",
+    "url"                   : "https://www.abdoroig.net",
+    "funding"               : [ "NCN2013", "MTM2015", "MTM2012", "MTM2009" ],
     "project_name"          : "new-project",
     "project_slug"          : "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
     "language"              : "english",
