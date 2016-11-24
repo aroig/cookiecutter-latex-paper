@@ -7,7 +7,8 @@
 #----------------------------------#
 
 # Software
-LATEX              := lualatex
+LATEX              := latex
+LUALATEX           := lualatex
 DIFFLATEX          := difflatex
 BIBTEX             := biber
 
@@ -187,13 +188,13 @@ $(PREAMBLE): $(MKPREAMBLE) $(METADATA)
 # precompile headers
 $(BLDDIR)/preamble.fmt: $(PREAMBLE)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) -ini \
+	$(call latex-environment,$(dir $<)) $(LUALATEX) $(LATEX_FLAGS) -ini \
 		-job-name="preamble" "&lualatex $<\dump" --output-directory=$(dir $@) $<
 
 # compile document to produce the bcf file. we do not want to rebuild on every tex file change.
 $(BLDDIR)/%.bcf: | $$(call latex-dependencies,%)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --draftmode \
+	$(call latex-environment,$(dir $<)) $(LUALATEX) $(LATEX_FLAGS) --draftmode \
 		--output-format=dvi --output-directory=$(dir $@) $*.tex
 
 # prepare bibliography when bibliography file changes. Do not rebuild when bcf file changes.
@@ -209,12 +210,14 @@ $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 # compile pdf with up to date bibliography
 $(BLDDIR)/%.pdf: %.tex $$(call doc-dependencies,%) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --synctex=1 --output-directory=$(dir $@) $<
+	$(call latex-environment,$(dir $<)) $(LUALATEX) $(LATEX_FLAGS) \
+		--synctex=1 --output-directory=$(dir $@) $<
 
 # compile one chapter alone
 $(BLDDIR)/chapter-%.pdf: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --synctex=1 --output-directory=$(dir $@) \
+	$(call latex-environment,$(dir $<)) $(LUALATEX) $(LATEX_FLAGS) \
+		--synctex=1 --output-directory=$(dir $@) \
 		-jobname=chapter-$* "\\includeonly{$<}\\input{$(DOCID).tex}"
 
 # make a tar.gz package of the sources
@@ -224,7 +227,7 @@ $(BLDDIR)/%.tar.gz: %.tex $$(call doc-dependencies) $(BIBFILES) $(BLDFILES)
 
 # make a tikz figure
 $(FIGDIR)/%.pdf: $(FIGDIR)/%.tex
-	@( cd $(FIGDIR); $(LATEX) --jobname=$* --output-directory=$(BLDDIR) $(notdir $<) )
+	@( cd $(FIGDIR); $(LUALATEX) --jobname=$* --output-directory=$(BLDDIR) $(notdir $<) )
 	cp $(BLDDIR)/$*.pdf $@
 
 
@@ -239,7 +242,7 @@ $(BLDDIR)/html/%.bbl: $(BLDDIR)/%.bbl
 # This obscure code comes from /usr/bin/htlatex
 $(BLDDIR)/html/%.dvi: %.tex $$(call doc-dependencies,%) $(BLDDIR)/html/%.bbl | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) latex $(LATEX_FLAGS) --output-directory=$(dir $@) '\makeatletter\def\HCode{\futurelet\HCode\HChar}\def\HChar{\ifx"\HCode\def\HCode"##1"{\Link##1}\expandafter\HCode\else\expandafter\Link\fi}\def\Link#1.a.b.c.{\g@addto@macro\@documentclasshook{\RequirePackage[#1,html]{tex4ht}}\let\HCode\documentstyle\def\documentstyle{\let\documentstyle\HCode\expandafter\def\csname tex4ht\endcsname{#1,html}\def\HCode####1{\documentstyle[tex4ht,}\@ifnextchar[{\HCode}{\documentstyle[tex4ht]}}}\makeatother\HCode html.a.b.c.\input ' $<
+	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) '\makeatletter\def\HCode{\futurelet\HCode\HChar}\def\HChar{\ifx"\HCode\def\HCode"##1"{\Link##1}\expandafter\HCode\else\expandafter\Link\fi}\def\Link#1.a.b.c.{\g@addto@macro\@documentclasshook{\RequirePackage[#1,html]{tex4ht}}\let\HCode\documentstyle\def\documentstyle{\let\documentstyle\HCode\expandafter\def\csname tex4ht\endcsname{#1,html}\def\HCode####1{\documentstyle[tex4ht,}\@ifnextchar[{\HCode}{\documentstyle[tex4ht]}}}\makeatother\HCode html.a.b.c.\input ' $<
 
 $(BLDDIR)/html/%.html: $(BLDDIR)/html/%.dvi
 	@mkdir -p $(dir $@)
