@@ -102,6 +102,8 @@ all: pdf
 
 pdf: $(DOCID).pdf $(DOCID).synctex.gz
 
+epub: $(DOCID).epub
+
 2in1: $(DOCID).2in1.pdf
 
 src: $(DOCID).tar.gz
@@ -145,6 +147,9 @@ $(BLDDIR)/%.ps.imposed: $(BLDDIR)/%.ps
 
 # copy files from the build directory
 %.pdf: $(BLDDIR)/%.pdf
+	cp $< $@
+
+%.epub: $(BLDDIR)/%.epub
 	cp $< $@
 
 %.synctex.gz: $(BLDDIR)/%.pdf
@@ -198,7 +203,7 @@ $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 
 
 #----------------------------------#
-# Document                         #
+# pdf document                     #
 #----------------------------------#
 
 # compile pdf with up to date bibliography
@@ -221,6 +226,34 @@ $(BLDDIR)/%.tar.gz: %.tex $$(call doc-dependencies) $(BIBFILES) $(BLDFILES)
 $(FIGDIR)/%.pdf: $(FIGDIR)/%.tex
 	@( cd $(FIGDIR); $(LATEX) --jobname=$* --output-directory=$(BLDDIR) $(notdir $<) )
 	cp $(BLDDIR)/$*.pdf $@
+
+
+#----------------------------------#
+# epub document                    #
+#----------------------------------#
+
+$(BLDDIR)/html/%.bbl: $(BLDDIR)/%.bbl
+	@mkdir -p $(dir $@)
+	cp $< $@
+
+# This obscure code comes from /usr/bin/htlatex
+$(BLDDIR)/html/%.dvi: %.tex $$(call doc-dependencies,%) $(BLDDIR)/html/%.bbl | $(BLDDIR)/$(GITREF)
+	@mkdir -p $(dir $@)
+	$(call latex-environment,$(dir $<)) latex $(LATEX_FLAGS) --output-directory=$(dir $@) '\makeatletter\def\HCode{\futurelet\HCode\HChar}\def\HChar{\ifx"\HCode\def\HCode"##1"{\Link##1}\expandafter\HCode\else\expandafter\Link\fi}\def\Link#1.a.b.c.{\g@addto@macro\@documentclasshook{\RequirePackage[#1,html]{tex4ht}}\let\HCode\documentstyle\def\documentstyle{\let\documentstyle\HCode\expandafter\def\csname tex4ht\endcsname{#1,html}\def\HCode####1{\documentstyle[tex4ht,}\@ifnextchar[{\HCode}{\documentstyle[tex4ht]}}}\makeatother\HCode html.a.b.c.\input ' $<
+
+$(BLDDIR)/html/%.html: $(BLDDIR)/html/%.dvi
+	@mkdir -p $(dir $@)
+	(
+		cd $(dir $@)
+		tex4ht -f/$(notdir $<)   # -i~/tex4ht.dir/texmf/tex4ht/ht-fonts/$3
+		t4ht -f/$(notdir $<)
+	)
+
+$(BLDDIR)/html/%.css: $(BLDDIR)/html/%.html
+
+$(BLDDIR)/%.epub: $(BLDDIR)/html/%.html $(BLDDIR)/html/%.css
+	@mkdir -p $(dir $@)
+	ebook-convert $< $@ --no-default-epub-cover
 
 
 #----------------------------------#
