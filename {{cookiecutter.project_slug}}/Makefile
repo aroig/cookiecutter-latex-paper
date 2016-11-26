@@ -252,9 +252,7 @@ $(BLDDIR)/html/%.html: $(BLDDIR)/html/%.dvi
 		t4ht -f/$(notdir $<)
 	)
 
-$(BLDDIR)/html/%.css: $(BLDDIR)/html/%.html
-
-$(BLDDIR)/%.epub: $(BLDDIR)/html/%.html $(BLDDIR)/html/%.css
+$(BLDDIR)/%.epub: $(BLDDIR)/html/%.html
 	@mkdir -p $(dir $@)
 	ebook-convert $< $@ --no-default-epub-cover
 
