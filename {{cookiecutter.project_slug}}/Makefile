@@ -1,5 +1,6 @@
 # Copyright (c) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 # All rights reserved.
+{%- raw %}
 
 
 #----------------------------------#
@@ -325,3 +326,5 @@ slideshow: $(DOCID).pdf
 .PHONY: test
 
 test:
+
+{%- endraw %}

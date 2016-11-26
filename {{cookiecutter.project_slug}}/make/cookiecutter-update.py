@@ -3,6 +3,7 @@
 #
 # Copyright (c) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 # All rights reserved.
+{%- raw %}
 
 import os
 import sys
@@ -77,3 +78,5 @@ if __name__ == '__main__':
         context = json.load(fd)
 
     update_template(context['_template'], os.getcwd(), branch=sys.argv[2])
+
+{%- endraw %}

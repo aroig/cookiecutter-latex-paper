@@ -3,7 +3,7 @@
 #
 # Copyright (c) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 # All rights reserved.
-
+{%- raw %}
 
 import sys
 import argparse
@@ -162,3 +162,5 @@ for e in entries:
         authors.append(e)
 
 print(format_preamble(metadata, authors))
+
+{%- endraw %}
