@@ -10,5 +10,5 @@
     "date"                  : "{% now 'local', '%Y-%m-%d' %}",
 
     "_template"             : "local:latex-base",
-    "_copy_without_render"  : [ "make/*", "lib/*", "fig/*", "*.sty", "*.lua" ]
+    "_copy_without_render"  : [ "Makefile", "make/*", "lib/*", "fig/*", "*.sty", "*.lua" ]
 }

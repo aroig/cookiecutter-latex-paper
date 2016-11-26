@@ -3,6 +3,9 @@ TODO
 
 ## latex-base
 
+* Do not skip template rendering for `Makefile` and `make/*`. Need to make sure
+  there is no interference with latex code.
+
 * Track dependencies of `.aux` and `.toc` files.
 
   Extend preamble script to handle journal styles.
