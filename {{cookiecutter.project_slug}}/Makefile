@@ -300,15 +300,19 @@ auto-bib:
 	cali find --fmt=bib "tag:paper:$(DOCID)" > $(DOCID).auto.bib
 
 
-.PHONY: view slideshow
+.PHONY: view-pdf view-epub view slideshow
 
-# view pdf
-view:
-	xdg-open $(DOCID).pdf &
+view-pdf: $(DOCID).pdf
+	xdg-open $< &
+
+view-epub: $(DOCID).epub
+	xdg-open $< &
+
+view: view-pdf
 
 # make a slideshow
-slideshow:
-	pdfpc $(DOCID).pdf &
+slideshow: $(DOCID).pdf
+	pdfpc $< &
 
 
 .PHONY: test
