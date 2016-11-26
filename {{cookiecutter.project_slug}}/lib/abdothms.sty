@@ -26,7 +26,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{amsthm}    % AMS theorem environments
-\RequirePackage{tikz}      % Powerful graphics package
 \RequirePackage{ifthen}    % Make decisions inside latex
 
 
@@ -48,7 +47,7 @@
   }{}%
 }
 
-\DeclareRobustCommand{\blackcircle}{\tikz \fill[textcolor] (1ex,1ex) circle (0.62ex);}
+\DeclareRobustCommand{\blackcircle}{\LARGE$\bullet$}
 
 \newcommand{\makeproofenv}[4]{
   \newenvironment{#1}[1][]{\par%
