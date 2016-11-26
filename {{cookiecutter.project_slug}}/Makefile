@@ -50,7 +50,7 @@ GITREF     := gitref
 
 FIGFILES   := $(sort $(wildcard $(FIGDIR)/*.png) $(wildcard $(FIGDIR)/*.pdf))
 LIBFILES   := $(sort $(wildcard *.sty) $(wildcard $(LIBDIR)/*))
-BIBFILES   := $(sort $(wildcard *.bib))
+BIBFILES   := $(sort $(filter-out $(METADATA),$(wildcard *.bib)))
 TEXFILES   := $(sort $(wildcard *.tex) $(wildcard $(TEXDIR)/*.tex) $(PREAMBLE))
 AUXFILES   := $(patsubst %.tex,$(notdir %.aux),$(TEXFILES))
 TOCFILES   := $(DOCID).toc
@@ -74,7 +74,15 @@ latex-dependencies = $1.tex $(foreach p,\
 )
 
 # bibliography files
-doc-dependencies = $(call latex-dependencies,$1) $(BLDDIR)/$1.bbl $(PREAMBLE) $(LIBFILES) $(FIGFILES)
+doc-pdf-dependencies = $(call latex-dependencies,$1) \
+                       $(if $(BIBFILES),$(BLDDIR)/$1.bbl) \
+                       $(PREAMBLE) $(LIBFILES) $(FIGFILES)
+
+doc-src-dependencies = $(call doc-pdf-dependencies,$1)
+
+doc-html-dependencies = $(call latex-dependencies,$1) \
+                        $(if $(BIBFILES),$(BLDDIR)/html/$1.bbl) \
+                        $(PREAMBLE) $(LIBFILES) $(FIGFILES)
 
 # write string $2 to file $1 only if it is different from its contents.
 write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ]; then echo "$1" > "$2"; fi
@@ -208,7 +216,7 @@ $(BLDDIR)/%.bbl: $(BIBFILES) | $(BLDDIR)/%.bcf
 #----------------------------------#
 
 # compile pdf with up to date bibliography
-$(BLDDIR)/%.pdf: %.tex $$(call doc-dependencies,%) | $(BLDDIR)/$(GITREF)
+$(BLDDIR)/%.pdf: %.tex $$(call doc-pdf-dependencies,%) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LUALATEX) $(LATEX_FLAGS) \
 		--synctex=1 --output-directory=$(dir $@) $<
@@ -221,7 +229,7 @@ $(BLDDIR)/chapter-%.pdf: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(G
 		-jobname=chapter-$* "\\includeonly{$<}\\input{$(DOCID).tex}"
 
 # make a tar.gz package of the sources
-$(BLDDIR)/%.tar.gz: %.tex $$(call doc-dependencies) $(BIBFILES) $(BLDFILES)
+$(BLDDIR)/%.tar.gz: %.tex $$(call doc-src-dependencies) $(BIBFILES) $(BLDFILES)
 	@mkdir -p $(dir $@)
 	tar -cz -f $@ $(patsubst ./%,%,$^)
 
@@ -240,7 +248,7 @@ $(BLDDIR)/html/%.bbl: $(BLDDIR)/%.bbl
 	cp $< $@
 
 # This obscure code comes from /usr/bin/htlatex
-$(BLDDIR)/html/%.dvi: %.tex $$(call doc-dependencies,%) $(BLDDIR)/html/%.bbl | $(BLDDIR)/$(GITREF)
+$(BLDDIR)/html/%.dvi: %.tex $$(call doc-html-dependencies,%) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) '\makeatletter\def\HCode{\futurelet\HCode\HChar}\def\HChar{\ifx"\HCode\def\HCode"##1"{\Link##1}\expandafter\HCode\else\expandafter\Link\fi}\def\Link#1.a.b.c.{\g@addto@macro\@documentclasshook{\RequirePackage[#1,html]{tex4ht}}\let\HCode\documentstyle\def\documentstyle{\let\documentstyle\HCode\expandafter\def\csname tex4ht\endcsname{#1,html}\def\HCode####1{\documentstyle[tex4ht,}\@ifnextchar[{\HCode}{\documentstyle[tex4ht]}}}\makeatother\HCode html.a.b.c.\input ' $<
 
