@@ -11,5 +11,5 @@
     "date"                  : "{% now 'local', '%Y-%m-%d' %}",
 
     "_template"             : "local:latex-paper",
-    "_copy_without_render"  : [ "make/*", "lib/*", "figs/*", "*.sty", "*.lua" ]
+    "_copy_without_render"  : [ "Makefile", "make/*", "lib/*", "figs/*", "*.sty", "*.lua" ]
 }
