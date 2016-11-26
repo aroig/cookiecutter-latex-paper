@@ -29,7 +29,6 @@ LATEXDIFF_FLAGS    := --packages=$(subst ' ',',',$(LATEXDIFF_PACKAGES)) \
 BLDDIR     := ./build
 FIGDIR     := ./figs
 LIBDIR     := ./lib
-TEXDIR     := ./tex
 REFDIR     := ./ref
 FLATDIR    := ./build/flat
 DIFFDIR    := ./build/diff
@@ -51,7 +50,7 @@ GITREF     := gitref
 FIGFILES   := $(sort $(wildcard $(FIGDIR)/*.png) $(wildcard $(FIGDIR)/*.pdf))
 LIBFILES   := $(sort $(wildcard *.sty) $(wildcard $(LIBDIR)/*))
 BIBFILES   := $(sort $(filter-out $(METADATA),$(wildcard *.bib)))
-TEXFILES   := $(sort $(wildcard *.tex) $(wildcard $(TEXDIR)/*.tex) $(PREAMBLE))
+TEXFILES   := $(sort $(wildcard *.tex) $(PREAMBLE))
 AUXFILES   := $(patsubst %.tex,$(notdir %.aux),$(TEXFILES))
 TOCFILES   := $(DOCID).toc
 
@@ -64,7 +63,7 @@ BLDFILES   := $(foreach f,$(BLDFILES),$(wildcard $(f)))
 #----------------------------------#
 
 # setup environment for some commands
-latex-environment  = TEXINPUTS="$1:$(LIBDIR):$(TEXDIR):$(FIGDIR):" LUAINPUTS="$1:$(LIBDIR):"
+latex-environment  = TEXINPUTS="$1:$(LIBDIR):$(FIGDIR):" LUAINPUTS="$1:$(LIBDIR):"
 lua-environment    = LUA_PATH="$(LIBDIR)/?.lua"
 
 # extract tex file dependencies
@@ -222,7 +221,7 @@ $(BLDDIR)/%.pdf: %.tex $$(call doc-pdf-dependencies,%) | $(BLDDIR)/$(GITREF)
 		--synctex=1 --output-directory=$(dir $@) $<
 
 # compile one chapter alone
-$(BLDDIR)/chapter-%.pdf: $(TEXDIR)/%.tex $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
+$(BLDDIR)/chapter-%.pdf: chapter-%.tex $(PREAMBLE) $(FIGFILES) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LUALATEX) $(LATEX_FLAGS) \
 		--synctex=1 --output-directory=$(dir $@) \
