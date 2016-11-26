@@ -25,7 +25,8 @@ all: build
 build:
 	@rm -Rf $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)
-	cookiecutter --no-input -o $(BUILD_DIR) $(abspath .)
+	cookiecutter --no-input -o $(BUILD_DIR) $(abspath .) project_slug=test
+	rsync -a test/ $(BUILD_DIR)/test/
 
 clean:
 	@rm -Rf $(BUILD_DIR)
