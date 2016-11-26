@@ -201,7 +201,7 @@ $(BLDDIR)/preamble.fmt: $(PREAMBLE)
 # compile document to produce the bcf file. we do not want to rebuild on every tex file change.
 $(BLDDIR)/%.bcf: | $$(call latex-dependencies,%)
 	@mkdir -p $(dir $@)
-	$(call latex-environment,$(dir $<)) $(LUALATEX) $(LATEX_FLAGS) --draftmode \
+	$(call latex-environment,$(dir $<)) $(LUALATEX) $(LATEX_FLAGS) \
 		--output-directory=$(dir $@) $*.tex
 
 # prepare bibliography when bibliography file changes. Do not rebuild when bcf file changes.
