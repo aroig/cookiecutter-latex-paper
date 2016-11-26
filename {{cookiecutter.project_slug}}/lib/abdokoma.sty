@@ -107,6 +107,7 @@
 % NOTE: without etex, tikz + beamer complain about not enough room for dimendions.
 \RequirePackage{etex}                   % etex stuff
 \RequirePackage{iftex}                  % conditionals on tex engine
+\RequirePackage{ifpdf}                  % conditional on pdf output
 
 % NOTE: needed on texlive 2016 due to some packages not following recent lualatex changes.
 \ifLuaTeX
@@ -147,12 +148,14 @@
 \RequirePackage{xcolor}           % provides color
 \RequirePackage{graphicx}         % Include external graphics
 
-\RequirePackage{tikz}             % Graphics
-\usetikzlibrary{matrix}
-\usetikzlibrary{calc}
-\usetikzlibrary{decorations.markings}
-\usetikzlibrary{cd}
-\tikzcdset{arrow style=tikz}
+\ifpdf
+  \RequirePackage{tikz}           % Graphics
+  \usetikzlibrary{matrix}
+  \usetikzlibrary{calc}
+  \usetikzlibrary{decorations.markings}
+  \usetikzlibrary{cd}
+  \tikzcdset{arrow style=tikz}
+\fi
 
 % personal
 \RequirePackage{abdocolor}        % Custom colors
