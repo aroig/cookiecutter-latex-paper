@@ -27,7 +27,7 @@ LATEXDIFF_FLAGS    := --packages=$(subst ' ',',',$(LATEXDIFF_PACKAGES)) \
 #----------------------------------#
 
 BLDDIR     := ./build
-FIGDIR     := ./figs
+FIGDIR     := ./fig
 LIBDIR     := ./lib
 REFDIR     := ./ref
 FLATDIR    := ./build/flat
