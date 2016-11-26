@@ -249,14 +249,16 @@
 % Revision History                                                        %
 % ----------------------------------------------------------------------- %
 
-% Set the revisions on a diff
-\newcommand{\setdiffrevision}[2]{\directlua{draftools.set_diff_revinfo("#1", "#2")}}
+\ifluatex
+  % Set the revisions on a diff
+  \newcommand{\setdiffrevision}[2]{\directlua{draftools.set_diff_revinfo("#1", "#2")}}
 
-% Set revision info to the current revision
-\newcommand{\setcurrentrevision}{\directlua{draftools.set_workingdir_revinfo()}}
+  % Set revision info to the current revision
+  \newcommand{\setcurrentrevision}{\directlua{draftools.set_workingdir_revinfo()}}
 
-\setcurrentrevision
-
+  \setcurrentrevision
+\fi
+  
 
 % Header line thickness
 \newlength\rev@headerlinethickness
@@ -269,7 +271,9 @@
     \footnotesize\ttfamily%
     \setlength\tabcolsep{0em}%
     \begin{tabular*}{\textwidth}{p{10em}l@{\extracolsep{\fill}}r}%
-      \directlua{draftools.print_revinfo_header()}
+      \ifluatex%
+      \directlua{draftools.print_revinfo_header()}%
+      \fi%
     \end{tabular*}%
     \hfill%
   }
