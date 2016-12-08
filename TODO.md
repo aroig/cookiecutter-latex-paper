@@ -26,3 +26,5 @@ TODO
   efficient compilation.
 
         pdflatex -jobname=chapter-foo "\\includeonly{foo}\\input{master.tex}"
+
+* make sure diagram arrows match font.
