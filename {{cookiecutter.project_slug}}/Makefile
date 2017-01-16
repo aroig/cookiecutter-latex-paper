@@ -1,7 +1,7 @@
-# Copyright (c) 2016, Abdó Roig-Maranges <abdo.roig@gmail.com>
+# Copyright (c) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 # All rights reserved.
 #
-# This file is part of 'LaTeX Base Cookiecutter'.
+# This file is part of '{{ cookiecutter.project_name }}'.
 
 
 # So that we can use newlines in recipes with $(\n)
@@ -20,22 +20,6 @@ SHELL       := /bin/bash
 # So we can use $$(variable) on the prerequisites, that expand at matching time.
 .SECONDEXPANSION:
 
-
-BUILD_DIR        := build
-TESTPROJ_DIR     := $(BUILD_DIR)/testproj
-
-all: build
-
-.PHONY: build clean
-
-build:
-	@rm -Rf $(BUILD_DIR)
-	mkdir -p $(BUILD_DIR)
-	cookiecutter --no-input -o $(BUILD_DIR) $(abspath .) project_slug=$(notdir $(TESTPROJ_DIR))
-	rsync -a --exclude '.dummy' test/ $(TESTPROJ_DIR)
-
-clean:
-	@rm -Rf $(BUILD_DIR)
 
 
 # -------------------------------------------------------------------------- #

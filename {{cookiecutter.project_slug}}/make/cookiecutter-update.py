@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2016, Abdó Roig-Maranges <abdo.roig@gmail.com>
+# Copyright (c) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 # All rights reserved.
 #
-# This file is part of 'LaTeX Base Cookiecutter'.
+# This file is part of '{{ cookiecutter.project_name }}'.
 
 
 import os
