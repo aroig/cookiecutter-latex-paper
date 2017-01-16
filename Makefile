@@ -1,14 +1,20 @@
 # Copyright (c) 2016, Abdó Roig-Maranges <abdo.roig@gmail.com>
 # All rights reserved.
 #
-# This file may be modified and distributed under the terms of the 3-clause BSD
-# license. See the LICENSE file for details.
+# This file is part of 'LaTeX Base Cookiecutter'.
 
 
-# shell settings
-SHELL       := /usr/bin/bash
+# So that we can use newlines in recipes with $(\n)
+define \n
+
+
+endef
+
+# Shell settings
+SHELL       := /bin/bash
 .SHELLFLAGS := -e -u -c
 
+# Use a single shell
 .ONESHELL:
 
 # So we can use $$(variable) on the prerequisites, that expand at matching time.
@@ -31,6 +37,10 @@ build:
 clean:
 	@rm -Rf $(BUILD_DIR)
 
+
+# -------------------------------------------------------------------------- #
+# Source maintenance                                                         #
+# -------------------------------------------------------------------------- #
 
 .PHONY: update-template update-copyright
 
