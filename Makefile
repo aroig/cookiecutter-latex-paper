@@ -16,7 +16,7 @@ SHELL       := /usr/bin/bash
 
 
 BUILD_DIR        := build
-
+TESTPROJ_DIR     := $(BUILD_DIR)/testproj
 
 all: build
 
@@ -25,8 +25,8 @@ all: build
 build:
 	@rm -Rf $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)
-	cookiecutter --no-input -o $(BUILD_DIR) $(abspath .) project_slug=test
-	rsync -a test/ $(BUILD_DIR)/test/
+	cookiecutter --no-input -o $(BUILD_DIR) $(abspath .) project_slug=$(notdir $(TESTPROJ_DIR))
+	rsync -a --exclude '.dummy' test/ $(TESTPROJ_DIR)
 
 clean:
 	@rm -Rf $(BUILD_DIR)
