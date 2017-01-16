@@ -4,8 +4,7 @@
 # Copyright (c) 2016, Abdó Roig-Maranges <abdo.roig@gmail.com>
 # All rights reserved.
 #
-# This file may be modified and distributed under the terms of the 3-clause BSD
-# license. See the LICENSE file for details.
+# This file is part of 'LaTeX Base Cookiecutter'.
 
 
 import os
@@ -82,3 +81,4 @@ if __name__ == '__main__':
         context = json.load(fd)
 
     update_template(context['_template'], os.getcwd(), branch=sys.argv[2])
+

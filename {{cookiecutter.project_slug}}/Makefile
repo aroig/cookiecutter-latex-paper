@@ -1,6 +1,9 @@
 # Copyright (c) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 # All rights reserved.
+#
+# This file is part of '{{ cookiecutter.project_name }}'.
 {%- raw %}
+
 
 
 #----------------------------------#
@@ -283,19 +286,6 @@ $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 # Miscelania rules                 #
 #----------------------------------#
 
-.PHONY: update-template update-copyright
-
-update-template:
-	@python make/cookiecutter-update.py ".cookiecutter.json" template
-
-update-copyright:
-	@year=$$(date '+%Y')
-	git ls-files | while read f; do
-		sed -i "1,10{s/Copyright (c) \([0-9]\+\)\(-[0-9]\+\)\?,/Copyright (c) \1-$$year,/}" "$$f"
-		sed -i "1,10{s/Copyright (c) $$year-$$year,/Copyright (c) $$year,/}" "$$f"
-	done
-
-
 .PHONY: ref-tree auto-bib
 
 # prepare a tree of symlinks to the bibliography
@@ -323,8 +313,22 @@ slideshow: $(DOCID).pdf
 	pdfpc $< &
 
 
-.PHONY: test
 
-test:
+# ---------------------------------#
+# Source maintenance               #
+# ---------------------------------#
 
-{%- endraw %}
+.PHONY: update-template update-copyright
+
+update-template:
+	@python make/cookiecutter-update.py ".cookiecutter.json" template
+
+update-copyright:
+	@year=$$(date '+%Y')
+	git ls-files | while read f; do
+		sed -i "1,10{s/Copyright (c) \([0-9]\+\)\(-[0-9]\+\)\?,/Copyright (c) \1-$$year,/}" "$$f"
+		sed -i "1,10{s/Copyright (c) $$year-$$year,/Copyright (c) $$year,/}" "$$f"
+	done
+
+
+{% endraw -%}

@@ -1,9 +1,9 @@
 {
-    "_copy_without_render": [  ],
+    "_copy_without_render": [],
     "_template": "local:cookiecutter",
     "date": "2016-07-10",
     "email": "abdo.roig@gmail.com",
-    "full_name": "Abdó Roig-Maranges",
+    "full_name": "Abd\u00f3 Roig-Maranges",
     "project_description": "A base LaTeX cookiecutter",
     "project_name": "LaTeX Base Cookiecutter",
     "project_slug": "latex-base"
