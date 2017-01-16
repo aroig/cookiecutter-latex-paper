@@ -3,7 +3,10 @@
 #
 # Copyright (c) {{ cookiecutter.date.split('-')[0] }}, {{ cookiecutter.full_name }} <{{ cookiecutter.email }}>
 # All rights reserved.
-{%- raw %}
+#
+# This file may be modified and distributed under the terms of the 3-clause BSD
+# license. See the LICENSE file for details.
+
 
 import os
 import sys
@@ -50,6 +53,7 @@ def update_template(template_url, root, branch):
     if os.path.exists(config_file):
         with open(config_file, 'r') as fd:
             context = json.loads(fd.read())
+            context['project_slug'] = project_slug
 
     # create a template branch if necessary
     if subprocess.run(["git", "rev-parse", "-q", "--verify", branch], cwd=root).returncode != 0:
@@ -78,5 +82,3 @@ if __name__ == '__main__':
         context = json.load(fd)
 
     update_template(context['_template'], os.getcwd(), branch=sys.argv[2])
-
-{%- endraw %}
