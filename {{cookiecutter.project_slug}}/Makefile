@@ -2,8 +2,6 @@
 # All rights reserved.
 #
 # This file is part of '{{ cookiecutter.project_name }}'.
-{%- raw %}
-
 
 
 #----------------------------------#
@@ -99,6 +97,7 @@ write-if-changed-cmd = if [ ! -f "$2" ] || [ ! "$1" = "`cat $2 2> /dev/null`" ];
 SHELL       := /usr/bin/bash
 .SHELLFLAGS := -e -u -c
 
+# Use a single shell
 .ONESHELL:
 
 # So we can use $$(variable) on the prerequisites, that expand at matching time
@@ -250,10 +249,13 @@ $(BLDDIR)/html/%.bbl: $(BLDDIR)/%.bbl
 	@mkdir -p $(dir $@)
 	cp $< $@
 
+{% raw -%}
 # This obscure code comes from /usr/bin/htlatex
 $(BLDDIR)/html/%.dvi: %.tex $$(call doc-html-dependencies,%) | $(BLDDIR)/$(GITREF)
 	@mkdir -p $(dir $@)
 	$(call latex-environment,$(dir $<)) $(LATEX) $(LATEX_FLAGS) --output-directory=$(dir $@) '\makeatletter\def\HCode{\futurelet\HCode\HChar}\def\HChar{\ifx"\HCode\def\HCode"##1"{\Link##1}\expandafter\HCode\else\expandafter\Link\fi}\def\Link#1.a.b.c.{\g@addto@macro\@documentclasshook{\RequirePackage[#1,html]{tex4ht}}\let\HCode\documentstyle\def\documentstyle{\let\documentstyle\HCode\expandafter\def\csname tex4ht\endcsname{#1,html}\def\HCode####1{\documentstyle[tex4ht,}\@ifnextchar[{\HCode}{\documentstyle[tex4ht]}}}\makeatother\HCode html.a.b.c.\input ' $<
+
+{%- endraw %}
 
 $(BLDDIR)/html/%.html: $(BLDDIR)/html/%.dvi
 	@mkdir -p $(dir $@)
@@ -313,16 +315,17 @@ slideshow: $(DOCID).pdf
 	pdfpc $< &
 
 
-
 # ---------------------------------#
 # Source maintenance               #
 # ---------------------------------#
 
 .PHONY: update-template update-copyright
 
+## Update cookiecutter template branch
 update-template:
 	@python make/cookiecutter-update.py ".cookiecutter.json" template
 
+## Update copyright from file headers
 update-copyright:
 	@year=$$(date '+%Y')
 	git ls-files | while read f; do
@@ -331,4 +334,13 @@ update-copyright:
 	done
 
 
-{% endraw -%}
+.PHONY: help
+
+## Print Makefile documentation
+help:
+	@perl -0 -nle 'printf("%-25s - %s\n", "$$2", "$$1") while m/^##\s*([^\r\n]+)\n^([\w-]+):[^=]/gm' \
+		$(MAKEFILE_LIST) | sort
+	printf "\n"
+	perl -0 -nle 'printf("%-25s - %s\n", "$$2=", "$$1") while m/^#%\s*([^\r\n]+)\n^([\w-]+)\s*:=/gm' \
+		$(MAKEFILE_LIST) | sort
+
