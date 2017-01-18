@@ -107,26 +107,35 @@ SHELL       := /usr/bin/bash
 .SECONDARY:
 
 # always trigger rebuilds on those
-.PHONY: pdf 2in1 src flat flatsrc diff figs clean
+.PHONY: pdf epub 2in1 src flat flatsrc diff figs clean
 
 all: pdf
 
+## Build PDF
 pdf: $(DOCID).pdf $(DOCID).synctex.gz
 
+## Build epub
 epub: $(DOCID).epub
 
+## Build PDF 2-in-1
 2in1: $(DOCID).2in1.pdf
 
+## Build source packages
 src: $(DOCID).tar.gz
 
+## Build flattened PDF
 flat: $(FLATDIR)/$(DOCID).pdf
 
+## Build flattened sources
 flatsrc: $(FLATDIR)/$(DOCID).tar.gz
 
+## Build PDF with differences highlighted
 diff: $(DIFFDIR)/$(DOCID).pdf
 
+## Produce figures
 figs: $(FIGFILES)
 
+## Remove build files
 clean:
 	rm -Rf $(BLDDIR) $(FLATDIR) $(DIFFDIR)
 	rm -Rf *.pdf *.tar.gz *.synctex.gz
@@ -290,27 +299,30 @@ $(DIFFDIR)/%.tex: $(DIFFDIR)/old/%.tex %.tex
 
 .PHONY: ref-tree auto-bib
 
-# prepare a tree of symlinks to the bibliography
+## Prepare a tree of symlinks to the bibliography
 ref-tree:
 	rm -Rf $(REFDIR)
 	cali lktree --classifier=flat "tag:paper:$(DOCID)" $(REFDIR)
 
-# autogenerate bibliography from citation keys
+## Autogenerate bibliography from citation keys
 auto-bib:
 	cali find --fmt=bib "tag:paper:$(DOCID)" > $(DOCID).auto.bib
 
 
 .PHONY: view-pdf view-epub view slideshow
 
+## Open PDF document
 view-pdf: $(DOCID).pdf
 	xdg-open $< &
 
+## Open epub document
 view-epub: $(DOCID).epub
 	xdg-open $< &
 
+## Open PDF document
 view: view-pdf
 
-# make a slideshow
+## Start a slideshow
 slideshow: $(DOCID).pdf
 	pdfpc $< &
 
