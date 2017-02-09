@@ -8,10 +8,9 @@
 # Variables                        #
 #----------------------------------#
 
-# Software
+# Tools
 LATEX              := latex
 LUALATEX           := lualatex
-DIFFLATEX          := difflatex
 BIBTEX             := biber
 
 # Latexdiff config
@@ -22,7 +21,6 @@ LATEXDIFF_PACKAGES := amsmath hyperref
 LATEX_FLAGS        := --shell-escape --halt-on-error --interaction=nonstopmode
 LATEXDIFF_FLAGS    := --packages=$(subst ' ',',',$(LATEXDIFF_PACKAGES)) \
                       --config "PICTUREENV=(?:$(subst ' ',|,$(LATEXDIFF_IGNORE)))[\w\d*@]*"
-
 
 #----------------------------------#
 # Directories                      #
@@ -43,7 +41,6 @@ DIFFDIR    := ./build/diff
 METADATA   := metadata.bib
 DOCID      := $(shell perl -ne '/\@article[a-zA-Z{]*:(.*),/ && print "$$1\n"' $(METADATA))
 DOCTYPE    := $(shell perl -ne '/entrysubtype\s*=\s*{\s*(.*)\s*}/ && print "$$1\n"' $(METADATA))
-REF        := HEAD
 
 MKPREAMBLE := make/mkpreamble.py
 PREAMBLE   := preamble.tex
@@ -61,6 +58,14 @@ BLDFILES   := $(foreach f,$(BLDFILES),$(wildcard $(f)))
 
 
 #----------------------------------#
+# Configurable variables           #
+#----------------------------------#
+
+## Git reference to compute diff against
+REF        := HEAD
+
+
+#----------------------------------#
 # Functions                        #
 #----------------------------------#
 
@@ -75,13 +80,13 @@ latex-dependencies = $1.tex $(foreach p,\
 )
 
 # bibliography files
-doc-pdf-dependencies = $(call latex-dependencies,$1) \
-                       $(if $(BIBFILES),$(BLDDIR)/$1.bbl) \
+doc-pdf-dependencies = $(call latex-dependencies,$1)       \
+                       $(if $(BIBFILES),$(BLDDIR)/$1.bbl)  \
                        $(PREAMBLE) $(LIBFILES) $(FIGFILES)
 
 doc-src-dependencies = $(call doc-pdf-dependencies,$1)
 
-doc-html-dependencies = $(call latex-dependencies,$1) \
+doc-html-dependencies = $(call latex-dependencies,$1)           \
                         $(if $(BIBFILES),$(BLDDIR)/html/$1.bbl) \
                         $(PREAMBLE) $(LIBFILES) $(FIGFILES)
 

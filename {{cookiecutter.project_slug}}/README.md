@@ -4,20 +4,31 @@ README
 ## How to compile
 To produce a pdf file:
     
-    make -B pdf
+    make pdf
   
-To produce a tarred source distribution:
+To produce a source distribution tarball:
 
-    make -B src
+    make src
+
+To open the PDF output in a viewer
+
+    make view
+
+To rebuild everything, from scratch, bibliography pass, etc
+
+    make -B pdf
+
+To get a list of avaliable make targets
+
+    make help
 
 
+## Dependencies
+* Standard linux environment with GNU make, perl, python and bash
 
-## Compile Dependencies
-This code depends on some tools in order to be compiled properly:
+* lualatex: distributed with texlive since 2010. http://www.tug.org/texlive/
 
-* lualatex: distributed with texlive since 2010.
-  http://www.tug.org/texlive/
-
+* biber: to generate bibliographies. http://biblatex-biber.sourceforge.net/
 
   
 Optional dependencies:
@@ -27,9 +38,6 @@ Optional dependencies:
   
 * impose+: To produce 2-in-1 pdf's.
   
-* texa: To manipulate the source tree.
-  https://github.com/aroig/texa
-  
 * git: For versioning the code.
   http://git-scm.com/
   
@@ -37,29 +45,3 @@ Optional dependencies:
   is distributed with texlive, for instance.
 
  
-
-Makefile targets
-----------------
-
-* clean: Clean output and temporal files.
-
-* diff: Produce a pdf from a diff tex file. Requires texa to generate the diffs and
-  latexdiff to compile.
-
-* figs: Compile the figures if they need compiling.
-
-* flat: Produce a pdf from flattened source code.
-
-* flatsrc: Produce flattened source code, with personal commands replaced, so it compiles
-  with the minimal requirements possible. Requires texa.
-  
-* pdf: Produce a pdf.
-
-* 2in1: Produce a 2-in-1 pdf. Requires impose+.
-
-* src: Produce a source tarball.
-
-* view: Open pdf.
-
-      
-
